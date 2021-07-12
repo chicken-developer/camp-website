@@ -1,0 +1,14 @@
+campwebsiteadmin	
+campwebsite123
+mongo "mongodb+srv://cluster0.1k6qh.mongodb.net/myFirstDatabase" --username campwebsiteadmin
+
+Java app connection:
+mongodb+srv://campwebsiteadmin:campwebsite123@cluster0.1k6qh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+
+Java app connection full example:
+ConnectionString connectionString = new ConnectionString("mongodb+srv://campwebsiteadmin:campwebsite123@cluster0.1k6qh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
+MongoClientSettings settings = MongoClientSettings.builder()
+        .applyConnectionString(connectionString)
+        .build();
+MongoClient mongoClient = MongoClients.create(settings);
+MongoDatabase database = mongoClient.getDatabase("test");
