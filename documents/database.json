@@ -1,0 +1,617 @@
+                    [
+  {
+    "schemaType": "Collection",
+    "name": "CampVehicleDetails",
+    "defaultValue": "",
+    "description": "",
+    "fields": [
+      {
+        "schemaType": "Field",
+        "name": "vehicalDetails_id",
+        "type": "ObjectId",
+        "required": true,
+        "unique": true,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "drivewayEntry",
+        "type": "String",
+        "required": true,
+        "unique": true,
+        "defaultValue": "",
+        "description": "",
+        "index": 1,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "drivewayLength",
+        "type": "Double",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "drivewaySurface",
+        "type": "String",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "isEquipmentMandatory",
+        "type": "Boolean",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "maxNumOfVehicles",
+        "type": "Integer",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "maxVehicleLenghth",
+        "type": "Integer",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "siteLength",
+        "type": "Integer",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      }
+    ]
+  },
+  {
+    "schemaType": "Collection",
+    "name": "CampSiteAvailability",
+    "type": "ObjectId",
+    "required": true,
+    "unique": true,
+    "defaultValue": "",
+    "description": "",
+    "index": 0,
+    "customProps": [],
+    "fields": [
+      {
+        "schemaType": "Field",
+        "name": "campSiteAvailability_id",
+        "type": "ObjectId",
+        "required": true,
+        "unique": true,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "date",
+        "type": "Date",
+        "required": true,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "detail",
+        "type": "String",
+        "required": true,
+        "unique": true,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      }
+    ]
+  },
+  {
+    "schemaType": "Collection",
+    "name": "Camp",
+    "type": "ObjectId",
+    "required": true,
+    "unique": true,
+    "defaultValue": "",
+    "description": "",
+    "index": 0,
+    "customProps": [],
+    "fields": [
+      {
+        "schemaType": "Field",
+        "name": "imgSourcePath",
+        "type": "String",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "price",
+        "type": "Double",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "partAddress",
+        "type": "String",
+        "required": true,
+        "unique": true,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "nearAddress",
+        "type": "String",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "siteDetails_id",
+        "type": "ObjectId",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "siteAvailability_id",
+        "type": "ObjectId",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "vehicleDetails_id",
+        "type": "ObjectId",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "allowableEquipmentList_id",
+        "type": "ObjectId",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "camp_id",
+        "type": "ObjectId",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      }
+    ]
+  },
+  {
+    "schemaType": "Collection",
+    "name": "User",
+    "type": "ObjectId",
+    "required": true,
+    "unique": true,
+    "defaultValue": "",
+    "description": "",
+    "index": 0,
+    "customProps": [],
+    "fields": [
+      {
+        "schemaType": "Field",
+        "name": "username",
+        "type": "ObjectId",
+        "required": true,
+        "unique": true,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "firstName",
+        "type": "String",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "lastName",
+        "type": "String",
+        "required": 0,
+        "unique": 0,
+        "defaultValue": "",
+        "description": "",
+        "index": 0
+      },
+      {
+        "schemaType": "Field",
+        "name": "password",
+        "type": "String",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "email",
+        "type": "String",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "phoneNumber",
+        "type": "String",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "userType",
+        "type": "String",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "bookingHistory",
+        "type": "Array",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      }
+    ]
+  },
+  {
+    "schemaType": "Collection",
+    "name": "Booking",
+    "type": "ObjectId",
+    "required": true,
+    "unique": true,
+    "defaultValue": "",
+    "description": "",
+    "index": 0,
+    "customProps": [],
+    "fields": [
+      {
+        "schemaType": "Field",
+        "name": "booking_id",
+        "type": "ObjectId",
+        "required": true,
+        "unique": true,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "user_id",
+        "type": "ObjectId",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "time",
+        "type": "Date",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "total_price",
+        "type": "Double",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "camp_id",
+        "type": "Array",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      }
+    ]
+  },
+  {
+    "schemaType": "Collection",
+    "name": "SiteDetails",
+    "defaultValue": "",
+    "description": "",
+    "fields": [
+      {
+        "schemaType": "Field",
+        "name": "siteDetails_id",
+        "type": "ObjectId",
+        "required": true,
+        "unique": true,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "siteType",
+        "type": "ObjectId",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "siteAccessible",
+        "type": "ObjectId",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "checkInTime",
+        "type": "Date",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "checkOutTime",
+        "type": "Date",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "maxNumOfPeople",
+        "type": "Integer",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "minNumOfPeople",
+        "type": "Integer",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "typeOfUse",
+        "type": "String",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "siteReserveType",
+        "type": "String",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "campFireAllowed",
+        "type": "Boolean",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "capacityRating",
+        "type": "String",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "petAllowed",
+        "type": "Boolean",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "shade",
+        "type": "String",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      }
+    ]
+  },
+  {
+    "schemaType": "Collection",
+    "name": "CampAllowableEquipment",
+    "defaultValue": "",
+    "description": "",
+    "fields": [
+      {
+        "schemaType": "Field",
+        "name": "allowableEquipment_id",
+        "type": "ObjectId",
+        "required": true,
+        "unique": true,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "allowItem",
+        "type": "String",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      },
+      {
+        "schemaType": "Field",
+        "name": "itemDetails",
+        "type": "ObjectId",
+        "required": false,
+        "unique": false,
+        "defaultValue": "",
+        "description": "",
+        "index": 0,
+        "customProps": []
+      }
+    ]
+  }
+]
+                
