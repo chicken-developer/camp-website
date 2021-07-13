@@ -1,0 +1,1 @@
+{"_id":{"$oid":"60ede97f21136946402ced64"},"bookingId":"b_123123","usernameBooked":"Demo","time":"22_02_2021","totalPrice":"20.20","campBookedId":["c_123123","c_456456"]}

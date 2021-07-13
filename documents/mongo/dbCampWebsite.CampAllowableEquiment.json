@@ -1,0 +1,1 @@
+{"_id":{"$oid":"60edea1721136946402ced68"},"allowableEquipmentId":"ae_123123","allowedItems":[{"item":"test1","details":"demo_test1"},{"item":"test_2","details":"demo_test2"},{"item":"test3","details":"demo_test3"}]}

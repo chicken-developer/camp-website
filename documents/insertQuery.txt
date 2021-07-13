@@ -1,0 +1,14 @@
+db.User.insert([{'username': 'test','userType':'admin', 'firstName': 'Test', 'lastName': 'Test','password': 'test123', 'email': 'test@gmail.com', 'phoneNumber': '123123123','bookingHistoryId': ['b_123123','b_456456'] }])
+db.Booking.insert([{'bookingId': 'b_123123', 'usernameBooked': 'Demo', 'time': '22_02_2021', 'totalPrice': '20.20', 'campBookedId': ['c_123123', 'c_456456']}])
+db.Camp.insert([{'campId': 'c_123123', 'price': '123.1', 'campImgSrc': 'demo/src/campid-c_123123', 'partAddress': 'US', 'nearAddress': 'US','siteDetailsId': 'sd_123123','siteAvailabilityId': 'sa_123123',
+                'vehicleDetailsId': 'vd_123123', 'allowableEquipmentListId': 'ae_123123'}])
+                
+db.CampSiteDetails.insert([{'siteDetailsId': 'sd_123123','siteType': 'demo', 'siteAccessible': 'demo', 'checkInTime': '22_02_2021', 'checkOutTime': '23_02_2021',
+                           'maxNumOfPeople': '5', 'minNumOfPeople': '5', 'typeOfUse': 'DEMO', 'siteReserveType': 'demo', 'campFireAllowed': 'false', 'capacityRating': 'single', 'petAllowed': 'false', 'shade': 'true'}])
+                           
+db.CampAllowableEquiment.insert([{'allowableEquipmentId': 'ae_123123', 'allowedItems': [{'item':'test1', 'details':'demo_test1'},{'item':'test_2', 'details':'demo_test2'},{'item':'test3', 'details':'demo_test3'}] }])
+
+db.CampSiteAvailability.insert([{'campSiteAvailabilityId': 'sa_123123', 'details' : [{'date': '20_01_2021', 'state': 'A'}, {'date': '21_01_2021', 'state': 'R'}]}])
+
+db.CampVehicleDetails.insert([{'CampVehicleDetailsId': 'vd_123123', 'drivewayEntry': 'test', 'drivewayLength': '42', 'drivewaySurface': 'test', 'isEquipmentMandatory': 'true',
+                              'maxNumOfVehicles': '20', 'maxVehicleLenghth': '120', 'siteLength': '200'}])

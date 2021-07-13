@@ -1,0 +1,1 @@
+{"_id":{"$oid":"60edea5521136946402ced6b"},"siteDetailsId":"sd_123123","siteType":"demo","siteAccessible":"demo","checkInTime":"22_02_2021","checkOutTime":"23_02_2021","maxNumOfPeople":"5","minNumOfPeople":"5","typeOfUse":"DEMO","siteReserveType":"demo","campFireAllowed":"false","capacityRating":"single","petAllowed":"false","shade":"true"}
