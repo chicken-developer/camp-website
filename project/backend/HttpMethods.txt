@@ -1,0 +1,22 @@
+
+get camp // show camp for homepage
+post user(details) // register
+get user(details) // login + show details
+get booking history(user) // show history - same with admin
+post booking // for book a camp
+
+
+//admin
+post camp // create new camp
+get camp / /show all current camp
+delete camp // delete camp
+put camp // update camp
+
+put user // update user information
+delete user // delete user
+get booking history(user) // get booking history of user - same with user
+-----
+support
+post campAllowableEquipment(details) // for update calender if have user booking camp
+
+

@@ -16,11 +16,10 @@ class UserRoute extends AccountJsonProtocol {
   implicit val materializer = ActorMaterializer()
   import system.dispatcher
 
-
   /**
-   * Exercise:
+   * User Http Requests:
    *
-   * - GET /api/people: retrieve ALL the people you have registered
+   * - GET /user: retrieve ALL the people you have registered
    * - GET /api/people/pin: retrieve the person with that PIN, return as JSON
    * - GET /api/people?pin=X (same)
    * - (harder) POST /api/people with a JSON payload denoting a Person, add that person to your database
@@ -28,29 +27,25 @@ class UserRoute extends AccountJsonProtocol {
    *     - extract the request
    *     - process the entity's data
    */
-
-  var accounts = List(
-    Account(1, "Alice"),
-    Account(2, "Bob"),
-    Account(3, "Charlie")
-  )
-
+  import Data._
   val finalRoute =
-    pathPrefix("api" / "people") {
-      get {
-        (path(IntNumber) | parameter('pin.as[Int])) { pin =>
-          complete(
+    pathPrefix("api" / "user") {
+        (get & parameter("userName")) { userName =>
+          val user = User("username", "typeOfUser", "firstName", "lastName", "password", "email", "phoneNumber", List("bookingHistoryID1","bookingHistoryID2"))
+          complete (
             HttpEntity(
               ContentTypes.`application/json`,
-              accounts.find(_.pin == pin).toJson.prettyPrint
+              user.toJson.prettyPrint
             )
           )
+
         } ~
           pathEndOrSingleSlash {
-            complete(
+            val user = User("username", "typeOfUser", "firstName", "lastName", "password", "email", "phoneNumber", List("bookingHistoryID1","bookingHistoryID2"))
+            complete (
               HttpEntity(
                 ContentTypes.`application/json`,
-                accounts.toJson.prettyPrint
+                user.toJson.prettyPrint
               )
             )
           }
@@ -58,16 +53,15 @@ class UserRoute extends AccountJsonProtocol {
         (post & pathEndOrSingleSlash & extractRequest & extractLog) { (request, log) =>
           val entity = request.entity
           val strictEntityFuture = entity.toStrict(2 seconds)
-          val accountFuture = strictEntityFuture.map(_.data.utf8String.parseJson.convertTo[Account])
+          val userFuture = strictEntityFuture.map(_.data.utf8String.parseJson.convertTo[Data.User])
 
-          onComplete(accountFuture) {
+          onComplete(userFuture) {
             case Success(account) =>
-              log.info(s"Got person: $account")
-              accounts = accounts :+ account
+              log.info(s"Got user: $userFuture")
+              //TODO: Write to database
               complete(StatusCodes.OK)
             case Failure(ex) =>
               failWith(ex)
           }
         }
-    }
 }

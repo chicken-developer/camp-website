@@ -1,6 +1,16 @@
-package DatabaseObjects
+package Routes
+
+import spray.json.DefaultJsonProtocol._
 
 case object Data {
+  implicit val userFormat = jsonFormat8(User)
+  implicit val bookingFormat = jsonFormat5(Booking)
+  implicit val campFormat = jsonFormat9(Camp)
+  implicit val campSiteDetailsFormat = jsonFormat13(CampSiteDetails)
+  implicit val campAllowableEquipmentFormat = jsonFormat2(CampAllowableEquipment)
+  implicit val campSiteAvailabilityFormat = jsonFormat3(CampSiteAvailability)
+  implicit val campVehicleDetailsFormat = jsonFormat8(CampVehicleDetails)
+
   case class User(username: String, typeOfUser: String, firstName: String, lastName: String, password: String, email: String, phoneNumber: String, bookingHistoryID: List[String] )
   case class Booking(bookingID: String, usernameBook: String, time: String, totalPrice: Double, campBookedListID: List[String])
 
@@ -14,7 +24,7 @@ case object Data {
                   vehicleDetailsID: String,
                   allowableEquipment: String)
 
-  case class CampSiteDetails(CampSiteDetailsID: String,
+  case class CampSiteDetails(campSiteDetailsID: String,
                              siteType: String,
                              siteAccessible: String,
                              checkInTime: String,
