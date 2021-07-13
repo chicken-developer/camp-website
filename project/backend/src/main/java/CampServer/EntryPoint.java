@@ -1,12 +1,12 @@
 package CampServer;
 import CampServer.MongoConfig.MongoController;
-import Routes.FinalRoute;
+import Routes.RouteSetup;
 
 public class EntryPoint {
     public static void main(String[] args) {
         System.out.println("Server is running in host");
 
         MongoController.Connect();
-        FinalRoute.Start();
+        RouteSetup.Start();
     }
 }

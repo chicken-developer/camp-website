@@ -9,7 +9,7 @@ import java.security.{KeyStore, SecureRandom}
 import javax.net.ssl.{KeyManagerFactory, SSLContext, TrustManagerFactory}
 import scala.io.StdIn
 
-object FinalRoute {
+object RouteSetup {
   def Start(): Unit = {
     implicit val system = ActorSystem()
     implicit val materializer = Materializer
@@ -34,17 +34,14 @@ object FinalRoute {
     //Setup ssl finish----------
 
 
-    val userService = new UserRoute()
-    val campService = new CampRoute()
-    val adminService = new AdminRoute()
+    val route = new RouteHandler()
 
     val host = "127.0.0.1"
-    val accountServerBind = Http().newServerAt(host, 8080).bindFlow(userService.finalRoute)
-    val lobbyServerBind = Http().newServerAt(host, 8081).bindFlow(campService.finalRoute)
-    val gameServerBind = Http().newServerAt(host, 8082).bindFlow(adminService.finalRoute)
+    val finalRouteHandler = Http().newServerAt(host, 8080).bindFlow(route.finalRoute)
 
 
-    val listBindingFutureWithSecurity = List(accountServerBind, lobbyServerBind, gameServerBind)
+    val listBindingFutureWithSecurity = List(finalRouteHandler)
+
     println(s"Server is progressing...\nPress RETURN to stop...")
     StdIn.readLine()
     listBindingFutureWithSecurity
