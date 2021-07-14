@@ -1,1 +1,0 @@
-Using Webstorm as IDE and TypeScript as programming language 

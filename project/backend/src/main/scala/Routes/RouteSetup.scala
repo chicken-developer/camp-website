@@ -37,7 +37,7 @@ object RouteSetup {
     val route = new RouteHandler()
 
     val host = "127.0.0.1"
-    val finalRouteHandler = Http().newServerAt(host, 8080).bindFlow(route.finalRoute)
+    val finalRouteHandler = Http().newServerAt(host, 54000).bindFlow(route.finalRoute)
 
 
     val listBindingFutureWithSecurity = List(finalRouteHandler)

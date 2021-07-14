@@ -29,7 +29,7 @@ class RouteHandler {
      */
     pathPrefix("api_v01" / "camp") {
       pathEndOrSingleSlash { //GET camp for home page
-        val camp: List[Camp] = List(templateCamp)
+        val camp: List[Camp] = RouteLogic.GetCamp().toList
         complete(
           HttpEntity(
             ContentTypes.`application/json`,

@@ -1,12 +1,12 @@
 name := "backend"
 
-version := "0.1"
-
 version := "1.0"
 
 scalaVersion := "2.13.6"
 val akkaVersion = "2.6.10"
 val JacksonVersion = "2.10.5.1"
+
+mainClass in Compile := Some("CampServer.EntryPoint")
 
 libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-actor" % akkaVersion,
@@ -35,7 +35,7 @@ libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "3.1.4" % Test,
   "com.typesafe.akka" %% "akka-http-testkit" % "10.2.2" % Test,
 
-  "com.google.protobuf" % "protobuf-java" % "3.17.3",
+  "com.google.protobuf" % "protobuf-java" % "3.17.3"
 
 )
 // https://mvnrepository.com/artifact/org.mongodb.scala/mongo-scala-driver

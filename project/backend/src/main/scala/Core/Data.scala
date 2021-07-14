@@ -1,11 +1,16 @@
 package Core
 
+import akka.actor.Status.Success
+import org.bson.Document
 import spray.json.DefaultJsonProtocol._
+import spray.json.enrichAny
+
+import scala.util.Failure
 
 case object Data {
   implicit val userFormat = jsonFormat8(User)
   implicit val bookingFormat = jsonFormat5(Booking)
-  implicit val campFormat = jsonFormat9(Camp)
+  implicit val campFormat = jsonFormat10(Camp)
   implicit val campSiteDetailsFormat = jsonFormat13(CampSiteDetails)
   implicit val campAllowableEquipmentFormat = jsonFormat2(CampAllowableEquipment)
   implicit val campSiteAvailabilityFormat = jsonFormat3(CampSiteAvailability)
@@ -15,7 +20,7 @@ case object Data {
   val templateUser = User("username", "typeOfUser", "firstName", "lastName", "password", "email" , "phoneNumber",List("b_345345", "b_123123"))
   case class Booking(bookingID: String, usernameBook: String, time: String, totalPrice: Double, campBookedListID: List[String])
 
-  case class Camp(campID: String,
+  case class Camp(_id: String, campID: String,
                   price: Double,
                   campImgSrc: String,
                   partAddress: String,
@@ -24,7 +29,8 @@ case object Data {
                   siteAvailabilityID: String,
                   vehicleDetailsID: String,
                   allowableEquipment: String)
-  val templateCamp = Camp("campID", 20.2, "campImgSrc", "partAddress", "nearAddress", "siteDetailsID" , "siteAvailabilityID","vehicleDetailsID" , "allowableEquipment")
+
+  val templateCamp = Camp("123123123","campID", 20.2, "campImgSrc", "partAddress", "nearAddress", "siteDetailsID" , "siteAvailabilityID","vehicleDetailsID" , "allowableEquipment")
 
   case class CampSiteDetails(campSiteDetailsID: String,
                              siteType: String,

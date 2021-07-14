@@ -2,13 +2,11 @@ package CampServer.MongoConfig;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.MongoIterable;
+import com.mongodb.client.*;
+import org.bson.Document;
 
 public class MongoController {
-
+    public static MongoDatabase database;
     public void InitField()
     {
         //If want to init field from code
@@ -20,7 +18,7 @@ public class MongoController {
                 .applyConnectionString(connectionString)
                 .build();
         MongoClient mongoClient = MongoClients.create(settings);
-        MongoDatabase database = mongoClient.getDatabase(MongoParams.databaseName);
+        database = mongoClient.getDatabase(MongoParams.databaseName);
 
         //Test connection
         MongoIterable<String> list = database.listCollectionNames();
@@ -28,4 +26,11 @@ public class MongoController {
             System.out.println(name);
         }
     }
+
+    public static MongoCollection<Document> GetCollection(String name)
+    {
+        return database.getCollection(name);
+    }
+
+
 }
