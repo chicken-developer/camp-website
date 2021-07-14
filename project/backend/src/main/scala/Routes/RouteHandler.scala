@@ -2,10 +2,11 @@ package Routes
 
 
 import akka.actor.ActorSystem
+import akka.http.scaladsl.model.ResponseEntity.fromJava
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity, StatusCodes}
 import akka.http.scaladsl.server.Directives._
-import akka.stream.{Materializer}
-import spray.json.DefaultJsonProtocol.listFormat
+import akka.stream.Materializer
+import spray.json.DefaultJsonProtocol.{UnitJsonFormat, listFormat}
 import spray.json._
 
 import scala.concurrent.duration._
@@ -16,32 +17,45 @@ class RouteHandler {
 
   implicit val system = ActorSystem("AccountServer")
   implicit val materializer = Materializer
-
-  import system.dispatcher
   import Core.Data._
 
   val campRoute = {
     /*
        *  get camp // show camp for homepage
        *  post camp // create new camp
-       *  put camp // update camp
-       *  delete camp // delete camp
+       * //For test
+       * api_v01/camp/
+       * api_v01/camp/?campId=123
      */
     pathPrefix("api_v01" / "camp") {
       pathEndOrSingleSlash { //GET camp for home page
-        val camp: List[Camp] = RouteLogic.GetCamp().toList
-        complete(
-          HttpEntity(
-            ContentTypes.`application/json`,
-            camp.toJson.prettyPrint
-          )
-        )
+        val listCampFuture = RouteLogic.GetAllCamp()
+        onComplete(listCampFuture) {
+          case Success(listCamp) =>
+            complete {
+              HttpEntity(
+                ContentTypes.`application/json`,
+                listCamp.toJson.prettyPrint
+              )
+            }
+          case Failure(ex) =>
+            failWith(ex)
+        }
       } ~
       (get & parameter("campId")) { campId => //GET camp for home page
-          complete {
-            "Received GET request for order " + campId
-          }
+        val campFuture = RouteLogic.GetCampById(campId)
+        onComplete(campFuture) {
+          case Success(camp) =>
+            complete {
+              HttpEntity(
+                ContentTypes.`application/json`,
+                camp.toJson.prettyPrint
+              )
+            }
+          case Failure(ex) =>
+            failWith(ex)
         }
+      }
     } // Finish camp path prefix
   } // Finish camp route
 
@@ -51,139 +65,192 @@ class RouteHandler {
        *  get user(details) // login + show details
        *  get booking history(user) // show history - same with admin
        *  post booking // for book a camp
+       * ***
+       * //For test
+       * api_v01/user/?userId=123
+       * api_v01/user/?historyOfUser=123
      */
     pathPrefix("api_v01" / "user") {
         (get & parameter("userId")) { userId => //GET user from ID
-          complete {
-            "Received GET request for order " + userId
+          val userFuture = RouteLogic.GetUserById(userId)
+          onComplete(userFuture) {
+            case Success(user) =>
+              complete {
+                HttpEntity(
+                  ContentTypes.`application/json`,
+                  user.toJson.prettyPrint
+                )
+              }
+            case Failure(ex) =>
+              failWith(ex)
           }
         } ~
         (get & parameter("historyOfUser")) { historyOfUser => //GET user from ID
-            complete {
-              "Received GET request for order " + historyOfUser
-            }
-          } ~
-        (post & pathEndOrSingleSlash & extractRequest & extractLog) { (request, log) => // POST user
+          val bookingListFuture = RouteLogic.GetUserById(historyOfUser)
+          onComplete(bookingListFuture) {
+            case Success(allBookingHistory) =>
+              complete {
+                HttpEntity(
+                  ContentTypes.`application/json`,
+                  allBookingHistory.toJson.prettyPrint
+                )
+              }
+            case Failure(ex) =>
+              failWith(ex)
+          }
+        } ~
+        (post & pathEndOrSingleSlash & extractRequest) { request => // POST user
           val entity = request.entity
-          val strictEntityFuture = entity.toStrict(2 seconds)
-          val userFuture = strictEntityFuture.map(_.data.utf8String.parseJson.convertTo[User])
+          val userFuture = RouteLogic.GenerateUserFromHttpEntity(entity)
 
           onComplete(userFuture) {
-            case Success(user) =>
-              log.info(s"Got new camp: $user")
-              //TODO: Write to database
-              complete(StatusCodes.OK)
+            case Success(user) => //Write user to database if valid
+              val statusCode = RouteLogic.WriteUserToDatabase(user)
+              onComplete(statusCode)
+              {
+                case Success(status) => complete(status)
+                case Failure(ex) => failWith(ex)
+              }
             case Failure(ex) =>
               failWith(ex)
           }
         } ~
         (post & pathEndOrSingleSlash & extractRequest & extractLog) { (request, log) => // POST booking
-            val entity = request.entity
-            val strictEntityFuture = entity.toStrict(2 seconds)
-            val bookingCampFuture = strictEntityFuture.map(_.data.utf8String.parseJson.convertTo[Booking])
+          val entity = request.entity
+          val bookingFuture = RouteLogic.GenerateBookingFromHttpEntity(entity)
 
-            onComplete(bookingCampFuture) {
-              case Success(orderBill) =>
-                log.info(s"Got new booking: $orderBill")
-                //TODO: Write to database
-                complete(StatusCodes.OK)
-              case Failure(ex) =>
-                failWith(ex)
-            }
+          onComplete(bookingFuture) {
+            case Success(booking) => //Write user to database if valid
+              val statusCode = RouteLogic.WriteBookingToDatabase(booking)
+              onComplete(statusCode) {
+                case Success(status) => complete(status)
+                case Failure(ex) => failWith(ex)
+              }
+            case Failure(ex) =>
+              failWith(ex)
           }
+        }
     }// Finish user path prefix
   }// Finish user route
+
   val adminRoute = {
     /*
-       *  put user // update user information
+      *  get all user // update user information
+      *  put user // update user information
       *  delete user // delete user
       *  get booking history(user) // get booking history of user - same with user
       *  post campAllowableEquipment(details)
      */
     pathPrefix("api_v01" / "admin") {
-      (get & parameter("userId")) { userId => //GET user from ID
-        complete {
-          "Received GET request for order " + userId
+      (get & parameter("numberOfUser")) { numberOfUser => //GET all user
+        val userFuture = RouteLogic.GetLimitUser(numberOfUser)
+        onComplete(userFuture) {
+          case Success(user) =>
+            complete {
+              HttpEntity(
+                ContentTypes.`application/json`,
+                user.toJson.prettyPrint
+              )
+            }
+          case Failure(ex) =>
+            failWith(ex)
         }
       } ~
-      (get & parameter("historyOfUser")) { historyOfUser => //GET user from ID
-          complete {
-            "Received GET request for order " + historyOfUser
-          }
-        } ~
-      (delete & pathEndOrSingleSlash & extractRequest & extractLog) { (request, log) => // DELETE user
-          val entity = request.entity
-          val strictEntityFuture = entity.toStrict(2 seconds)
-          val userFuture = strictEntityFuture.map(_.data.utf8String.parseJson.convertTo[User])
+      (delete & pathEndOrSingleSlash & extractRequest) { request => // DELETE user
+        val entity = request.entity
+        val userFuture = RouteLogic.GenerateUserFromHttpEntity(entity)
 
-          onComplete(userFuture) {
-            case Success(user) =>
-              log.info(s"Got new camp: $user")
-              //TODO: Write to database
-              complete(StatusCodes.OK)
-            case Failure(ex) =>
-              failWith(ex)
-          }
-        } ~
-      (put & pathEndOrSingleSlash & extractRequest & extractLog) { (request, log) => // PUT user
-          val entity = request.entity
-          val strictEntityFuture = entity.toStrict(2 seconds)
-          val bookingCampFuture = strictEntityFuture.map(_.data.utf8String.parseJson.convertTo[Booking])
-
-          onComplete(bookingCampFuture) {
-            case Success(orderBill) =>
-              log.info(s"Got new booking: $orderBill")
-              //TODO: Write to database
-              complete(StatusCodes.OK)
-            case Failure(ex) =>
-              failWith(ex)
-          }
-        } ~
-      (delete & pathEndOrSingleSlash & extractRequest & extractLog) { (request, log) => // DELETE camp
-          val entity = request.entity
-          val strictEntityFuture = entity.toStrict(2 seconds)
-          val userFuture = strictEntityFuture.map(_.data.utf8String.parseJson.convertTo[User])
-
-          onComplete(userFuture) {
-            case Success(user) =>
-              log.info(s"Got new camp: $user")
-              //TODO: Write to database
-              complete(StatusCodes.OK)
-            case Failure(ex) =>
-              failWith(ex)
-          }
-        } ~
-      (put & pathEndOrSingleSlash & extractRequest & extractLog) { (request, log) => // PUT camp
-            val entity = request.entity
-            val strictEntityFuture = entity.toStrict(2 seconds)
-            val userFuture = strictEntityFuture.map(_.data.utf8String.parseJson.convertTo[User])
-
-            onComplete(userFuture) {
-              case Success(user) =>
-                log.info(s"Got new camp: $user")
-                //TODO: Write to database
-                complete(StatusCodes.OK)
-              case Failure(ex) =>
-                failWith(ex)
+        onComplete(userFuture) {
+          case Success(user) => //Delete user from database if valid
+            val statusCode = RouteLogic.DeleteUserFromDatabase(user)
+            onComplete(statusCode)
+            {
+              case Success(status) => complete(status)
+              case Failure(ex) => failWith(ex)
             }
-          } ~
-      (post & pathEndOrSingleSlash & extractRequest & extractLog) { (request, log) => // POST Camp
-          val entity = request.entity
-          val strictEntityFuture = entity.toStrict(2 seconds)
-          val bookingCampFuture = strictEntityFuture.map(_.data.utf8String.parseJson.convertTo[Booking])
+          case Failure(ex) =>
+            failWith(ex)
+        }
+      } ~
+      (put & pathEndOrSingleSlash & extractRequest) { request => // PUT user
+        val entity = request.entity
+        val newUserInfoFuture = RouteLogic.FindUserInDatabase(entity)
 
-          onComplete(bookingCampFuture) {
-            case Success(orderBill) =>
-              log.info(s"Got new booking: $orderBill")
-              //TODO: Write to database
-              complete(StatusCodes.OK)
+        onComplete(newUserInfoFuture) {
+          case Success(newUser) => //Delete user from database if valid
+            val statusCode = RouteLogic.UpdateUserInformation(newUser, newUser.username)
+            onComplete(statusCode)
+            {
+              case Success(status) => complete(status)
+              case Failure(ex) => failWith(ex)
+            }
+          case Failure(ex) =>
+            failWith(ex)
+        }
+      } ~
+      (delete & pathEndOrSingleSlash & extractRequest) { request => // DELETE camp
+          val entity = request.entity
+          val campFuture = RouteLogic.FindCampInDatabase(entity)
+
+          onComplete(campFuture) {
+            case Success(camp) => //Delete user from database if valid
+              val statusCode = RouteLogic.DeleteCampFromDatabase(camp)
+              onComplete(statusCode)
+              {
+                case Success(status) => complete(status)
+                case Failure(ex) => failWith(ex)
+              }
+            case Failure(ex) =>
+              failWith(ex)
+          }
+        } ~
+      (put & pathEndOrSingleSlash & extractRequest) { request => // PUT camp
+          val entity = request.entity
+          val newCampInfoFuture = RouteLogic.FindCampInDatabase(entity)
+
+          onComplete(newCampInfoFuture) {
+            case Success(newCamp) => //Delete user from database if valid
+              val statusCode = RouteLogic.UpdateCampInformation(newCamp, newCamp.campId)
+              onComplete(statusCode)
+              {
+                case Success(status) => complete(status)
+                case Failure(ex) => failWith(ex)
+              }
+            case Failure(ex) =>
+              failWith(ex)
+          }
+        } ~
+      (post & pathEndOrSingleSlash & extractRequest) { request => // POST camp
+          val entity = request.entity
+          val newCampFuture = RouteLogic.GenerateCampFromHttpEntity(entity)
+
+          onComplete(newCampFuture) {
+            case Success(newCamp) => //Delete user from database if valid
+              val statusCode = RouteLogic.WriteCampToDatabase(newCamp)
+              onComplete(statusCode)
+              {
+                case Success(status) => complete(status)
+                case Failure(ex) => failWith(ex)
+              }
             case Failure(ex) =>
               failWith(ex)
           }
         }
     }// Finish admin path prefix
-
   }// Finish admin route
 
-  val finalRoute = campRoute ~ userRoute ~ adminRoute
+  val adminHelpRoute = {
+    /*
+      *  get/ push/ put/ delete
+      * campSiteDetails
+      * campAllowableEquipmentFormat
+      * campSiteAvailabilityFormat
+      * campVehicleDetailsFormat
+     */
+    pathPrefix("api_v01" / "admin"/ "help") {
+      complete(StatusCodes.OK) //TODO
+    }// Finish admin path prefix
+  }
+
+  val finalRoute = campRoute ~ userRoute ~ adminRoute ~ adminHelpRoute
 }

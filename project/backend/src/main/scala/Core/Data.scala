@@ -19,16 +19,16 @@ case object Data {
   case class User(username: String, typeOfUser: String, firstName: String, lastName: String, password: String, email: String, phoneNumber: String, bookingHistoryID: List[String])
   val templateUser = User("username", "typeOfUser", "firstName", "lastName", "password", "email" , "phoneNumber",List("b_345345", "b_123123"))
   case class Booking(bookingID: String, usernameBook: String, time: String, totalPrice: Double, campBookedListID: List[String])
-
-  case class Camp(_id: String, campID: String,
+  val templateBooking = Booking("bookingID", "usernameBook", "time", 324.2, List("sdasd1","wdasdasdasd"))
+  case class Camp(_id: String, campId: String,
                   price: Double,
                   campImgSrc: String,
                   partAddress: String,
                   nearAddress: String,
-                  siteDetailsID: String,
-                  siteAvailabilityID: String,
-                  vehicleDetailsID: String,
-                  allowableEquipment: String)
+                  siteDetailsId: String,
+                  siteAvailabilityId: String,
+                  vehicleDetailsId: String,
+                  allowableEquipmentListId: String)
 
   val templateCamp = Camp("123123123","campID", 20.2, "campImgSrc", "partAddress", "nearAddress", "siteDetailsID" , "siteAvailabilityID","vehicleDetailsID" , "allowableEquipment")
 
