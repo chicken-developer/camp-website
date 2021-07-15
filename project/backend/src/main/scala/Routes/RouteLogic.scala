@@ -34,19 +34,16 @@ case object RouteLogic {
   import Core.Data._
   implicit val system = ActorSystem("AccountServer")
   implicit val materializer = Materializer
+
   import system.dispatcher
+  import Core.Converter._
 
   def GetAllCamp(): Future[List[Camp]] = {
     val allCamps = campCollection.find()
-      .map { camp =>
-        camp.toString.toJson
+    .map { camp =>
+        ConvertToCamp(camp.toString.replaceAll("Document", "Camp"))
       }.toList
-    println("LOG_CAMP")
-    println(allCamps)
-    println("LOG_CAMP")
-
-    val temp = Future(List[Camp](templateCamp))
-    temp
+    Future(allCamps)
   }
 
   def GetCampById(id: String): Future[Camp] = {
@@ -54,6 +51,21 @@ case object RouteLogic {
     //TODO
     val temp = Future(List[Camp](templateCamp).head)
     temp
+  }
+
+  def GetUserByInformation(inputUsername: String, inputPassword: String): Future[User] = {
+
+    val allUsers = userCollection.find()
+      .map { user =>
+        ConvertToUser(user.toString.replaceAll("Document", "User"))
+      }.toList
+
+    val user = allUsers.findLast(_.username == inputUsername).filter(_.password == inputPassword)
+    user match {
+      case Some(user) =>
+        Future(user)
+      case None => Future(templateUser)
+    }
   }
 
   def GetUserById(id: String): Future[User] = {

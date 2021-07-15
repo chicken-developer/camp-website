@@ -71,8 +71,8 @@ class RouteHandler {
        * api_v01/user/?historyOfUser=123
      */
     pathPrefix("api_v01" / "user") {
-        (get & parameter("userId")) { userId => //GET user from ID
-          val userFuture = RouteLogic.GetUserById(userId)
+        (get & parameter("username") & parameter("password")) { (username, password) => //GET user from ID
+          val userFuture = RouteLogic.GetUserByInformation(username, password)
           onComplete(userFuture) {
             case Success(user) =>
               complete {
@@ -99,7 +99,7 @@ class RouteHandler {
               failWith(ex)
           }
         } ~
-        (post & pathEndOrSingleSlash & extractRequest) { request => // POST user
+        (post & pathPrefix("register") & extractRequest) { request => // POST user
           val entity = request.entity
           val userFuture = RouteLogic.GenerateUserFromHttpEntity(entity)
 
@@ -241,7 +241,7 @@ class RouteHandler {
 
   val adminHelpRoute = {
     /*
-      *  get/ push/ put/ delete
+      * get/ push/ put/ delete
       * campSiteDetails
       * campAllowableEquipmentFormat
       * campSiteAvailabilityFormat
