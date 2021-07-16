@@ -1,26 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="0fb7f3eb-b314-497b-a835-0ce0c3f31f1e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/frontend.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/frontend.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+    <list default="true" id="8f93fa70-29fa-4d6a-b850-87891193ce2d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/scala/Core/Converter.scala" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/scala/Core/Converter.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/scala/Core/Data.scala" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/scala/Core/Data.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/scala/Routes/RouteHandler.scala" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/scala/Routes/RouteHandler.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/src/main/scala/Routes/RouteLogic.scala" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/scala/Routes/RouteLogic.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.babelrc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/favicon.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/logo192.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/logo512.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/manifest.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/robots.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/helloworld.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/react-app-env.d.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App/App.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/HomePage/HomePage.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/HomePage/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/LoginPage/LoginPage.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/LoginPage/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RegisterPage/RegisterPage.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RegisterPage/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/_actions/alert.actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/_actions/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/_actions/user.actions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/_components/PrivateRoute.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/_components/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/_constants/alert.constants.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/_constants/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/_constants/user.constants.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/_helpers/auth-header.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/_helpers/fake-backend.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/_helpers/history.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/_helpers/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/_helpers/store.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/_reducers/alert.reducer.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/_reducers/authentication.reducer.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/_reducers/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/_reducers/registration.reducer.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/_reducers/users.reducer.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/_services/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/_services/user.service.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.jsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/webpack.config.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,43 +56,62 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
-  <component name="ProjectId" id="1vJBzE66sUbISuUh9LEDd8A6PFe" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectId" id="1vPOte8myMMfaIgC3KXWikVio9x" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/Components" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
-  <component name="RunManager">
-    <configuration name="App.jsx" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/src/App/App.jsx" working-dir="$PROJECT_DIR$/src/App">
-      <method v="2" />
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Node.js.App.jsx" />
-      </list>
-    </recent_temporary>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/Components" />
+      <recent name="$PROJECT_DIR$/src" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/Pages" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="0fb7f3eb-b314-497b-a835-0ce0c3f31f1e" name="Default Changelist" comment="" />
-      <created>1626270576511</created>
+      <changelist id="8f93fa70-29fa-4d6a-b850-87891193ce2d" name="Changes" comment="" />
+      <created>1626460474479</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1626270576511</updated>
-      <workItem from="1626270578446" duration="2732000" />
+      <updated>1626460474479</updated>
+      <workItem from="1626460481272" duration="4340000" />
+      <workItem from="1626467338762" duration="6666000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

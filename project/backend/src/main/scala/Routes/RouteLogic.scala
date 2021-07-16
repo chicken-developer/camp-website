@@ -37,7 +37,10 @@ case object RouteLogic {
 
   import system.dispatcher
   import Core.Converter._
+  def DatabaseInit(): Unit =
+  {
 
+  }
   def GetAllCamp(): Future[List[Camp]] = {
     val allCamps = campCollection.find()
     .map { camp =>
@@ -48,7 +51,10 @@ case object RouteLogic {
 
   def GetCampById(id: String): Future[Camp] = {
 
-    //TODO
+    val allCamps = campCollection.find()
+      .map { camp =>
+        ConvertToCamp(camp.toString.replaceAll("Document", "Camp"))
+      }.toList
     val temp = Future(List[Camp](templateCamp).head)
     temp
   }

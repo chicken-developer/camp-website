@@ -42,7 +42,7 @@ class RouteHandler {
             failWith(ex)
         }
       } ~
-      (get & parameter("campId")) { campId => //GET camp for home page
+      (get & parameter("campId")) { campId => //GET camp for camp page
         val campFuture = RouteLogic.GetCampById(campId)
         onComplete(campFuture) {
           case Success(camp) =>

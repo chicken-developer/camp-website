@@ -18,10 +18,13 @@ case object Data {
   implicit val campVehicleDetailsFormat = jsonFormat9(CampVehicleDetails)
 
   case class ObjectId(_objId: String)
+
   case class User(_id: ObjectId, username: String, typeOfUser: String, firstName: String, lastName: String, password: String, email: String, phoneNumber: String, bookingHistoryID: List[String])
   val templateUser = User(ObjectId("12312312"), "username", "typeOfUser", "firstName", "lastName", "password", "email" , "phoneNumber",List("b_345345", "b_123123"))
-  case class Booking(_id: ObjectId, bookingID: String, usernameBook: String, time: String, totalPrice: Double, campBookedListID: List[String])
+
+  case class Booking(_id: ObjectId, bookingId: String, usernameBook: String, time: String, totalPrice: Double, campBookedListId: List[String])
   val templateBooking = Booking(ObjectId("12312312"),"bookingID", "usernameBook", "time", 324.2, List("sdasd1","wdasdasdasd"))
+
   case class Camp(_id: ObjectId, campId: String,
                   price: Double,
                   campImgSrc: String,
@@ -35,7 +38,7 @@ case object Data {
   val templateCamp = Camp(ObjectId("12312312"),"123123123", 20.2, "campImgSrc", "partAddress", "nearAddress", "siteDetailsID" , "siteAvailabilityID","vehicleDetailsID" , "allowableEquipment")
 
   case class CampSiteDetails(_id: ObjectId,
-                             campSiteDetailsID: String,
+                             campSiteDetailsId: String,
                              siteType: String,
                              siteAccessible: String,
                              checkInTime: String,
@@ -48,14 +51,22 @@ case object Data {
                              capacityRating: String,
                              petAllowed: Boolean,
                              shade: String)
+  val templateCampSiteDetails = CampSiteDetails(ObjectId("2123"), "campSiteDetailsId", "siteType",
+                                "siteAccessible",
+                                "checkInTime",
+                                "checkOutTime", 22, 10,
+                                "typeOfUse",
+                                "siteReserveType", true,
+                                "capacityRating", true,
+                                "shade")
+  case class CampAllowableEquipment(_id: ObjectId, allowableEquipmentId: String, items: Map[String, String])
+  val templateCampAllowableEquipment = CampAllowableEquipment(ObjectId("1231321"),"ae_123123", Map("123" -> "123123", "123" -> "123123"))
 
-  case class CampAllowableEquipment(_id: ObjectId,
-                                    allowableEquipmentID: String, items: Map[String, String])
-
-  case class CampSiteAvailability(_id: ObjectId,campSiteAvailabilityID: String, date: String, state: String)
+  case class CampSiteAvailability(_id: ObjectId,campSiteAvailabilityId: String, date: String, state: String)
+  val templateCampSiteAvailability = CampSiteAvailability(ObjectId("123123123"),"sa_123123", "2020_20_21","test")
 
   case class CampVehicleDetails(_id: ObjectId,
-                                CampVehicleDetailsID: String,
+                                campVehicleDetailsId: String,
                                 drivewayEntry: String,
                                 drivewayLength: Double,
                                 drivewaySurface: String,
@@ -63,5 +74,6 @@ case object Data {
                                 maxNumOfVehicles: Int,
                                 maxVehicleLength: Int,
                                 siteLength: Int)
+  val templateCampVehicleDetails = CampVehicleDetails(ObjectId("asda123123"),"CampVehicleDetailsId", "drivewayEntry", 90.2, "drivewaySurface", "isEquipmentMandatory", 12, 120, 10)
 
 }
