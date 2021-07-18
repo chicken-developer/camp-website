@@ -6,24 +6,24 @@ Must have:
   - nodejs
 1. Script(Update soon)
 
-  'cd camp-website'
+     'cd camp-website'
   
-  'sh ./start.sh'
+     'sh ./start.sh'
   
 2. Manualy
 
-   'cd camp-website/project/backend'
+      'cd camp-website/project/backend'
    
-   'sbt run'
+      'sbt run'
    
    
-  Open new command line
+    Open new command line
   
-   'cd camp-website/project/frontend'
+      'cd camp-website/project/frontend'
    
-   'npm install'
+      'npm install'
    
-   'npm start'
+      'npm start'
    
  View your website on address: localhost:3000
   
