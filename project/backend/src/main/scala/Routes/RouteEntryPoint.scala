@@ -1,5 +1,8 @@
 package Routes
+import CampRestful.Camp.CampRoute
+import CampRestful.User.UserRoute
 
+import scala.language.postfixOps
 import akka.actor.ActorSystem
 import akka.http.scaladsl.{ConnectionContext, Http}
 import akka.stream.Materializer
@@ -8,8 +11,9 @@ import java.io.InputStream
 import java.security.{KeyStore, SecureRandom}
 import javax.net.ssl.{KeyManagerFactory, SSLContext, TrustManagerFactory}
 import scala.io.StdIn
+import akka.http.scaladsl.server.Directives._
 
-object RouteSetup {
+object RouteEntryPoint {
   def Start(): Unit = {
     implicit val system = ActorSystem()
     implicit val materializer = Materializer
@@ -33,12 +37,14 @@ object RouteSetup {
     val httpsConnectionContext = ConnectionContext.httpsServer(sslContext)
     //Setup ssl finish----------
 
+    val userRoute =  new UserRoute()
+    val campRoute =  new CampRoute()
+    val finalRoute = userRoute.userFinalRoute ~ campRoute.campFinalRoute
 
-    val route = new RouteHandler()
-
-    val host = "127.0.0.1"
+    val localhost = "127.0.0.1"
     val ubuntuVMHost = "192.168.220.129"
-    val finalRouteHandler = Http().newServerAt(ubuntuVMHost, 54000).bindFlow(route.finalRoute)
+
+    val finalRouteHandler = Http().newServerAt(ubuntuVMHost, 54000).bindFlow(finalRoute)
 
 
     val listBindingFutureWithSecurity = List(finalRouteHandler)

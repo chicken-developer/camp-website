@@ -1,22 +1,28 @@
+For testing
+API address: localhost:54000/api_v01/
 
-get camp // show camp for homepage
-post user(details) // register
-get user(details) // login + show details
-get booking history(user) // show history - same with admin
-post booking // for book a camp
+User:
+get /user/username=test&password=123123
+post /user/register (user object)
+get /user/?numberOfUser=12
+delete /user (user object)
+put /user (user object)
+get /user/historyOfUser
+post /user/booking (booking object)
 
+Camp:
+get /camp
+get /camp?campId=123123
+delete /camp (camp object)
+put /camp(camp object)
+post /camp(camp object)
 
-//admin
-post camp // create new camp
-get camp / /show all current camp
-delete camp // delete camp
-put camp // update camp
+Camp site details
+get /camp/siteDetails/campId=123123
+delete /camp/siteDetails/ (Camp site details object)
+put /camp/siteDetails/    (Camp site details object)
+post /camp/siteDetails/     (Camp site details object)
 
-put user // update user information
-delete user // delete user
-get booking history(user) // get booking history of user - same with user
------
-support
-post campAllowableEquipment(details) // for update calender if have user booking camp
-
-
+Camp allowable equipment: Update soon
+Camp site availability: Update soon
+Camp vehicle details: Update soon

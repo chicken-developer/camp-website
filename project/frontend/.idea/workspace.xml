@@ -5,48 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8f93fa70-29fa-4d6a-b850-87891193ce2d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/scala/Core/Converter.scala" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/scala/Core/Converter.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/scala/Core/Data.scala" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/scala/Core/Data.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/scala/Routes/RouteHandler.scala" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/scala/Routes/RouteHandler.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/src/main/scala/Routes/RouteLogic.scala" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/src/main/scala/Routes/RouteLogic.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.babelrc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App/App.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/HomePage/HomePage.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/HomePage/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/LoginPage/LoginPage.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/LoginPage/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/RegisterPage/RegisterPage.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/RegisterPage/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_actions/alert.actions.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_actions/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_actions/user.actions.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_components/PrivateRoute.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_components/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_constants/alert.constants.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_constants/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_constants/user.constants.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_helpers/auth-header.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_helpers/fake-backend.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_helpers/history.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_helpers/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_helpers/store.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_reducers/alert.reducer.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_reducers/authentication.reducer.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_reducers/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_reducers/registration.reducer.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_reducers/users.reducer.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_services/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_services/user.service.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpack.config.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,7 +54,7 @@
       <option name="presentableId" value="Default" />
       <updated>1626460474479</updated>
       <workItem from="1626460481272" duration="4340000" />
-      <workItem from="1626467338762" duration="6666000" />
+      <workItem from="1626467338762" duration="8461000" />
     </task>
     <servers />
   </component>
