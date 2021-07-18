@@ -12,8 +12,9 @@ import scala.util.{Failure, Success}
 
 class CampRoute(implicit val actorSystem : ActorSystem, implicit  val actorMaterializer: Materializer) extends Directives {
   import Routes.Data._
-  val campRoute: Route = {
+  import ch.megard.akka.http.cors.scaladsl.CorsDirectives._
 
+  val campRoute: Route = cors(){
     pathPrefix("api_v01" / "camp") {
       pathEndOrSingleSlash {
         //GET all camps -> for show all camp in home page

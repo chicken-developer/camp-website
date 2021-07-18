@@ -1,6 +1,7 @@
 package CampRestful.Camp
 
 import Routes.Data._
+import org.mongodb.scala.bson.Document
 
 case object CampLogic {
   def ConvertToCamp(jsonStr: String) : Camp = {
@@ -14,18 +15,17 @@ case object CampLogic {
     }
     camp
   }
-
-  def ConvertToBooking(jsonStr: String): Booking = {
-    val booking: Booking = jsonStr
-      .replace("Booking{{","")
-      .replace("}}","")
-    match {
-      case s"_id=$id, bookingId=$bookingId, usernameBook=$usernameBook, time=$time, totalPrice=$total_price, campBookedListId=$arrCampBooked" =>
-        val campBooked = arrCampBooked.replace("[", "").replace("]", "").split(",").toList
-        Booking(ObjectId(id), bookingId,usernameBook, time,total_price.toDouble ,campBooked)
-      case _ => templateBooking
-    }
-    booking
+  def DocumentFromCamp(camp: Camp): Document = {
+    Document("campId" -> camp.campId,
+      "price" -> camp.price,
+      "campImgSrc" -> camp.campImgSrc,
+      "partAddress" -> camp.partAddress,
+      "nearAddress" -> camp.nearAddress,
+      "siteDetailsId" -> camp.siteDetailsId,
+      "siteAvailabilityId" -> camp.siteAvailabilityId,
+      "vehicleDetailsId" -> camp.vehicleDetailsId,
+      "allowableEquipmentListId" -> camp.allowableEquipmentListId
+    )
   }
 
   def ConvertToCampSiteDetails(jsonStr: String): CampSiteDetails = {

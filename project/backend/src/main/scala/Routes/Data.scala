@@ -18,7 +18,7 @@ case object Data {
 
   val templateUser = User(ObjectId("template"), "username", "typeOfUser", "firstName", "lastName", "password", "email", "phoneNumber", List("b_345345", "b_123123"))
 
-  case class Booking(_id: ObjectId, bookingId: String, usernameBook: String, time: String, totalPrice: Double, campBookedListId: List[String])
+  case class Booking(_id: ObjectId, bookingId: String, usernameBooked: String, time: String, totalPrice: Double, campBookedId: List[String])
 
   val templateBooking = Booking(ObjectId("template"), "bookingID", "usernameBook", "time", 324.2, List("sdasd1", "wdasdasdasd"))
 

@@ -1,6 +1,6 @@
 package CampRestful.User
 
-import Routes.Data.{ObjectId, User, templateUser}
+import Routes.Data.{Booking, ObjectId, User, templateBooking, templateUser}
 import org.mongodb.scala.bson.Document
 
 case object UserLogic {
@@ -10,7 +10,6 @@ case object UserLogic {
       .replace("}}","")
     match {
       case s"_id=$id, username=$username, userType=$usertype, firstName=$f_name, lastName=$l_name, password=$password, email=$email, phoneNumber=$phoneNumber, bookingHistoryId=$arrBooking" =>
-        //List(_id=60edea8d21136946402ced6d, username=test, userType=admin, firstName=Test, lastName=Test, password=test123, email=test@gmail.com, phoneNumber=123123123, bookingHistoryId=[b_123123, b_456456])
         val bookingHistory = arrBooking.replace("[", "").replace("]", "").split(",").toList
         User(ObjectId(id), username,usertype, f_name,l_name,password,email,phoneNumber,bookingHistory)
       case _ => templateUser
@@ -19,9 +18,35 @@ case object UserLogic {
   }
 
   def DocumentFromUser(user: User): Document = {
-    Document("username" -> user.username, "userType" -> user.typeOfUser,
-      "firstName" -> user.firstName, "lastName" -> user.lastName, "password" -> user.password,
-      "email"-> user.email, "phoneNumber" -> user.phoneNumber,"bookingHistoryId" -> user.bookingHistoryId)
+    Document("username" -> user.username,
+      "userType" -> user.typeOfUser,
+      "firstName" -> user.firstName,
+      "lastName" -> user.lastName,
+      "password" -> user.password,
+      "email"-> user.email,
+      "phoneNumber" -> user.phoneNumber,
+      "bookingHistoryId" -> user.bookingHistoryId)
   }
 
+  def ConvertToBooking(jsonStr: String): Booking = {
+    val booking: Booking = jsonStr
+      .replace("Booking{{","")
+      .replace("}}","")
+    match {
+      case s"_id=$id, bookingId=$bookingId, usernameBooked=$usernameBooked, time=$time, totalPrice=$total_price, campBookedId=$arrCampBooked" =>
+        val campBooked = arrCampBooked.replace("[", "").replace("]", "").split(",").toList
+        Booking(ObjectId(id), bookingId,usernameBooked, time,total_price.toDouble ,campBooked)
+      case _ => templateBooking
+    }
+    booking
+  }
+
+  def DocumentFromBooking(booking: Booking): Document = {
+    Document("bookingId" -> booking.bookingId,
+      "usernameBooked" -> booking.usernameBooked,
+      "time" -> booking.time,
+      "totalPrice" -> booking.totalPrice,
+      "campBookedId" -> booking.campBookedId
+    )
+  }
 }

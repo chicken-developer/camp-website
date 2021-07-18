@@ -7,13 +7,14 @@ import akka.http.scaladsl.server.{Directives, Route}
 import akka.stream.Materializer
 import spray.json.DefaultJsonProtocol.listFormat
 import spray.json._
+
 import scala.language.postfixOps
 import scala.util.{Failure, Success}
 
 class UserRoute(implicit val actorSystem : ActorSystem, implicit  val actorMaterializer: Materializer) extends Directives{
   import Routes.Data._
-  val userFinalRoute: Route = {
-
+  import ch.megard.akka.http.cors.scaladsl.CorsDirectives._
+  val userFinalRoute: Route = cors() {
     pathPrefix("api_v01" / "user") {
       (Directives.get & parameter("username") & parameter("password")) { (username, password) =>
         //GET user from username & password -> using for login
@@ -129,5 +130,4 @@ class UserRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
         }
     }// Finish user path prefix
   }// Finish user route
-
 }

@@ -42,3 +42,4 @@ libraryDependencies ++= Seq(
 libraryDependencies += "org.mongodb.scala" %% "mongo-scala-driver" % "4.2.3"
 // https://mvnrepository.com/artifact/org.mongodb/mongo-java-driver
 libraryDependencies += "org.mongodb" % "mongo-java-driver" % "3.12.8"
+libraryDependencies += "ch.megard" %% "akka-http-cors" % "1.1.1"
