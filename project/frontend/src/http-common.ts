@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export default axios.create({
-    baseURL: "http://103.153.65.194:54000/api_v01/", //change to vps ip for remote backend
+    baseURL: "http://192.168.220.129:54000/api_v01/",
     headers: {
         "Content-type": "application/json"
     }

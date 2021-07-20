@@ -39,7 +39,9 @@ object RouteEntryPoint {
 
     val userRoute =  new UserRoute()
     val campRoute =  new CampRoute()
-    val finalRoute = userRoute.userFinalRoute ~ campRoute.campFinalRoute
+    import ch.megard.akka.http.cors.scaladsl.CorsDirectives._
+
+    val finalRoute = cors(){ userRoute.userFinalRoute ~ campRoute.campFinalRoute}
 
     val localhost = "127.0.0.1"
     val vpshost = "103.153.65.194"

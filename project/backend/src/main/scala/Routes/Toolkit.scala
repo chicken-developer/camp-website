@@ -162,6 +162,12 @@ case object Toolkit {
 
   def GenerateUserFromHttpEntity(entity: HttpEntity): Future[User] = {
 
+    val temp = Future(List[User](templateUser).head)
+    temp
+  }
+
+  def GetUserFromLoginRequest(entity: HttpEntity): Future[User] = {
+
     val strictEntityFuture = entity.toStrict(2 seconds)
     val temp = Future(List[User](templateUser).head)
     temp

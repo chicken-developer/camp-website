@@ -19,13 +19,13 @@ case object UserLogic {
 
   def DocumentFromUser(user: User): Document = {
     Document("username" -> user.username,
-      "userType" -> user.typeOfUser,
+      "userType" -> "normal",
       "firstName" -> user.firstName,
       "lastName" -> user.lastName,
       "password" -> user.password,
       "email"-> user.email,
       "phoneNumber" -> user.phoneNumber,
-      "bookingHistoryId" -> user.bookingHistoryId)
+      "bookingHistoryId" -> "")
   }
 
   def ConvertToBooking(jsonStr: String): Booking = {

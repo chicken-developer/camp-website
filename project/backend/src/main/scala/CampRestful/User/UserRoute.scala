@@ -16,11 +16,28 @@ class UserRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
   import ch.megard.akka.http.cors.scaladsl.CorsDirectives._
   val userFinalRoute: Route = cors() {
     pathPrefix("api_v01" / "user") {
-      (Directives.get & parameter("username") & parameter("password")) { (username, password) =>
+      (get & parameter("username") & parameter("password")) { (username, password) =>
         //GET user from username & password -> using for login
         val userFuture = Toolkit.GetUserByInformation(username, password)
         onComplete(userFuture) {
             case Success(user) =>
+              complete {
+                HttpEntity(
+                  ContentTypes.`application/json`,
+                  user.toJson.prettyPrint
+                )
+              }
+            case Failure(ex) =>
+              failWith(ex)
+          }
+        } ~
+        (post & pathPrefix("login") & extractRequest) { request =>
+          //POST user -> for user register
+          val entity = request.entity
+          val userFuture = Toolkit.GetUserFromLoginRequest(entity)
+
+          onComplete(userFuture) {
+            case Success(user) => //Write user to database if valid
               complete {
                 HttpEntity(
                   ContentTypes.`application/json`,
