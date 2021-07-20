@@ -41,11 +41,10 @@ object RouteEntryPoint {
     val campRoute =  new CampRoute()
     val finalRoute = userRoute.userFinalRoute ~ campRoute.campFinalRoute
 
-    val localhost = "localhost"
-    val ubuntuVMHost = "192.168.220.129"
+    val localhost = "127.0.0.1"
+    val vpshost = "103.153.65.194"
 
-    val finalRouteHandler = Http().newServerAt(ubuntuVMHost, 54000).bindFlow(finalRoute)
-
+    val finalRouteHandler = Http().newServerAt(vpshost, 54000).bindFlow(finalRoute)
 
     val listBindingFutureWithSecurity = List(finalRouteHandler)
 

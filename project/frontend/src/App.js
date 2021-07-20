@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import Login from "./pages/Login/Login"
 import Register from "./pages/RegisterPage/Register";
 import HomePage from "./pages/HomePage/HomePage";
+import AdminPage from "./pages/AdminPage/AdminPage";
 
 function App() {
   return (<Router>
@@ -38,7 +39,7 @@ function App() {
             <Route path="/home" component={HomePage}/>
             <Route path="/camp" component={HomePage}/>
             <Route path="/booking" component={HomePage}/>
-            <Route path="/admin" component={HomePage}/>
+            <Route path="/admin" component={AdminPage}/>
 
           </Switch>
         </div>
