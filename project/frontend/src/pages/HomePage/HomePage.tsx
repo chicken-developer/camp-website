@@ -1,107 +1,95 @@
-import React, { useState, useEffect } from "react";
-import CampService from "../network/camp-api";
-import { Link } from "react-router-dom";
-import ICampData from "../network/types/Camp";
+import React from "react";
+import { NavLink } from "react-router-dom";
 
-const CampList: React.FC = () => {
-  const [camp, setCamp] = useState<Array<ICampData>>([]);
-  const [currentCamp, setCurrentCamp] = useState<ICampData | null>(null);
-  const [currentIndex, setCurrentIndex] = useState<number>(-1);
+import "./HomePage.css";
+interface Props {}
 
-  useEffect(() => {
-    retrieveCamps();
-  }, []);
-
-  const retrieveCamps = () => {
-    CampService.getAll()
-      .then((response: { data: React.SetStateAction<ICampData[]> }) => {
-        setCamp(response.data);
-        console.log(response.data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
-
-  const refreshList = () => {
-    retrieveCamps();
-    setCurrentCamp(null);
-    setCurrentIndex(-1);
-  };
-
-  const setActiveCamp = (tutorial: ICampData, index: number) => {
-    setCurrentCamp(tutorial);
-    setCurrentIndex(index);
-  };
-
-  const removeAllCamps = () => {
-    CampService.removeAll()
-      .then((response: { data: any }) => {
-        console.log(response.data);
-        refreshList();
-      })
-      .catch((e: any) => {
-        console.log(e);
-      });
-  };
-
+const HomePage = (props: Props) => {
   return (
-    <div className="list row">
-      <div className="col-md-6">
-        <h4>Camps List</h4>
-
-        <ul className="list-group">
-          {camp &&
-            camp.map((camp, index) => (
-              <li
-                className={
-                  "list-group-item " + (index === currentIndex ? "active" : "")
-                }
-                onClick={() => setActiveCamp(camp, index)}
-                key={index}
-              >
-                {camp.campId}
-              </li>
-            ))}
-        </ul>
-
-        <button className="m-3 btn btn-sm btn-danger" onClick={removeAllCamps}>
-          Remove All
-        </button>
-      </div>
-      <div className="col-md-6">
-        {currentCamp ? (
-          <div>
-            <h4>Camp</h4>
-            <div>
-              <label>
-                <strong>Title:</strong>
-              </label>{" "}
-              {currentCamp.campId}
+    <div className="container home ">
+      <div className="row">
+        <div className="col-xs-12 col-md-5">
+          <div className="card text-left">
+            <img
+              className="card-img-top item-img"
+              src="https://cdn.recreation.gov/public/2019/02/21/19/34/65350_e7c97c84-39f2-425b-9714-4566d2fbaf8f_700.jpg"
+              alt=""
+            />
+            <div className="card-body">
+              <h4 className="card-title ">Site: A003, Loop: A</h4>
+              <ul className="rec-flex-card-meta rec-v-fill-space mb-half">
+                <li>STANDARD NONELECTRIC</li>
+                <li>Overnight</li>
+                <li className="max-num-ppl">
+                  <strong>6</strong> Max Occupants
+                </li>
+                <li className="max-num-vehicles">
+                  <strong>2</strong> Max Vehicles (max 30 ft./vehicle)
+                </li>
+              </ul>
+              <div className="rec-panel-wrap">
+                <div className="icon-wrap">
+                  <div>
+                    <svg
+                      data-component="Icon"
+                      className="sarsa-icon rec-icon-rv-trailer"
+                      viewBox="0 0 24 24"
+                      role="presentation"
+                      focusable="false"
+                      height="24"
+                      width="24"
+                    >
+                      <g>
+                        <path d="M18.3 8.9h2.4L20 6.2c-.1-.3-.3-.5-.6-.5H4.1c-.9 0-1.6.7-1.6 1.6V16h2.4c0 1.3 1.1 2.4 2.4 2.4 1.3 0 2.4-1.1 2.4-2.4h4.7c0 1.3 1.1 2.4 2.4 2.4 1.3 0 2.4-1.1 2.4-2.4h2.4v-3.9l-3.3-3.2zm-11 8.2c-.7 0-1.2-.5-1.2-1.2s.5-1.2 1.2-1.2 1.2.5 1.2 1.2-.6 1.2-1.2 1.2zM12 12H4.1V8.9H12V12zm4.7 5.1c-.7 0-1.2-.5-1.2-1.2s.5-1.2 1.2-1.2 1.2.5 1.2 1.2-.5 1.2-1.2 1.2zM15.5 12V8.9h1.6l3.1 3.1h-4.7z"></path>
+                      </g>
+                    </svg>
+                    &nbsp;<span>RV (max 30 ft.)</span>
+                  </div>
+                  <div>
+                    <svg
+                      data-component="Icon"
+                      className="sarsa-icon rec-icon-tent"
+                      viewBox="0 0 24 24"
+                      role="presentation"
+                      focusable="false"
+                      height="24"
+                      width="24"
+                    >
+                      <g>
+                        <path d="M6.17 6.045L1 18h3.795l1.547-7.756L7.876 18h3.91L6.718 6.041M17.726 6l-9.348.036L13.453 18H23"></path>
+                      </g>
+                    </svg>
+                    &nbsp;<span>Tent (max 40 ft.)</span>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div>
-              <label>
-                <strong>Description:</strong>
-              </label>{" "}
-              {currentCamp.price}
+            <div className="rec-flex-card-content-bottom-wrap">
+              <div className="rec-flex-card-price-button-wrap">
+                <div className="rec-flex-card-price-wrap">
+                  <div className="rec-flex-card-price">$32.14</div>
+                  <div className="rec-flex-card-duration">/ per night</div>
+                </div>
+                <NavLink
+                  data-component="Button"
+                  className="sarsa-button sarsa-button-tertiary sarsa-button-xs"
+                  id="enter-dates-button-65218"
+                  to="/camping/campsites/65218"
+                  rel="noopener noreferrer"
+                  aria-label="View details for Site: A004, Loop: A"
+                >
+                  <span className="sarsa-button-inner-wrapper">
+                    <span className="sarsa-button-content">View Details</span>
+                  </span>
+                </NavLink>
+              </div>
             </div>
-
-            <Link
-              to={"/camp/?campId=" + currentCamp.campId}
-              className="badge badge-warning"
-            >
-              Edit
-            </Link>
           </div>
-        ) : (
-          <div>
-            <br />
-            <p>Click on camp</p>
-          </div>
-        )}
+        </div>
+        <div className="col-xs-12 col-md-7"></div>
       </div>
     </div>
   );
 };
 
-export default CampList;
+export default HomePage;

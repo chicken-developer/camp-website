@@ -11,33 +11,30 @@ function AppRouter() {
   const auth = useSelector((state: any) => state.auth);
   return (
     <Router>
-      <Layout>
-        <Route exact path="/" component={Login} />
+      {/* <Layout> */}
+        {/* <Route exact path="/" component={Login} />
         <Route path="/sign-in" component={Login} />
-        <Route path="/sign-up" component={Register} />
+        <Route path="/sign-up" component={Register} /> */}
+      {/* </Layout> */}
 
-        <PrivateRoute
-          authentication={auth.isLogin}
-          path="/home"
-          component={HomePage}
-        />
-        <PrivateRoute
-          authentication={auth.isLogin}
-          path="/camp"
-          component={HomePage}
-        />
+      <Route path="/home" component={HomePage} />
 
-        <PrivateRoute
-          authentication={auth.isLogin}
-          path="/booking"
-          component={HomePage}
-        />
-        <PrivateRoute
-          authentication={auth.isLogin}
-          path="/bookadmining"
-          component={HomePage}
-        />
-      </Layout>
+      {/* <PrivateRoute
+        authentication={auth.isLogin}
+        path="/camp"
+        component={HomePage}
+      />
+
+      <PrivateRoute
+        authentication={auth.isLogin}
+        path="/booking"
+        component={HomePage}
+      />
+      <PrivateRoute
+        authentication={auth.isLogin}
+        path="/bookadmining"
+        component={HomePage}
+      /> */}
     </Router>
   );
 }

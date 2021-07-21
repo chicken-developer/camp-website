@@ -20,3 +20,14 @@
 .App-link {
   color: #09d3ac;
 }
+
+ol li,
+ul li {
+  margin-bottom: 0.6rem;
+}
+*,
+:after,
+:before {
+  -webkit-box-sizing: inherit;
+  box-sizing: inherit;
+}
