@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 function Register() {
   return (
@@ -47,7 +48,7 @@ function Register() {
       </button>
 
       <p className="forgot-password text-right">
-        Already registered <a href="#">sign in?</a>
+        Already registered <NavLink to="#">sign in?</NavLink>
       </p>
     </form>
   );
