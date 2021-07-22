@@ -2,7 +2,8 @@ import { useSelector } from "react-redux";
 import { Redirect, Route, useLocation } from "react-router-dom";
 
 export const PrivateRoute = ({ component: Component, ...rest }: any) => {
-  const auth = useSelector((state: any) => state.auth);
+  const auth = useSelector((state: any) => state.userData);
+  
   const location = useLocation();
   return (
     <Route

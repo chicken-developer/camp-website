@@ -1,16 +1,42 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { NavLink } from "react-router-dom";
-import { userActions } from "../../reducers/auth/actions";
+import { NavLink, useHistory } from "react-router-dom";
+import * as API from '../../service/'
+import Swal from 'sweetalert2'
+import * as actions from "../../reducers/auth/actions"
+import Constant from "../../utils/Constant";
+import {toastSuccess, toastFailure} from "../../utils/toast_mixin"
 
 function Login() {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = (e: any) => {
     e.preventDefault();
-    dispatch(userActions.login(email, password));
+    API.login({
+      username: email,
+      password
+    }).then(userResponse => {
+      const userData = userResponse.data;
+      if (userData.status) {
+        const authUser = userData.data;
+        console.log(authUser)
+        dispatch(actions.loginSuccess(authUser))
+        localStorage.setItem(Constant.KEY.USER, JSON.stringify(authUser))
+        toastSuccess("Login Successfull");
+        history.push("/home")
+      } else {
+        toastFailure("Login Fail")
+        console.log("else!!!")
+      }
+    })
+    .catch(error => {
+      toastFailure("Login Fail")
+      console.log("else!!!")
+      console.log(error)
+    })
   };
 
   const onChangeEmail = (e: any) => {

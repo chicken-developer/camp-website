@@ -1,48 +1,15 @@
 import axios from "axios";
+import CONSTANTS from '../utils/Constant'
+import * as Model from '../type'
 
-export const userService = {
-  login,
-  logout,
-  register,
-};
-const apiUrl = "http://103.153.65.194:54000/api_v01";
+const axiosInstance = axios.create({
+  baseURL: CONSTANTS.HOST_URL
+});
 
-function login(username: string, password: string) {
-  const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username, password }),
-  };
-
-  return axios
-    .post(`${apiUrl}/user/login`, requestOptions)
-    .then((user) => {
-      localStorage.setItem("user", JSON.stringify(user));
-      return user;
-    })
-    .catch((err) => {
-      return err;
-    });
+export function login(data: Object) {
+  return axiosInstance.post<Model.SingleUser>("/user/login", data)
 }
 
-function logout() {
-  localStorage.removeItem("user");
-}
-
-function register(user: any) {
-  const requestOptions = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(user),
-  };
-
-  return axios
-    .post(`${apiUrl}/user/register`, requestOptions)
-    .then((user) => {
-      localStorage.setItem("user", JSON.stringify(user));
-      return user;
-    })
-    .catch((err) => {
-      return err;
-    });
+export function register(data: Object) {
+  return axiosInstance.post<Model.SingleUser>("/user/register", data)
 }

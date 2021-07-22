@@ -6,52 +6,30 @@ import {
 } from "./constants";
 
 const initialState = {
-  requesting: false,
-  successful: false,
-  messages: {},
-  errors: false,
-  loading: false,
-  isLogin: false,
+  userData: {}
 };
 
 const authReducer = function loginReducer(
-  state = { ...initialState },
+  state = initialState,
   action: any
 ) {
+  const nextData = action.data
+  let newState = {...state}
+
   switch (action.type) {
-    case LOGIN_REQUESTING:
-      return {
-        requesting: true,
-        successful: false,
-        loading: true,
-        messages: "",
-        errors: false,
-        isLogin: false,
-      };
     case LOGIN_SUCCESS:
-      return {
-        ...action,
-        isLogin: true,
-        requesting: false,
-        loading: false,
-        errors: false,
-        successful: true,
-      };
-    case LOGOUT: {
-      return {};
-    }
-    case LOGIN_ERROR:
-      return {
-        messages: "Please check your password or account",
-        loading: false,
-        requesting: false,
-        successful: false,
-        errors: true,
-      };
+      newState.userData = nextData;
+      break;
+    case LOGOUT: 
+      newState.userData = {}
+      break;
 
     default:
-      return state;
+      newState = state;
+      break;    
   }
+
+  return newState;
 };
 
 export default authReducer;
