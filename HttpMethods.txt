@@ -1,28 +1,33 @@
 For testing
-API address: localhost:54000/api_v01/
+Local API address: localhost:54000/api_v01/
+Public API Address
 
 User:
-get /user/username=test&password=123123
+post /user/login (username:password)
 post /user/register (user object)
-get /user/?numberOfUser=12
-delete /user (user object)
-put /user (user object)
-get /user/historyOfUser
+get /user/all
+get /user/?username={username}
+delete /user/{username}
+put /user/{username} (user object)
+get /user/bookinghistory/?username={username}
 post /user/booking (booking object)
 
 Camp:
 get /camp
-get /camp?campId=123123
-delete /camp (camp object)
-put /camp(camp object)
+
+get /camp?campid={campId}
 post /camp(camp object)
+put /camp/{campid} (camp object)
+delete /camp/{campid}
 
 Camp site details
-get /camp/siteDetails/campId=123123
-delete /camp/siteDetails/ (Camp site details object)
-put /camp/siteDetails/    (Camp site details object)
-post /camp/siteDetails/     (Camp site details object)
+get /campsitedetails?campid={campId}
+post /campsitedetailscampsitedetailsobject)
+put /campsitedetails/{campid} (camp object)
+delete /campsitedetails/{campid}
 
-Camp allowable equipment: Update soon
-Camp site availability: Update soon
-Camp vehicle details: Update soon
+Camp allowable equipment: Same as camp site details
+Camp site availability: Same as camp site details
+Camp vehicle details:  Same as camp site details
+
+

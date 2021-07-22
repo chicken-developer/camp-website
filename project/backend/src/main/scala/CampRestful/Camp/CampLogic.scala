@@ -10,7 +10,7 @@ case object CampLogic {
       .replace("}}","")
     match {
       case s"_id=$id, campId=$campId, price=$prince, campImgSrc=$campImgSrc, partAddress=$partAddress, nearAddress=$nearAddress, siteDetailsId=$siteDetail, siteAvailabilityId=$siteAvailability, vehicleDetailsId=$vehicleDetailsId, allowableEquipmentListId=$allowableEquipmentListId" =>
-        Camp(ObjectId(id), campId, prince.toDouble, campImgSrc, partAddress, nearAddress, siteDetail, siteAvailability, vehicleDetailsId,allowableEquipmentListId)
+        Camp(id, campId, prince.toDouble, campImgSrc, partAddress, nearAddress, siteDetail, siteAvailability, vehicleDetailsId,allowableEquipmentListId)
       case _ => templateCamp
     }
     camp
@@ -34,7 +34,7 @@ case object CampLogic {
       .replace("}}","")
     match {
       case s"_id=$id, campSiteDetailsId=$campSiteDetailsId, siteType=$siteType, siteAccessible=$siteAccessible, checkInTime=$checkInTime, checkOutTime=$checkOutTime, maxNumOfPeople=$maxNumOfPeople, minNumOfPeople=$minNumOfPeople, typeOfUse=$typeOfUse, siteReserveType=$siteReserveType, campFireAllowed=$campFireAllowed, capacityRating=$capacityRating, petAllowed=$petAllowed, shade=$shade"  =>
-        CampSiteDetails(ObjectId(id),
+        CampSiteDetails(id,
           campSiteDetailsId,
           siteType,
           siteAccessible,
@@ -60,7 +60,7 @@ case object CampLogic {
     match {
       case s"_id=$id, allowableEquipmentId=$allowableEquipmentId, items=$items" =>
         val itemList: Map[String, String] = Map("123" -> "123") // TODO
-        CampAllowableEquipment(ObjectId(id), allowableEquipmentId, itemList)
+        CampAllowableEquipment(id, allowableEquipmentId, itemList)
       case _ => templateCampAllowableEquipment
     }
     campAllowableEquipment
@@ -72,7 +72,7 @@ case object CampLogic {
       .replace("}}","")
     match {
       case s"_id=$id, campSiteAvailabilityId=$campSiteAvailabilityId, date=$date,state=$state " =>
-        CampSiteAvailability(ObjectId(id), campSiteAvailabilityId, date, state)
+        CampSiteAvailability(id, campSiteAvailabilityId, date, state)
       case _ => templateCampSiteAvailability
     }
     campSiteAvailability
@@ -84,7 +84,7 @@ case object CampLogic {
       .replace("}}","")
     match {
       case s"_id=$id, CampVehicleDetailsId=$campVehicleDetailsId, drivewayEntry=$drivewayEntry, drivewayLength=$drivewayLength, drivewaySurface=$drivewaySurface, isEquipmentMandatory=$isEquipmentMandatory, maxNumOfVehicles=$maxNumOfVehicles, maxVehicleLength=$maxVehicleLength, siteLength=$siteLength" =>
-        CampVehicleDetails(ObjectId(id),
+        CampVehicleDetails(id,
           campVehicleDetailsId,
           drivewayEntry,
           drivewayLength.toDouble,
