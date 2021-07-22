@@ -19,7 +19,7 @@ case object UserLogic {
 
   def DocumentFromUser(user: User): Document = {
     Document("username" -> user.username,
-      "userType" -> "normal",
+      "userType" -> user.typeOfUser,
       "firstName" -> user.firstName,
       "lastName" -> user.lastName,
       "password" -> user.password,

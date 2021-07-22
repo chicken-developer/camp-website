@@ -124,29 +124,13 @@ case object Toolkit {
   }
 
 
-  /* Toolkit for user route*/
-  def GetUserByInformation(inputUsername: String, inputPassword: String): Future[User] = {
-
-    val allUsers = userCollection.find()
-      .map { user =>
-        UserLogic.ConvertToUser(user.toString.replaceAll("Document", "User"))
-      }.toList
-
-    val user = allUsers.findLast(_.username == inputUsername).filter(_.password == inputPassword)
-    user match {
-      case Some(user) =>
-        Future(user)
-      case None => Future(templateUser)
-    }
-  }
-
   def GetUserById(id: String): Future[User] = {
 
     //TODO
     val temp = Future(List[User](templateUser).head)
     temp
   }
-  def GetLimitUser(numberOfUsers: String): Future[List[User]] = {
+  def GetAllUser(): Future[List[User]] = {
 
     //TODO
     val temp = Future(List[User](templateUser))
@@ -160,17 +144,19 @@ case object Toolkit {
     temp
   }
 
-  def GenerateUserFromHttpEntity(entity: HttpEntity): Future[User] = {
 
-    val temp = Future(List[User](templateUser).head)
-    temp
-  }
+  def GetUserFromLoginForm(username: String, password: String): Future[User] = {
+    val allUsers = userCollection.find()
+      .map { user =>
+        UserLogic.ConvertToUser(user.toString.replaceAll("Document", "User"))
+      }.toList
 
-  def GetUserFromLoginRequest(entity: HttpEntity): Future[User] = {
-
-    val strictEntityFuture = entity.toStrict(2 seconds)
-    val temp = Future(List[User](templateUser).head)
-    temp
+    val user = allUsers.findLast(_.username == username).filter(_.password == password)
+    user match {
+      case Some(user) =>
+        Future(user)
+      case None => Future(templateUser)
+    }
   }
 
   def WriteUserToDatabase(user: User): Future[StatusCode] = {

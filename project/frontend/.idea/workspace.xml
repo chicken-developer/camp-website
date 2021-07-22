@@ -4,14 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8f93fa70-29fa-4d6a-b850-87891193ce2d" name="Changes" comment="" />
+    <list default="true" id="8f93fa70-29fa-4d6a-b850-87891193ce2d" name="Changes" comment="Changes">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
   <component name="ProjectId" id="1vPOte8myMMfaIgC3KXWikVio9x" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -31,7 +33,7 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="ts.external.directory.path" value="E:\DevGame\FreelanceProjects\camp-website\project\frontend-demo\frontend\node_modules\typescript\lib" />
+    <property name="ts.external.directory.path" value="E:\DevGame\FreelanceProjects\camp-website\project\frontend\node_modules\typescript\lib" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
@@ -73,6 +75,7 @@
       <workItem from="1626467338762" duration="8461000" />
       <workItem from="1626639381447" duration="8797000" />
       <workItem from="1626796096202" duration="2888000" />
+      <workItem from="1626919671199" duration="609000" />
     </task>
     <servers />
   </component>

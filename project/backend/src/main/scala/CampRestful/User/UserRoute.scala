@@ -1,13 +1,16 @@
 package CampRestful.User
 
 import Routes.Toolkit
+import Routes.Toolkit.system.dispatcher
 import akka.actor.ActorSystem
-import akka.http.scaladsl.model.{ContentTypes, HttpEntity, StatusCodes}
+import akka.http.scaladsl.model.{ContentTypes, HttpEntity, HttpRequest, StatusCodes}
 import akka.http.scaladsl.server.{Directives, Route}
 import akka.stream.Materializer
-import spray.json.DefaultJsonProtocol.listFormat
+import com.fasterxml.jackson.annotation.JsonFormat
+import spray.json.DefaultJsonProtocol._
 import spray.json._
 
+import scala.concurrent.duration.DurationInt
 import scala.language.postfixOps
 import scala.util.{Failure, Success}
 
@@ -16,88 +19,108 @@ class UserRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
   import ch.megard.akka.http.cors.scaladsl.CorsDirectives._
   val userFinalRoute: Route = cors() {
     pathPrefix("api_v01" / "user") {
-      (get & parameter("username") & parameter("password")) { (username, password) =>
-        //GET user from username & password -> using for login
-        val userFuture = Toolkit.GetUserByInformation(username, password)
-        onComplete(userFuture) {
-            case Success(user) =>
-              complete {
-                HttpEntity(
-                  ContentTypes.`application/json`,
-                  user.toJson.prettyPrint
-                )
-              }
-            case Failure(ex) =>
-              failWith(ex)
-          }
-        } ~
         (post & pathPrefix("login") & extractRequest) { request =>
           //POST user -> for user register
+          case class UserForm(username: String, password: String)
+          implicit val userFormFormat = jsonFormat2(UserForm)
           val entity = request.entity
-          val userFuture = Toolkit.GetUserFromLoginRequest(entity)
+          val strictEntityFuture = entity.toStrict(2 seconds)
+          val loginForm = strictEntityFuture.map(_.data.utf8String.parseJson.convertTo[UserForm])
+          println(s"Data from server: $loginForm")
 
-          onComplete(userFuture) {
-            case Success(user) => //Write user to database if valid
+          onComplete(loginForm) {
+            case Failure(ex) =>
               complete {
                 HttpEntity(
                   ContentTypes.`application/json`,
-                  user.toJson.prettyPrint
+                  Message(ex.toString, 500, "").toJson.prettyPrint
                 )
               }
-            case Failure(ex) =>
-              failWith(ex)
-          }
-        } ~
-      (post & pathPrefix("register") & extractRequest) { request =>
-          //POST user -> for user register
-          val entity = request.entity
-          val userFuture = Toolkit.GenerateUserFromHttpEntity(entity)
+            case Success(form) => //Write user to database if valid
+              val userFuture = Toolkit.GetUserFromLoginForm(form.username, form.password)
+              onComplete(userFuture) {
+                case Failure(ex) =>
+                  complete {
+                    HttpEntity(
+                      ContentTypes.`application/json`,
+                      Message(ex.toString, 500, "").toJson.prettyPrint
+                    )
+                  }
+                case Success(confirmUser) =>
+                  if(confirmUser.username == templateUser.username)
+                    {
+                      complete {
+                        HttpEntity(
+                          ContentTypes.`application/json`,
+                          Message("", 500, "").toJson.prettyPrint
+                        )
+                      }
+                    }
+                  else
+                    {
+                      complete {
+                        HttpEntity(
+                          ContentTypes.`application/json`,
+                          Message("", 200, confirmUser.toJson.toString()).toJson.prettyPrint
+                        )
+                      }
+                    }
 
-          onComplete(userFuture) {
-            case Success(user) => //Write user to database if valid
-              val statusCode = Toolkit.WriteUserToDatabase(user)
-              onComplete(statusCode)
-              {
-                case Success(status) => complete(status)
-                case Failure(ex) => failWith(ex)
               }
-            case Failure(ex) =>
-              failWith(ex)
           }
         } ~
-      (get & parameter("numberOfUser")) { numberOfUser =>
-          //Get n first user from database -> for admin handle user
-          val userFuture = Toolkit.GetLimitUser(numberOfUser)
+        (post & pathPrefix("register") & extractRequest) { request =>
+            case class RegisterForm(username: String,firstName: String, lastName: String, password: String, email: String, phoneNumber: String)
+            implicit val registerFormFormat = jsonFormat6(RegisterForm)
+            val entity = request.entity
+            val strictEntityFuture = entity.toStrict(2 seconds)
+            val registerForm = strictEntityFuture.map(_.data.utf8String.parseJson.convertTo[RegisterForm])
+            println(s"Data from server: $registerForm")
+
+            onComplete(registerForm) {
+              case Failure(ex) =>
+                complete {
+                  HttpEntity(
+                    ContentTypes.`application/json`,
+                    Message(ex.toString, 500, "").toJson.prettyPrint
+                  )
+                }
+              case Success(form) => //Write user to database if valid
+                val user: User = User(ObjectId("id_null"),form.username,"normal", form.firstName, form.lastName, form.password,form.email, form.phoneNumber, List(""))
+                val userFuture = Toolkit.WriteUserToDatabase(user)
+                onComplete(userFuture) {
+                  case Failure(ex) =>
+                    complete {
+                      HttpEntity(
+                        ContentTypes.`application/json`,
+                        Message(ex.toString, 500, "").toJson.prettyPrint
+                      )
+                    }
+                  case Success(confirmUser) =>
+                    complete {
+                      HttpEntity(
+                        ContentTypes.`application/json`,
+                        Message("", 200, user.toJson.toString()).toJson.prettyPrint
+                      )
+                    }
+                }
+            }
+          } ~
+        (get &  pathPrefix("all")) {
+          val userFuture = Toolkit.GetAllUser()
           onComplete(userFuture) {
             case Success(user) =>
               complete {
                 HttpEntity(
                   ContentTypes.`application/json`,
-                  user.toJson.prettyPrint
+                  Message("",0,user.toJson.toString()).toJson.prettyPrint
                 )
               }
             case Failure(ex) =>
               failWith(ex)
           }
         } ~
-      (delete & pathEndOrSingleSlash & extractRequest) { request =>
-          //DELETE user -> for admin handle user
-        val entity = request.entity
-          val userFuture = Toolkit.GenerateUserFromHttpEntity(entity)
-
-          onComplete(userFuture) {
-            case Success(user) => //Delete user from database if valid
-              val statusCode = Toolkit.DeleteUserFromDatabase(user)
-              onComplete(statusCode)
-              {
-                case Success(status) => complete(status)
-                case Failure(ex) => failWith(ex)
-              }
-            case Failure(ex) =>
-              failWith(ex)
-          }
-        } ~
-      (put & pathEndOrSingleSlash & extractRequest) { request =>
+      (put & pathPrefix(Segment) & extractRequest) { (username, request) =>
           //PUT user -> for admin update user information
           val entity = request.entity
           val newUserInfoFuture = Toolkit.FindUserInDatabase(entity)
@@ -114,9 +137,9 @@ class UserRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
               failWith(ex)
           }
         } ~
-      (get & parameter("historyOfUser")) { historyOfUser =>
+      (get & pathPrefix(Segment) & pathPrefix("history")) { userid =>
         //GET booking history of user using their username -> for admin handle user booking history
-          val bookingListFuture = Toolkit.GetUserById(historyOfUser)
+          val bookingListFuture = Toolkit.GetUserById(userid)
           onComplete(bookingListFuture) {
             case Success(allBookingHistory) =>
               complete {
@@ -129,7 +152,7 @@ class UserRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
               failWith(ex)
           }
         } ~
-      (post & pathPrefix("booking") & extractRequest) { request =>
+      (post & pathPrefix(Segment) & pathPrefix("booking") & extractRequest) { (username,request) =>
         // POST booking -> for user booking a camp
           val entity = request.entity
           val bookingFuture = Toolkit.GenerateBookingFromHttpEntity(entity)

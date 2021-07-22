@@ -11,7 +11,8 @@ case object Data {
   implicit val campAllowableEquipmentFormat = jsonFormat3(CampAllowableEquipment)
   implicit val campSiteAvailabilityFormat = jsonFormat4(CampSiteAvailability)
   implicit val campVehicleDetailsFormat = jsonFormat9(CampVehicleDetails)
-
+  implicit val messageFormat3 = jsonFormat3(Message)
+  case class Message(message: String, status: Int, data: String)
   case class ObjectId(_objId: String)
 
   case class User(_id: ObjectId, username: String, typeOfUser: String, firstName: String, lastName: String, password: String, email: String, phoneNumber: String, bookingHistoryId: List[String])
