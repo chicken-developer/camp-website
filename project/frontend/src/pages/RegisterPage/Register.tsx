@@ -37,13 +37,14 @@ export class Register extends Component<IRegisterProps, IRegisterState> {
   }
 
   onSignUp = (evt: any) => {
-    const {firstName, lastName, username, password, email} = this.state;
+    const {firstName, lastName, username, password, phoneNumber, email} = this.state;
     
     API.register({
       firstName,
       lastName,
       username,
       password,
+        phoneNumber,
       email
     }).then(userResponse => {
       const userData = userResponse.data;
@@ -64,7 +65,16 @@ export class Register extends Component<IRegisterProps, IRegisterState> {
     return (
       <form>
         <h3>Sign Up</h3>
-  
+          <div className="form-group">
+              <label>Username</label>
+              <input
+                  type="username"
+                  className="form-control"
+                  placeholder="Enter username"
+                  onChange = {this.handleInputChange}
+                  name = "username"
+              />
+          </div>
         <div className="form-group">
           <label>First name</label>
           <input 

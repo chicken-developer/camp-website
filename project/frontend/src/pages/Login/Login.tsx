@@ -49,11 +49,11 @@ function Login() {
     <form>
       <h3>Sign In</h3>
       <div className="form-group">
-        <label>Email address</label>
+        <label>Username</label>
         <input
           type="email"
           className="form-control"
-          placeholder="Enter email"
+          placeholder="Enter username"
           name="email"
           onChange={onChangeEmail}
         />
