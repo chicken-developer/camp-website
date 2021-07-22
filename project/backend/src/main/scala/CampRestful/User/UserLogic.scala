@@ -1,6 +1,6 @@
 package CampRestful.User
 
-import Routes.Data.{Booking, ObjectId, User, templateBooking, templateUser}
+import Routes.Data._
 import org.mongodb.scala.bson.Document
 
 case object UserLogic {
@@ -11,7 +11,7 @@ case object UserLogic {
     match {
       case s"_id=$id, username=$username, userType=$usertype, firstName=$f_name, lastName=$l_name, password=$password, email=$email, phoneNumber=$phoneNumber, bookingHistoryId=$arrBooking" =>
         val bookingHistory = arrBooking.replace("[", "").replace("]", "").split(",").toList
-        User(ObjectId(id), username,usertype, f_name,l_name,password,email,phoneNumber,bookingHistory)
+        User(id, username,usertype, f_name,l_name,password,email,phoneNumber,bookingHistory)
       case _ => templateUser
     }
     user
@@ -35,7 +35,7 @@ case object UserLogic {
     match {
       case s"_id=$id, bookingId=$bookingId, usernameBooked=$usernameBooked, time=$time, totalPrice=$total_price, campBookedId=$arrCampBooked" =>
         val campBooked = arrCampBooked.replace("[", "").replace("]", "").split(",").toList
-        Booking(ObjectId(id), bookingId,usernameBooked, time,total_price.toDouble ,campBooked)
+        Booking(id, bookingId,usernameBooked, time,total_price.toDouble ,campBooked)
       case _ => templateBooking
     }
     booking

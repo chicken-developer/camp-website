@@ -33,8 +33,9 @@ class UserRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
               complete {
                 HttpEntity(
                   ContentTypes.`application/json`,
-                  Message(ex.toString, 500, "").toJson.prettyPrint
-                )
+                  Message(ex.toString, 0, "".toJson).toJson.prettyPrint
+                );
+                StatusCodes.InternalServerError
               }
             case Success(form) => //Write user to database if valid
               val userFuture = Toolkit.GetUserFromLoginForm(form.username, form.password)
@@ -43,8 +44,9 @@ class UserRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
                   complete {
                     HttpEntity(
                       ContentTypes.`application/json`,
-                      Message(ex.toString, 500, "").toJson.prettyPrint
-                    )
+                      Message(ex.toString, 0, "".toJson).toJson.prettyPrint
+                    );
+                    StatusCodes.InternalServerError
                   }
                 case Success(confirmUser) =>
                   if(confirmUser.username == templateUser.username)
@@ -52,8 +54,9 @@ class UserRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
                       complete {
                         HttpEntity(
                           ContentTypes.`application/json`,
-                          Message("", 500, "").toJson.prettyPrint
-                        )
+                          Message("", 0, "".toJson).toJson.prettyPrint
+                        );
+                        StatusCodes.InternalServerError
                       }
                     }
                   else
@@ -61,7 +64,7 @@ class UserRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
                       complete {
                         HttpEntity(
                           ContentTypes.`application/json`,
-                          Message("", 200, confirmUser.toJson.toString()).toJson.prettyPrint
+                          Message("", 1, confirmUser.toJson).toJson.prettyPrint
                         )
                       }
                     }
@@ -82,25 +85,27 @@ class UserRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
                 complete {
                   HttpEntity(
                     ContentTypes.`application/json`,
-                    Message(ex.toString, 500, "").toJson.prettyPrint
-                  )
+                    Message(ex.toString, 0, "".toJson).toJson.prettyPrint
+                  );
+                  StatusCodes.InternalServerError
                 }
               case Success(form) => //Write user to database if valid
-                val user: User = User(ObjectId("id_null"),form.username,"normal", form.firstName, form.lastName, form.password,form.email, form.phoneNumber, List(""))
+                val user: User = User("id_null",form.username,"normal", form.firstName, form.lastName, form.password,form.email, form.phoneNumber, List(""))
                 val userFuture = Toolkit.WriteUserToDatabase(user)
                 onComplete(userFuture) {
                   case Failure(ex) =>
                     complete {
                       HttpEntity(
                         ContentTypes.`application/json`,
-                        Message(ex.toString, 500, "").toJson.prettyPrint
-                      )
+                        Message(ex.toString, 0, "".toJson).toJson.prettyPrint
+                      );
+                      StatusCodes.InternalServerError
                     }
                   case Success(confirmUser) =>
                     complete {
                       HttpEntity(
                         ContentTypes.`application/json`,
-                        Message("", 200, user.toJson.toString()).toJson.prettyPrint
+                        Message("", 1, user.toJson).toJson.prettyPrint
                       )
                     }
                 }
@@ -113,7 +118,7 @@ class UserRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
               complete {
                 HttpEntity(
                   ContentTypes.`application/json`,
-                  Message("",0,user.toJson.toString()).toJson.prettyPrint
+                  Message("",0,user.toJson).toJson.prettyPrint
                 )
               }
             case Failure(ex) =>
