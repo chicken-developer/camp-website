@@ -1,5 +1,4 @@
 package Routes
-import CampRestful.Camp.CampRoute
 import CampRestful.User.UserRoute
 
 import scala.language.postfixOps
@@ -38,10 +37,10 @@ object RouteEntryPoint {
     //Setup ssl finish----------
 
     val userRoute =  new UserRoute()
-    val campRoute =  new CampRoute()
+    //val campRoute =  new CampRoute()
     import ch.megard.akka.http.cors.scaladsl.CorsDirectives._
 
-    val finalRoute = cors(){ userRoute.userFinalRoute ~ campRoute.campFinalRoute}
+    val finalRoute = cors(){ userRoute.userFinalRoute}// ~ campRoute.campFinalRoute}
 
     val localhost = "127.0.0.1"
     val vpshost = "103.153.65.194"

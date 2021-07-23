@@ -1,15 +1,13 @@
 package CampRestful.User
 
-import Routes.Toolkit
-import Routes.Toolkit.system.dispatcher
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity, HttpRequest, StatusCodes}
 import akka.http.scaladsl.server.{Directives, Route}
 import akka.stream.Materializer
-import com.fasterxml.jackson.annotation.JsonFormat
 import spray.json.DefaultJsonProtocol._
 import spray.json._
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.DurationInt
 import scala.language.postfixOps
 import scala.util.{Failure, Success}
@@ -30,41 +28,41 @@ class UserRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
 
           onComplete(loginForm) {
             case Failure(ex) =>
-              complete {
-                HttpEntity(
+              complete (
+                StatusCodes.InternalServerError,
+                  HttpEntity(
                   ContentTypes.`application/json`,
-                  Message(ex.toString, 0, "".toJson).toJson.prettyPrint
-                );
-                StatusCodes.InternalServerError
-              }
+                  Message("Input not valid", 0, "".toJson).toJson.prettyPrint
+                )
+              )
             case Success(form) => //Write user to database if valid
-              val userFuture = Toolkit.GetUserFromLoginForm(form.username, form.password)
+              val userFuture = UserLogic.GetUserFromLoginForm(form.username, form.password)
               onComplete(userFuture) {
                 case Failure(ex) =>
-                  complete {
+                  complete (
+                    StatusCodes.InternalServerError,
                     HttpEntity(
                       ContentTypes.`application/json`,
-                      Message(ex.toString, 0, "".toJson).toJson.prettyPrint
-                    );
-                    StatusCodes.InternalServerError
-                  }
+                      Message("Can't handle input", 0, "".toJson).toJson.prettyPrint
+                    )
+                  )
                 case Success(confirmUser) =>
                   if(confirmUser.username == templateUser.username)
                     {
-                      complete {
+                      complete (
+                        StatusCodes.InternalServerError,
                         HttpEntity(
                           ContentTypes.`application/json`,
-                          Message("", 0, "".toJson).toJson.prettyPrint
-                        );
-                        StatusCodes.InternalServerError
-                      }
+                          Message("Wrong username or password", 0, "".toJson).toJson.prettyPrint
+                        )
+                      )
                     }
                   else
                     {
                       complete {
                         HttpEntity(
                           ContentTypes.`application/json`,
-                          Message("", 1, confirmUser.toJson).toJson.prettyPrint
+                          Message("Success", 1, confirmUser.toJson).toJson.prettyPrint
                         )
                       }
                     }
@@ -82,37 +80,37 @@ class UserRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
 
             onComplete(registerForm) {
               case Failure(ex) =>
-                complete {
-                  HttpEntity(
+                complete (
+                  StatusCodes.InternalServerError,
+                    HttpEntity(
                     ContentTypes.`application/json`,
-                    Message(ex.toString, 0, "".toJson).toJson.prettyPrint
-                  );
-                  StatusCodes.InternalServerError
-                }
+                    Message("Input not valid", 0, "".toJson).toJson.prettyPrint
+                  )
+                )
               case Success(form) => //Write user to database if valid
-                val user: User = User("id_null",form.username,"normal", form.firstName, form.lastName, form.password,form.email, form.phoneNumber, List(""))
-                val userFuture = Toolkit.WriteUserToDatabase(user)
+                val user: User = User("id_null", form.username, "normal", form.firstName, form.lastName, form.password,form.email, form.phoneNumber, List(""))
+                val userFuture = UserLogic.HandleUserRegister(user)
                 onComplete(userFuture) {
                   case Failure(ex) =>
+                    complete (
+                      StatusCodes.InternalServerError,
+                        HttpEntity(
+                        ContentTypes.`application/json`,
+                        Message("Fail to register", 0, "".toJson).toJson.prettyPrint
+                      )
+                    )
+                  case Success(valueNotUse) =>
                     complete {
                       HttpEntity(
                         ContentTypes.`application/json`,
-                        Message(ex.toString, 0, "".toJson).toJson.prettyPrint
-                      );
-                      StatusCodes.InternalServerError
-                    }
-                  case Success(confirmUser) =>
-                    complete {
-                      HttpEntity(
-                        ContentTypes.`application/json`,
-                        Message("", 1, user.toJson).toJson.prettyPrint
+                        Message("Success", 1, user.toJson).toJson.prettyPrint
                       )
                     }
                 }
             }
           } ~
         (get &  pathPrefix("all")) {
-          val userFuture = Toolkit.GetAllUser()
+          val userFuture = UserLogic.GetAllUser()
           onComplete(userFuture) {
             case Success(user) =>
               complete {
@@ -128,11 +126,11 @@ class UserRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
       (put & pathPrefix(Segment) & extractRequest) { (username, request) =>
           //PUT user -> for admin update user information
           val entity = request.entity
-          val newUserInfoFuture = Toolkit.FindUserInDatabase(entity)
+          val newUserInfoFuture = UserLogic.FindUserInDatabase(entity)
 
           onComplete(newUserInfoFuture) {
             case Success(newUser) => //Delete user from database if valid
-              val statusCode = Toolkit.UpdateUserInformation(newUser, newUser.username)
+              val statusCode = UserLogic.UpdateUserInformation(newUser, newUser.username)
               onComplete(statusCode)
               {
                 case Success(status) => complete(status)
@@ -144,7 +142,7 @@ class UserRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
         } ~
       (get & pathPrefix(Segment) & pathPrefix("history")) { userid =>
         //GET booking history of user using their username -> for admin handle user booking history
-          val bookingListFuture = Toolkit.GetUserById(userid)
+          val bookingListFuture = UserLogic.GetUserById(userid)
           onComplete(bookingListFuture) {
             case Success(allBookingHistory) =>
               complete {
@@ -160,11 +158,11 @@ class UserRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
       (post & pathPrefix(Segment) & pathPrefix("booking") & extractRequest) { (username,request) =>
         // POST booking -> for user booking a camp
           val entity = request.entity
-          val bookingFuture = Toolkit.GenerateBookingFromHttpEntity(entity)
+          val bookingFuture = BookingLogic.GenerateBookingFromHttpEntity(entity)
 
           onComplete(bookingFuture) {
             case Success(booking) => //Write user to database if valid
-              val statusCode = Toolkit.WriteBookingToDatabase(booking)
+              val statusCode = BookingLogic.WriteBookingToDatabase(booking)
               onComplete(statusCode) {
                 case Success(status) => complete(status)
                 case Failure(ex) => failWith(ex)

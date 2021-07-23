@@ -1,74 +1,75 @@
 package Routes
 
-import com.fasterxml.jackson.annotation.JsonValue
 import spray.json.DefaultJsonProtocol._
 import spray.json.JsValue
 
 case object Data {
   implicit val userFormat = jsonFormat9(User)
-  implicit val bookingFormat = jsonFormat6(Booking)
-  implicit val campFormat = jsonFormat10(Camp)
-  implicit val campSiteDetailsFormat = jsonFormat14(CampSiteDetails)
-  implicit val campAllowableEquipmentFormat = jsonFormat3(CampAllowableEquipment)
-  implicit val campSiteAvailabilityFormat = jsonFormat4(CampSiteAvailability)
-  implicit val campVehicleDetailsFormat = jsonFormat9(CampVehicleDetails)
-  implicit val messageFormat3 = jsonFormat3(Message)
+  implicit val bookingFormat = jsonFormat5(Booking)
+  implicit val campFormat = jsonFormat11(Camp)
+  implicit val siteAvailabilityFormat = jsonFormat3(SiteAvailability)
+  implicit val siteDetailsFormat = jsonFormat13(SiteDetails)
+  implicit val allowableEquipmentFormat = jsonFormat2(AllowableEquipment)
+  implicit val allowableVehicleAndDrivewayDetailsFormat = jsonFormat8(AllowableVehicleAndDrivewayDetails)
+
   case class Message(message: String, status: Int, data: JsValue)
+  implicit val messageFormat3 = jsonFormat3(Message)
 
   case class User(_id: String, username: String, typeOfUser: String, firstName: String, lastName: String, password: String, email: String, phoneNumber: String, bookingHistoryId: List[String])
 
-  val templateUser = User("id_template", "username", "typeOfUser", "firstName", "lastName", "password", "email", "phoneNumber", List("b_345345", "b_123123"))
+  val templateUser = User("user_template", "test", "normal", "Test", "Bro", "test123", "test@gmail.com", "0123 421123", List("b_345345", "b_123123"))
 
-  case class Booking(_id: String, bookingId: String, usernameBooked: String, time: String, totalPrice: Double, campBookedId: List[String])
+  case class Booking(_id: String, usernameBooked: String, time: String, totalPrice: Double, campBookedId: List[String])
 
-  val templateBooking = Booking("id_template", "bookingId", "usernameBook", "time", 324.2, List("sdasd1", "wdasdasdasd"))
+  val templateBooking = Booking("b_123123", "test", "2021:07:24", 324.2, List("c_123123", "c_456456", "c_789789"))
 
-  case class Camp(_id: String, campId: String,
+  case class Camp(_id: String,
+                  campName: String,
                   price: Double,
-                  campImgSrc: String,
+                  campImgSrc: List[String],
                   partAddress: String,
                   nearAddress: String,
-                  siteDetailsId: String,
+                  campLocationAddress: String,
                   siteAvailabilityId: String,
-                  vehicleDetailsId: String,
-                  allowableEquipmentListId: String)
+                  siteDetailsId: String,
+                  allowableEquipmentListId: String,
+                  allowableVehicleAndDrivewayDetailsId: String
+                  )
 
-  val templateCamp = Camp("id_template", "123123123", 20.2, "campImgSrc", "partAddress", "nearAddress", "siteDetailsID", "siteAvailabilityID", "vehicleDetailsID", "allowableEquipment")
+  val templateCamp = Camp("c_123123","Site: A004, Loop: A", 20.2, List("src/pic/01.png","src/pic/02.png"),
+            " Stanislaus National Forest", " Pinecrest, California","Pinecrest", "sa_123123",
+              "sd_123123", "ae_123123", "av_123123")
 
-  case class CampSiteDetails(_id: String,
-                             campSiteDetailsId: String,
-                             siteType: String,
-                             siteAccessible: String,
-                             checkInTime: String,
-                             checkOutTime: String,
-                             maxNumOfPeople: Int,
-                             minNumOfPeople: Int,
-                             typeOfUse: String,
-                             siteReserveType: String,
-                             campFireAllowed: Boolean,
-                             capacityRating: String,
-                             petAllowed: Boolean,
-                             shade: String)
+  case class SiteAvailability(_id: String,date: String, state: String)
+  val templateSiteAvailability = SiteAvailability("sa_123123", "2021:07:24", "R")
 
-  val templateCampSiteDetails = CampSiteDetails("id_template", "campSiteDetailsId", "siteType",
-    "siteAccessible",
-    "checkInTime",
-    "checkOutTime", 22, 10,
-    "typeOfUse",
-    "siteReserveType", true,
-    "capacityRating", true,
-    "shade")
+  case class SiteDetails(_id: String,
+                         siteType: String,
+                         siteAccessible: String,
+                         checkInTime: String,
+                         checkOutTime: String,
+                         maxNumOfPeople: Int,
+                         minNumOfPeople: Int,
+                         typeOfUse: String,
+                         siteReserveType: String,
+                         capacityRating: String,
+                         campFireAllowed: String,
+                         petAllowed: String,
+                         shade: String)
 
-  case class CampAllowableEquipment(_id: String, allowableEquipmentId: String, items: Map[String, String])
+  val templateSiteDetails = SiteDetails("sd_123123", "Standard Nonelectric",
+    "No",
+    "2:00 PM",
+    "11:00 AM", 6, 1,
+    "Over night",
+    "Site-Specific", "Single",
+    "Yes", "Yes", "Yes")
 
-  val templateCampAllowableEquipment = CampAllowableEquipment("id_template", "ae_123123", Map("123" -> "123123", "123" -> "123123"))
+  case class AllowableEquipment(_id: String, items: Map[String, String])
 
-  case class CampSiteAvailability(_id: String, campSiteAvailabilityId: String, date: String, state: String)
+  val templateCampAllowableEquipment = AllowableEquipment("ae_123123", Map("Tent" -> "Yes", "RV" -> "max .30ft","Trailer" ->"max .30ft"))
 
-  val templateCampSiteAvailability = CampSiteAvailability("id_template", "sa_123123", "2020_20_21", "test")
-
-  case class CampVehicleDetails(_id: String,
-                                campVehicleDetailsId: String,
+  case class AllowableVehicleAndDrivewayDetails(_id: String,
                                 drivewayEntry: String,
                                 drivewayLength: Double,
                                 drivewaySurface: String,
@@ -77,6 +78,6 @@ case object Data {
                                 maxVehicleLength: Int,
                                 siteLength: Int)
 
-  val templateCampVehicleDetails = CampVehicleDetails("id_template", "CampVehicleDetailsId", "drivewayEntry", 90.2, "drivewaySurface", "isEquipmentMandatory", 12, 120, 10)
+  val templateAllowableVehicleAndDrivewayDetails = AllowableVehicleAndDrivewayDetails("av_123123", "Back-in", 42.0, "Paved", "Yes", 2, 30, 42)
 
 }
