@@ -27,7 +27,7 @@ class CampRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
             complete(
               HttpEntity(
                 ContentTypes.`application/json`,
-                Message(s"Success with ${campsForHome.size} camps", 0, campsForHome.toJson).toJson.prettyPrint
+                Message(s"Success with ${campsForHome.size} camps", 1, campsForHome.toJson).toJson.prettyPrint
               )
             )
           case Failure(ex) =>
@@ -47,10 +47,9 @@ class CampRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
         onComplete(camp) {
           case Success(aCamp) =>
             complete (
-              StatusCodes.InternalServerError,
               HttpEntity(
                 ContentTypes.`application/json`,
-                Message(s"Success with camp id ${aCamp._id}", 0, aCamp.toJson).toJson.prettyPrint
+                Message(s"Success with camp id ${aCamp._id}", 1, aCamp.toJson).toJson.prettyPrint
               )
             )
           case Failure(ex) =>
