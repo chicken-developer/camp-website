@@ -8,7 +8,7 @@ object Playground extends App{
   println(templateCamp.toJson.prettyPrint)
   println(templateSiteAvailability.toJson.prettyPrint)
   println(templateSiteDetails.toJson.prettyPrint)
-  println(templateCampAllowableEquipment.toJson.prettyPrint)
+  println(templateAllowableEquipment.toJson.prettyPrint)
   println(templateAllowableVehicleAndDrivewayDetails.toJson.prettyPrint)
 
 }
