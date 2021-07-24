@@ -1,93 +1,145 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { NavLink } from "react-router-dom";
+import CampCard from "../../components/CampCard";
+import { Pagination, PaginationItem, PaginationLink, Row, Col } from 'reactstrap';
+import PagePagintion from "../../components/PagePagingtion";
+import ReadMoreReact from 'read-more-react';
+import Carousel from 'react-multi-carousel';
+import Loading from "../../components/Loading";
+import * as API from "../../service";
+import * as Model from "../../type";
+import 'react-multi-carousel/lib/styles.css';
 
 import "./HomePage.css";
+import { Type } from "typescript";
 interface Props {}
+const responsive = {
+  superLargeDesktop: {
+    // the naming can be any, depends on you.
+    breakpoint: { max: 4000, min: 3000 },
+    items: 5
+  },
+  desktop: {
+    breakpoint: { max: 3000, min: 1024 },
+    items: 3
+  },
+  tablet: {
+    breakpoint: { max: 1024, min: 464 },
+    items: 2
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 1
+  }
+};
 
 const HomePage = (props: Props) => {
+  const [isLoading, setLoading] = useState(false);
+  const [listCamp, setListCamp] = useState([] as any);
+
+  useEffect(() => {
+    setLoading(true);
+    fetchCamps();
+  }, [])
+
+  const fetchCamps = () => {
+    API.getListCamp()
+    .then(response => {
+      const listCampData = response.data;
+      console.log(listCampData)
+      if (listCampData) {
+        setListCamp(listCampData.data);
+      }
+      setLoading(false);
+    })
+    .catch(error => {
+      setLoading(false);
+    })
+  }
+  console.log("DID UPDAYE",listCamp )
   return (
-    <div className="container home ">
-      <div className="row">
-        <div className="col-xs-12 col-md-5">
-          <div className="card text-left">
-            <img
-              className="card-img-top item-img"
+    <div className="container home">
+      <Row>
+        <Carousel responsive={responsive}>
+         <div className = "mx-3">
+          <img
+                className="w-100"
+                src="https://cdn.recreation.gov/public/2019/02/21/19/34/65350_e7c97c84-39f2-425b-9714-4566d2fbaf8f_700.jpg"
+                alt=""
+            />
+         </div>
+
+         <div className = "mx-3">
+          <img
+                className="w-100"
+                src="https://cdn.recreation.gov/public/2019/02/21/19/34/65350_e7c97c84-39f2-425b-9714-4566d2fbaf8f_700.jpg"
+                alt=""
+            />
+         </div>
+        <div className = "mx-3">
+          <img
+                className="w-100"
+                src="https://cdn.recreation.gov/public/2019/02/21/19/34/65350_e7c97c84-39f2-425b-9714-4566d2fbaf8f_700.jpg"
+                alt=""
+            />
+         </div>
+         <div className = "mx-3">
+          <img
+                className="w-100"
+                src="https://cdn.recreation.gov/public/2019/02/21/19/34/65350_e7c97c84-39f2-425b-9714-4566d2fbaf8f_700.jpg"
+                alt=""
+            />
+         </div>
+         <div className = "mx-3">
+          <img
+                className="w-100"
+                src="https://cdn.recreation.gov/public/2019/02/21/19/34/65350_e7c97c84-39f2-425b-9714-4566d2fbaf8f_700.jpg"
+                alt=""
+            />
+         </div>
+        </Carousel>;
+      </Row>
+
+      <Row>
+        <Col md = {8} className = "my-4">
+          <h1>Pinecrest</h1>
+
+          <ReadMoreReact 
+          text={"Pinecrest features a large campground by Pinecrest Lake, just 30 miles east of Sonora, at an elevation of 5600 feet. The area includes a day-use beach and a marina, a small shopping center and recreation cabins. The campground caters to all ages and is within walking distance of the lake, an amphitheater, visitor center, swimming beach and spectacular hiking trails. Pets are welcome, but must be compliant with Tuolumne County leash laws."} />
+        </Col>
+      </Row>
+
+      <Row className = "mt-5">
+        <Col md = {6}>
+          <div className = "listcamp">
+            {isLoading && <Loading />}
+            {listCamp.map(camp => {
+              return (
+                <CampCard camp = {camp}/>
+              )
+            })}
+          </div>
+        </Col>
+        <Col md = {5}>
+          <img
+              className="w-100"
               src="https://cdn.recreation.gov/public/2019/02/21/19/34/65350_e7c97c84-39f2-425b-9714-4566d2fbaf8f_700.jpg"
               alt=""
-            />
-            <div className="card-body">
-              <h4 className="card-title ">Site: A003, Loop: A</h4>
-              <ul className="rec-flex-card-meta rec-v-fill-space mb-half">
-                <li>STANDARD NONELECTRIC</li>
-                <li>Overnight</li>
-                <li className="max-num-ppl">
-                  <strong>6</strong> Max Occupants
-                </li>
-                <li className="max-num-vehicles">
-                  <strong>2</strong> Max Vehicles (max 30 ft./vehicle)
-                </li>
-              </ul>
-              <div className="rec-panel-wrap">
-                <div className="icon-wrap">
-                  <div>
-                    <svg
-                      data-component="Icon"
-                      className="sarsa-icon rec-icon-rv-trailer"
-                      viewBox="0 0 24 24"
-                      role="presentation"
-                      focusable="false"
-                      height="24"
-                      width="24"
-                    >
-                      <g>
-                        <path d="M18.3 8.9h2.4L20 6.2c-.1-.3-.3-.5-.6-.5H4.1c-.9 0-1.6.7-1.6 1.6V16h2.4c0 1.3 1.1 2.4 2.4 2.4 1.3 0 2.4-1.1 2.4-2.4h4.7c0 1.3 1.1 2.4 2.4 2.4 1.3 0 2.4-1.1 2.4-2.4h2.4v-3.9l-3.3-3.2zm-11 8.2c-.7 0-1.2-.5-1.2-1.2s.5-1.2 1.2-1.2 1.2.5 1.2 1.2-.6 1.2-1.2 1.2zM12 12H4.1V8.9H12V12zm4.7 5.1c-.7 0-1.2-.5-1.2-1.2s.5-1.2 1.2-1.2 1.2.5 1.2 1.2-.5 1.2-1.2 1.2zM15.5 12V8.9h1.6l3.1 3.1h-4.7z"></path>
-                      </g>
-                    </svg>
-                    &nbsp;<span>RV (max 30 ft.)</span>
-                  </div>
-                  <div>
-                    <svg
-                      data-component="Icon"
-                      className="sarsa-icon rec-icon-tent"
-                      viewBox="0 0 24 24"
-                      role="presentation"
-                      focusable="false"
-                      height="24"
-                      width="24"
-                    >
-                      <g>
-                        <path d="M6.17 6.045L1 18h3.795l1.547-7.756L7.876 18h3.91L6.718 6.041M17.726 6l-9.348.036L13.453 18H23"></path>
-                      </g>
-                    </svg>
-                    &nbsp;<span>Tent (max 40 ft.)</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="rec-flex-card-content-bottom-wrap">
-              <div className="rec-flex-card-price-button-wrap">
-                <div className="rec-flex-card-price-wrap">
-                  <div className="rec-flex-card-price">$32.14</div>
-                  <div className="rec-flex-card-duration">/ per night</div>
-                </div>
-                <NavLink
-                  data-component="Button"
-                  className="sarsa-button sarsa-button-tertiary sarsa-button-xs"
-                  id="enter-dates-button-65218"
-                  to="/camping/campsites/65218"
-                  rel="noopener noreferrer"
-                  aria-label="View details for Site: A004, Loop: A"
-                >
-                  <span className="sarsa-button-inner-wrapper">
-                    <span className="sarsa-button-content">View Details</span>
-                  </span>
-                </NavLink>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="col-xs-12 col-md-7"></div>
-      </div>
+          />
+        </Col>
+      </Row>
+
+      <Row className = "mt-2">
+        <Col md = {6}>
+          {/* <div className="d-flex justify-content-between align-items-center">
+            <span>1 - 10 results of 196</span>
+            <PagePagintion />
+          </div> */}
+          
+        </Col>
+      </Row>
+
+         
     </div>
   );
 };

@@ -1,0 +1,13 @@
+[type="submit"], [type="email"], [type="password"] {
+    height: 30px;
+    font-size: 14px;
+}
+.custom-control-input {
+    margin-top: 5px;
+}
+.custom-control-input::before {
+    top: 0.5rem;
+}
+.custom-control-label {
+    font-size: 14px;
+}

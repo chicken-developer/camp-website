@@ -5,7 +5,7 @@ interface Props {}
 
 const NavBar = (props: Props) => {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light fixed-top">
+    <nav className="navbar navbar-expand-md navbar-light fixed-top">
       <div className="container">
         <Link className="navbar-brand" to={"/sign-in"}>
           Booking Camp Super

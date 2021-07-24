@@ -1,6 +1,6 @@
 import React from "react";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
-import "./App.css";
+import "./App.scss";
 
 import { Provider } from "react-redux";
 import store from "./store";

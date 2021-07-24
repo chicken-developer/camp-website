@@ -6,6 +6,7 @@ import Swal from 'sweetalert2'
 import * as actions from "../../reducers/auth/actions"
 import Constant from "../../utils/Constant";
 import {toastSuccess, toastFailure} from "../../utils/toast_mixin"
+import "./Login.css"
 
 function Login() {
   const dispatch = useDispatch();
@@ -71,7 +72,7 @@ function Login() {
       </div>
 
       <div className="form-group">
-        <div className="custom-control custom-checkbox">
+        <div className="custom-control custom-checkbox d-flex align-items-center">
           <input
             type="checkbox"
             className="custom-control-input"

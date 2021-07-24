@@ -13,3 +13,7 @@ export function login(data: Object) {
 export function register(data: Object) {
   return axiosInstance.post<Model.SingleUser>("/user/register", data)
 }
+
+export function getListCamp() {
+  return axiosInstance.get<Model.ListCamp>("/home");
+}

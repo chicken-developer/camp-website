@@ -1,0 +1,17 @@
+[type="submit"], [type="email"], 
+[type="password"], [type="button"],
+[type="phone"], [type="text"] {
+    height: 30px;
+    font-size: 14px;
+}
+.page-register {
+}
+.custom-control-input {
+    margin-top: 5px;
+}
+.custom-control-input::before {
+    top: 0.5rem;
+}
+.custom-control-label {
+    font-size: 14px;
+}

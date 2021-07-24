@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
 import NavBar from "./NavBar";
-import "./Layout.css";
+import Footer from "./Footer";
+import "./LandingLayout.css";
 
 interface Props {
   children: ReactNode;
@@ -8,11 +9,13 @@ interface Props {
 
 const Layout = ({ children }: Props) => {
   return (
-    <div className="App">
+    <div>
       <NavBar />
       <div className="auth-wrapper">
-        <div className="auth-inner">{children}</div>
+        {/* <div className="appbody">{children}</div> */}
+        {children}
       </div>
+      <Footer />
     </div>
   );
 };
