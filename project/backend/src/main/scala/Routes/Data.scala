@@ -15,6 +15,13 @@ case object Data {
   case class Message(message: String, status: Int, data: JsValue)
   implicit val messageFormat3 = jsonFormat3(Message)
 
+  case class CampForHomePage(_id: String, name: String, mainImgSrc: String, allImgSrc: List[String], address: String,sd_typeOfUse: String,sd_maxNumOfPeople: Int, vd_maxNumOfVehicles: Int,vd_maxVehicleLengthForVehicle: Int,rvMax: Int, tenMax: Int, price: Double)
+  implicit val campForHomeFormat = jsonFormat12(CampForHomePage)
+
+  val templateCampForHomePage =  CampForHomePage("c_template","Site: A004, Loop: A",
+    "src/pic/123.png", List("src/pic/123.png", "src/pic/456.png"), " Stanislaus National Forest","Overnight",
+    6, 2,30,30, 30, 21.14)
+
   case class User(_id: String, username: String, typeOfUser: String, firstName: String, lastName: String, password: String, email: String, phoneNumber: String, bookingHistoryId: List[String])
 
   val templateUser = User("user_template", "test", "normal", "Test", "Bro", "test123", "test@gmail.com", "0123 421123", List("b_345345", "b_123123"))
@@ -67,7 +74,7 @@ case object Data {
 
   case class AllowableEquipment(_id: String, items: Map[String, String])
 
-  val templateCampAllowableEquipment = AllowableEquipment("ae_123123", Map("Tent" -> "Yes", "RV" -> "max .30ft","Trailer" ->"max .30ft"))
+  val templateAllowableEquipment = AllowableEquipment("ae_123123", Map("Tent" -> "Yes", "RV" -> "max .30ft","Trailer" ->"max .30ft"))
 
   case class AllowableVehicleAndDrivewayDetails(_id: String,
                                 drivewayEntry: String,

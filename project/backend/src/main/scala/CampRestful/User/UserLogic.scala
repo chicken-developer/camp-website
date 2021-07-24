@@ -21,17 +21,10 @@ case object UserLogic {
   def GetUserFromLoginForm(usrname: String, pass: String): Future[User] = {
     val allUsers = userCollection.find()
       .map { user =>
-        println("Receive from Mongodb:")
-        println(user)
-        println("---------------------")
         UserLogic.ConvertToUser(user.toString.replaceAll("Document", "User"))
       }.toList
-    println("---------------------")
-    println("---------------------")
 
-    println(s"\nResultll: $allUsers \n")
     val user = allUsers.findLast(_.username == usrname).filter(_.password == pass)
-    println(s"Resultll: $user")
     user match {
       case Some(user) =>
         Future(user)
