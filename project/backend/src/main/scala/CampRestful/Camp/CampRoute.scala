@@ -8,6 +8,8 @@ import akka.stream.Materializer
 import spray.json.DefaultJsonProtocol.{StringJsonFormat, listFormat}
 import spray.json._
 
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
 import scala.language.postfixOps
 import scala.util.{Failure, Success}
 
@@ -39,17 +41,16 @@ class CampRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
         }
       }
     } ~
-      pathPrefix("api_v01" / "camp") {
-      pathEndOrSingleSlash {
-        //GET all camps -> for show all camp in home page
-        val listCampFuture = GetMethodLogic.GetAllCamp()
-        onComplete(listCampFuture) {
-          case Success(listCamp) =>
+    pathPrefix("api_v01" / "camp" / Segment) { campId =>
+      get {
+        val camp = Future(templateCampData)
+        onComplete(camp) {
+          case Success(aCamp) =>
             complete (
               StatusCodes.InternalServerError,
               HttpEntity(
                 ContentTypes.`application/json`,
-                Message(s"Success with ${listCamp.size} camps", 0, listCamp.toJson).toJson.prettyPrint
+                Message(s"Success with camp id ${aCamp._id}", 0, aCamp.toJson).toJson.prettyPrint
               )
             )
           case Failure(ex) =>
@@ -62,23 +63,7 @@ class CampRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
             )
         }
       }
-//      (delete & pathEndOrSingleSlash & extractRequest) { request =>
-//        // DELETE camp -> For admin delete a camp
-//          val entity = request.entity
-//          val campFuture = Toolkit.FindCampInDatabase(entity)
-//
-//          onComplete(campFuture) {
-//            case Success(camp) =>
-//              val statusCode = Toolkit.DeleteCampFromDatabase(camp)
-//              onComplete(statusCode)
-//              {
-//                case Success(status) => complete(status)
-//                case Failure(ex) => failWith(ex)
-//              }
-//            case Failure(ex) =>
-//              failWith(ex)
-//          }
-//        } ~
+
 
 
     } // Finish camp path prefix

@@ -1,7 +1,7 @@
 package Routes
 
 import spray.json.DefaultJsonProtocol._
-import spray.json.JsValue
+import spray.json.{JsValue, enrichAny, jsonReader}
 
 case object Data {
   implicit val userFormat = jsonFormat9(User)
@@ -12,17 +12,7 @@ case object Data {
   implicit val allowableEquipmentFormat = jsonFormat2(AllowableEquipment)
   implicit val allowableVehicleAndDrivewayDetailsFormat = jsonFormat8(AllowableVehicleAndDrivewayDetails)
 
-  case class Message(message: String, status: Int, data: JsValue)
-  implicit val messageFormat3 = jsonFormat3(Message)
-
-  case class CampForHomePage(_id: String, name: String, mainImgSrc: String, allImgSrc: List[String], address: String,sd_typeOfUse: String,sd_maxNumOfPeople: Int, vd_maxNumOfVehicles: Int,vd_maxVehicleLengthForVehicle: Int,rvMax: Int, tenMax: Int, price: Double)
-  implicit val campForHomeFormat = jsonFormat12(CampForHomePage)
-
-  val templateCampForHomePage =  CampForHomePage("c_template","Site: A004, Loop: A",
-    "src/pic/123.png", List("src/pic/123.png", "src/pic/456.png"), " Stanislaus National Forest","Overnight",
-    6, 2,30,30, 30, 21.14)
-
-  case class User(_id: String, username: String, typeOfUser: String, firstName: String, lastName: String, password: String, email: String, phoneNumber: String, bookingHistoryId: List[String])
+case class User(_id: String, username: String, typeOfUser: String, firstName: String, lastName: String, password: String, email: String, phoneNumber: String, bookingHistoryId: List[String])
 
   val templateUser = User("user_template", "test", "normal", "Test", "Bro", "test123", "test@gmail.com", "0123 421123", List("b_345345", "b_123123"))
 
@@ -86,5 +76,33 @@ case object Data {
                                 siteLength: Int)
 
   val templateAllowableVehicleAndDrivewayDetails = AllowableVehicleAndDrivewayDetails("av_123123", "Back-in", 42.0, "Paved", "Yes", 2, 30, 42)
+  case class Message(message: String, status: Int, data: JsValue)
+  implicit val messageFormat3 = jsonFormat3(Message)
+
+  case class CampForHomePage(_id: String, name: String, mainImgSrc: String, allImgSrc: List[String], address: String,sd_typeOfUse: String,sd_maxNumOfPeople: Int, vd_maxNumOfVehicles: Int,vd_maxVehicleLengthForVehicle: Int,rvMax: Int, tenMax: Int, price: Double)
+  implicit val campForHomeFormat = jsonFormat12(CampForHomePage)
+
+
+  val templateCampForHomePage =  CampForHomePage("c_template","Site: A004, Loop: A",
+    "src/pic/123.png", List("src/pic/123.png", "src/pic/456.png"), " Stanislaus National Forest","Overnight",
+    6, 2,30,30, 30, 21.14)
+  case class CampData(_id: String,
+                      campName: String,
+                      price: Double,
+                      campImgSrc: List[String],
+                      partAddress: String,
+                      nearAddress: String,
+                      campLocationAddress: String,
+                      siteAvailability: JsValue,
+                      siteDetails: JsValue,
+                      allowableEquipmentList: JsValue,
+                      allowableVehicleAndDrivewayDetails: JsValue
+                     )
+
+  implicit val campDataFormat = jsonFormat11(CampData)
+  val templateCampData = CampData("c_123123","Site: A004, Loop: A", 20.2, List("src/pic/01.png","src/pic/02.png"),
+    " Stanislaus National Forest", " Pinecrest, California","Pinecrest", templateSiteAvailability.toJson,
+    templateSiteDetails.toJson, templateAllowableEquipment.toJson, templateAllowableVehicleAndDrivewayDetails.toJson)
+
 
 }
