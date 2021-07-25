@@ -4,7 +4,10 @@ import Routes.Data._
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.{HttpEntity, StatusCode, StatusCodes}
 import akka.stream.Materializer
+import org.bson.types.ObjectId
 import org.mongodb.scala.bson.Document
+import org.mongodb.scala.model.Filters.equal
+import org.mongodb.scala.model.Updates.set
 
 import scala.collection.convert.ImplicitConversions.`iterable AsScalaIterable`
 import scala.concurrent.Future
@@ -37,10 +40,21 @@ case object UserLogic {
     val temp = Future(StatusCodes.OK)
     temp
   }
+  def HandleUserUpdateData(user: User, userId: String): Future[StatusCode] = {
+   // userCollection.updateOne(equal("username", 10), set("i", 110))
+    val temp = Future(StatusCodes.OK)
+    temp
+  }
+
+  def HandleDeleteUser(userId: String): Future[StatusCode] = {
+    // userCollection.updateOne(equal("username", 10), set("i", 110))
+    val temp = Future(StatusCodes.OK)
+    temp
+  }
   def GetAllUser(): Future[List[User]] = {
 
     //TODO
-    val temp = Future(List[User](templateUser))
+    val temp = Future(List[User](templateUser,templateUser,templateUser,templateUser))
     temp
   }
 
@@ -51,11 +65,7 @@ case object UserLogic {
     temp
   }
 
-  def UpdateUserInformation(newUser: User, oldUserID: String): Future[StatusCode] = {
 
-    val temp = Future(StatusCodes.OK)
-    temp
-  }
   def GetUserById(id: String): Future[User] = {
 
     //TODO

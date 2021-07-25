@@ -5,7 +5,7 @@ import spray.json.{JsValue, enrichAny, jsonReader}
 
 case object Data {
   implicit val userFormat = jsonFormat9(User)
-  implicit val bookingFormat = jsonFormat5(Booking)
+  implicit val bookingFormat = jsonFormat6(Booking)
   implicit val campFormat = jsonFormat11(Camp)
   implicit val siteAvailabilityFormat = jsonFormat3(SiteAvailability)
   implicit val siteDetailsFormat = jsonFormat13(SiteDetails)
@@ -16,9 +16,9 @@ case class User(_id: String, username: String, typeOfUser: String, firstName: St
 
   val templateUser = User("user_template", "test", "normal", "Test", "Bro", "test123", "test@gmail.com", "0123 421123", List("b_345345", "b_123123"))
 
-  case class Booking(_id: String, usernameBooked: String, time: String, totalPrice: Double, campBookedId: List[String])
+  case class Booking(_id: String, usernameBooked: String, timeStart: String, timeEnd: String, totalPrice: Double, campBookedId: List[String])
 
-  val templateBooking = Booking("b_123123", "test", "2021:07:24", 324.2, List("c_123123", "c_456456", "c_789789"))
+  val templateBooking = Booking("b_123123", "test", "2021:07:24","2021:07:26", 324.2, List("c_123123", "c_456456", "c_789789"))
 
   case class Camp(_id: String,
                   campName: String,

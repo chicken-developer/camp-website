@@ -24,10 +24,15 @@ case object BookingLogic {
     temp
   }
 
-  def WriteBookingToDatabase(booking: Booking): Future[StatusCode] = {
+  def GetAllBookingForHistory(userId: String): Future[List[Booking]] = {
+    val listBooking = Future(List(templateBooking,templateBooking,templateBooking,templateBooking))
+    listBooking
+  }
 
-    val temp = Future(StatusCodes.OK)
-    temp
+  def WriteBookingToDatabase(booking: Booking): Future[Booking] = {
+
+    val booking = Future(templateBooking)
+    booking
   }
 
   def ConvertToBooking(jsonStr: String): Booking = {
@@ -35,9 +40,9 @@ case object BookingLogic {
       .replace("Booking{{","")
       .replace("}}","")
     match {
-      case s"_id=$id,  campBookedId=$arrCampBooked,time=$time, totalPrice=$totalPrice, , usernameBooked=$usernameBooked," =>
+      case s"_id=$id,  campBookedId=$arrCampBooked,timeStart=$timeStart,,timeEnd=$timeEnd totalPrice=$totalPrice, , usernameBooked=$usernameBooked," =>
         val campBooked = arrCampBooked.replace("[", "").replace("]", "").split(",").toList
-        Booking(id, usernameBooked, time, totalPrice.toDouble ,campBooked)
+        Booking(id, usernameBooked, timeStart, timeEnd, totalPrice.toDouble ,campBooked)
       case _ => templateBooking
     }
     booking
@@ -45,7 +50,8 @@ case object BookingLogic {
 
   def DocumentFromBooking(booking: Booking): Document = {
     Document("usernameBooked" -> booking.usernameBooked,
-      "time" -> booking.time,
+      "timeStart" -> booking.timeStart,
+      "timeEnd" -> booking.timeEnd,
       "totalPrice" -> booking.totalPrice,
       "campBookedId" -> booking.campBookedId
     )

@@ -109,6 +109,65 @@ class UserRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
                 }
             }
           } ~
+          (put & pathPrefix(Segment) & extractRequest) { (userId, request) =>
+            case class NewData(userId: String, username: String,firstName: String, lastName: String, password: String, email: String, phoneNumber: String)
+            implicit val updateFormat = jsonFormat7(NewData)
+            val entity = request.entity
+            val strictEntityFuture = entity.toStrict(2 seconds)
+            val newDataForm = strictEntityFuture.map(_.data.utf8String.parseJson.convertTo[NewData])
+            println(s"Data from server: $newDataForm")
+
+            onComplete(newDataForm) {
+              case Failure(ex) =>
+                complete (
+                  StatusCodes.InternalServerError,
+                  HttpEntity(
+                    ContentTypes.`application/json`,
+                    Message("New data not valid", 0, "".toJson).toJson.prettyPrint
+                  )
+                )
+              case Success(form) => //Write user to database if valid
+                val user: User = User(form.userId, form.username, "normal", form.firstName, form.lastName, form.password,form.email, form.phoneNumber, List(""))
+                val userFuture = UserLogic.HandleUserUpdateData(user, user.typeOfUser)
+                onComplete(userFuture) {
+                  case Failure(ex) =>
+                    complete (
+                      StatusCodes.InternalServerError,
+                      HttpEntity(
+                        ContentTypes.`application/json`,
+                        Message("Fail to update", 0, "".toJson).toJson.prettyPrint
+                      )
+                    )
+                  case Success(valueNotUse) =>
+                    complete {
+                      HttpEntity(
+                        ContentTypes.`application/json`,
+                        Message("Success", 1, user.toJson).toJson.prettyPrint
+                      )
+                    }
+                }
+            }
+          } ~
+        (delete &  pathPrefix(Segment)) { userId =>
+            val userFuture = UserLogic.HandleDeleteUser(userId)
+            onComplete(userFuture) {
+              case Success(user) =>
+                complete {
+                  HttpEntity(
+                    ContentTypes.`application/json`,
+                    Message("Success",1,"".toJson).toJson.prettyPrint
+                  )
+                }
+              case Failure(ex) =>
+                complete (
+                  StatusCodes.InternalServerError,
+                  HttpEntity(
+                    ContentTypes.`application/json`,
+                    Message("Fail to delete", 0, "".toJson).toJson.prettyPrint
+                  )
+                )
+            }
+          } ~
         (get &  pathPrefix("all")) {
           val userFuture = UserLogic.GetAllUser()
           onComplete(userFuture) {
@@ -116,61 +175,75 @@ class UserRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
               complete {
                 HttpEntity(
                   ContentTypes.`application/json`,
-                  Message("",0,user.toJson).toJson.prettyPrint
+                  Message("Success",1,user.toJson).toJson.prettyPrint
                 )
               }
             case Failure(ex) =>
-              failWith(ex)
-          }
-        } ~
-      (put & pathPrefix(Segment) & extractRequest) { (username, request) =>
-          //PUT user -> for admin update user information
-          val entity = request.entity
-          val newUserInfoFuture = UserLogic.FindUserInDatabase(entity)
-
-          onComplete(newUserInfoFuture) {
-            case Success(newUser) => //Delete user from database if valid
-              val statusCode = UserLogic.UpdateUserInformation(newUser, newUser.username)
-              onComplete(statusCode)
-              {
-                case Success(status) => complete(status)
-                case Failure(ex) => failWith(ex)
-              }
-            case Failure(ex) =>
-              failWith(ex)
+              complete (
+                StatusCodes.InternalServerError,
+                HttpEntity(
+                  ContentTypes.`application/json`,
+                  Message("Fail to get all user", 0, "".toJson).toJson.prettyPrint
+                )
+              )
           }
         } ~
       (get & pathPrefix(Segment) & pathPrefix("history")) { userid =>
-        //GET booking history of user using their username -> for admin handle user booking history
-          val bookingListFuture = UserLogic.GetUserById(userid)
-          onComplete(bookingListFuture) {
+        val historyBookingOfUser = BookingLogic.GetAllBookingForHistory(userid)
+          onComplete(historyBookingOfUser) {
             case Success(allBookingHistory) =>
               complete {
                 HttpEntity(
                   ContentTypes.`application/json`,
-                  allBookingHistory.toJson.prettyPrint
+                  Message("Success",1,allBookingHistory.toJson).toJson.prettyPrint
                 )
               }
             case Failure(ex) =>
-              failWith(ex)
+              complete (
+                StatusCodes.InternalServerError,
+                HttpEntity(
+                  ContentTypes.`application/json`,
+                  Message("Fail to get history", 0, "".toJson).toJson.prettyPrint
+                )
+              )
           }
         } ~
-      (post & pathPrefix(Segment) & pathPrefix("booking") & extractRequest) { (username,request) =>
-        // POST booking -> for user booking a camp
-          val entity = request.entity
-          val bookingFuture = BookingLogic.GenerateBookingFromHttpEntity(entity)
+      (post & pathPrefix(Segment) & pathPrefix("booking") & extractRequest) { (username, request) =>
+        val entity = request.entity
+        val strictEntityFuture = entity.toStrict(2 seconds)
+        val bookingData = strictEntityFuture.map(_.data.utf8String.parseJson.convertTo[Booking])
+        println(s"Data from server: $bookingData")
 
-          onComplete(bookingFuture) {
-            case Success(booking) => //Write user to database if valid
-              val statusCode = BookingLogic.WriteBookingToDatabase(booking)
-              onComplete(statusCode) {
-                case Success(status) => complete(status)
-                case Failure(ex) => failWith(ex)
-              }
-            case Failure(ex) =>
-              failWith(ex)
-          }
+        onComplete(bookingData) {
+          case Failure(ex) =>
+            complete(
+              StatusCodes.InternalServerError,
+              HttpEntity(
+                ContentTypes.`application/json`,
+                Message("New booking data not valid", 0, "".toJson).toJson.prettyPrint
+              )
+            )
+          case Success(form) => //Write user to database if valid
+            val result = BookingLogic.WriteBookingToDatabase(form)
+            onComplete(result) {
+              case Failure(ex) =>
+                complete(
+                  StatusCodes.InternalServerError,
+                  HttpEntity(
+                    ContentTypes.`application/json`,
+                    Message("Fail to write in database", 0, "".toJson).toJson.prettyPrint
+                  )
+                )
+              case Success(booking) =>
+                complete {
+                  HttpEntity(
+                    ContentTypes.`application/json`,
+                    Message("Success", 1, booking.toJson).toJson.prettyPrint
+                  )
+                }
+            }
         }
+      }
     }// Finish user path prefix
   }// Finish user route
 }
