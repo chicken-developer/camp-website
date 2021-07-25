@@ -16,9 +16,9 @@ case class User(_id: String, username: String, typeOfUser: String, firstName: St
 
   val templateUser = User("user_template", "test", "normal", "Test", "Bro", "test123", "test@gmail.com", "0123 421123", List("b_345345", "b_123123"))
 
-  case class Booking(_id: String, usernameBooked: String, timeStart: String, timeEnd: String, totalPrice: Double, campBookedId: List[String])
+  case class Booking(_id: String, usernameBooked: String, timeStart: String, timeEnd: String, totalPrice: Double, campBookedId: String)
 
-  val templateBooking = Booking("b_123123", "test", "2021:07:24","2021:07:26", 324.2, List("c_123123", "c_456456", "c_789789"))
+  val templateBooking = Booking("b_template", "test", "2021:07:24","2021:07:26", 324.2,"c_123123")
 
   case class Camp(_id: String,
                   campName: String,
@@ -33,7 +33,7 @@ case class User(_id: String, username: String, typeOfUser: String, firstName: St
                   allowableVehicleAndDrivewayDetailsId: String
                   )
 
-  val templateCamp = Camp("c_123123","Site: A004, Loop: A", 20.2, List("src/pic/01.png","src/pic/02.png"),
+  val templateCamp = Camp("c_template","Site: A004, Loop: A", 20.2, List("src/pic/01.png","src/pic/02.png"),
             " Stanislaus National Forest", " Pinecrest, California","Pinecrest", "sa_123123",
               "sd_123123", "ae_123123", "av_123123")
 

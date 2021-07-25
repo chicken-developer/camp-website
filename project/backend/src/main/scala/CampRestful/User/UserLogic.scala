@@ -65,13 +65,19 @@ case object UserLogic {
     temp
   }
 
-
   def GetUserById(id: String): Future[User] = {
-
-    //TODO
-    val temp = Future(List[User](templateUser).head)
-    temp
+    val allUsers = userCollection.find()
+      .map { user =>
+        UserLogic.ConvertToUser(user.toString.replaceAll("Document", "User"))
+      }.toList
+    val user = allUsers.findLast(_._id == id)
+    user match {
+      case Some(user) =>
+        Future(user)
+      case None => Future(templateUser)
+    }
   }
+
   def ConvertToUser(jsonStr: String) : User = {
     val user: User = jsonStr
       .replace("User{{","")
