@@ -17,3 +17,7 @@ export function register(data: Object) {
 export function getListCamp() {
   return axiosInstance.get<Model.ListCamp>("/home");
 }
+
+export function getDetailCamp(campId: String) {
+  return axiosInstance.get<Model.CampResponse>("/camp/" + campId);
+}

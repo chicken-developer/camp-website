@@ -32,3 +32,6 @@ ul li {
   -webkit-box-sizing: inherit;
   box-sizing: inherit;
 }
+.badge span{
+  font-weight: 300;
+}

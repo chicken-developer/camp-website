@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import CampCard from "../../components/CampCard";
 import { Pagination, PaginationItem, PaginationLink, Row, Col } from 'reactstrap';
 import PagePagintion from "../../components/PagePagingtion";
-import ReadMoreReact from 'read-more-react';
+// import ReadMoreReact from 'read-more-react';
 import Carousel from 'react-multi-carousel';
 import Loading from "../../components/Loading";
 import * as API from "../../service";
@@ -104,8 +104,8 @@ const HomePage = (props: Props) => {
         <Col md = {8} className = "my-4">
           <h1>Pinecrest</h1>
 
-          <ReadMoreReact 
-          text={"Pinecrest features a large campground by Pinecrest Lake, just 30 miles east of Sonora, at an elevation of 5600 feet. The area includes a day-use beach and a marina, a small shopping center and recreation cabins. The campground caters to all ages and is within walking distance of the lake, an amphitheater, visitor center, swimming beach and spectacular hiking trails. Pets are welcome, but must be compliant with Tuolumne County leash laws."} />
+          {/* <ReadMoreReact 
+          text={"Pinecrest features a large campground by Pinecrest Lake, just 30 miles east of Sonora, at an elevation of 5600 feet. The area includes a day-use beach and a marina, a small shopping center and recreation cabins. The campground caters to all ages and is within walking distance of the lake, an amphitheater, visitor center, swimming beach and spectacular hiking trails. Pets are welcome, but must be compliant with Tuolumne County leash laws."} /> */}
         </Col>
       </Row>
 
@@ -113,7 +113,7 @@ const HomePage = (props: Props) => {
         <Col md = {6}>
           <div className = "listcamp">
             {isLoading && <Loading />}
-            {listCamp.map(camp => {
+            {listCamp.map((camp: Model.Camp) => {
               return (
                 <CampCard camp = {camp}/>
               )

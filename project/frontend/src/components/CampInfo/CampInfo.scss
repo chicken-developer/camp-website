@@ -1,0 +1,32 @@
+$box-height: 45px;
+.camp-info {
+    border-radius: 0;
+    
+}
+.card-info__content {
+    min-height: $box-height;
+    display: flex;
+    flex-direction: row;
+}
+.camp-info__icon {
+    height: $box-height;
+    width: $box-height;
+    display: inline-block;
+    border-right: 1px solid rgba(0,0,0,.125);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+.camp-info__title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+}
+.svg-inline--fa {
+    margin-right: 0!important;
+    color: #466c04;
+    font-size: 18px;
+}

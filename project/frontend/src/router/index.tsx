@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from "../pages/Login/Login";
 import Register from "../pages/RegisterPage/Register";
 import HomePage from "../pages/HomePage/HomePage";
+import CampPage from "../pages/CampPage/CampPage";
 import Layout from "../components/Layout";
 import LandingLayout from "../components/LandingLayout";
 
@@ -33,6 +34,8 @@ function AppRouter() {
         <LandingLayout>
            <React.Suspense fallback = {() => <div/>}>
               <Route exact path="/home" component={HomePage} />
+              <Route path="/camp/:campId" component={CampPage} />
+              <Route exact path="/camp" component={CampPage} />
            </React.Suspense>
         </LandingLayout>
         

@@ -77,7 +77,7 @@ const CampCard = ({camp}: Props) => {
                         data-component="Button"
                         className="sarsa-button sarsa-button-tertiary sarsa-button-xs"
                         id="enter-dates-button-65218"
-                        to="/camping/campsites/65218"
+                        to={`/camp/${camp._id}`}
                         rel="noopener noreferrer"
                         aria-label="View details for Site: A004, Loop: A"
                     >
