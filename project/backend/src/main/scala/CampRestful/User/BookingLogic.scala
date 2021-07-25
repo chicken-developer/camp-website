@@ -1,15 +1,17 @@
 package CampRestful.User
 
-import Routes.Data.{Booking, templateBooking}
+import Routes.Data.{Booking, User, templateBooking, templateUser}
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.{HttpEntity, StatusCode, StatusCodes}
 import akka.stream.Materializer
 import org.mongodb.scala.bson.Document
 
+import scala.collection.convert.ImplicitConversions.`iterable AsScalaIterable`
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
 import scala.language.postfixOps
+import scala.util.{Failure, Success}
 
 case object BookingLogic {
 
@@ -24,10 +26,38 @@ case object BookingLogic {
     temp
   }
 
-  def WriteBookingToDatabase(booking: Booking): Future[StatusCode] = {
+  def GetAllBookingForHistory(userId: String): Future[List[Booking]] = {
+    val allBooking = bookingCollection.find()
+      .map { booking =>
+        BookingLogic.ConvertToBooking(booking.toString.replaceAll("Document", "Booking"))
+      }.toList
 
-    val temp = Future(StatusCodes.OK)
-    temp
+    def GetBookingHistoryFromUser(user: User): Future[List[Booking]] = {
+      val listBooking = user.bookingHistoryId.map { bookingId =>
+        val booking = allBooking.findLast(_._id == bookingId)
+        booking match {
+          case Some(booking) => booking
+          case None => templateBooking
+        }
+      }.filter(booking => booking._id != templateBooking._id)
+      Future(listBooking)
+    }
+
+    val allUsers = userCollection.find()
+      .map { user =>
+        UserLogic.ConvertToUser(user.toString.replaceAll("Document", "User"))
+      }.toList
+    val user = allUsers.findLast(_._id == userId)
+      user match {
+        case Some(user) =>
+          GetBookingHistoryFromUser(user)
+        case None => Future(List(templateBooking))
+      }
+  }
+
+  def WriteBookingToDatabase(booking: Booking): Future[Booking] = {
+    bookingCollection.insertOne(BookingLogic.DocumentFromBooking(booking))
+    Future(booking)
   }
 
   def ConvertToBooking(jsonStr: String): Booking = {
@@ -35,9 +65,8 @@ case object BookingLogic {
       .replace("Booking{{","")
       .replace("}}","")
     match {
-      case s"_id=$id,  campBookedId=$arrCampBooked,time=$time, totalPrice=$totalPrice, , usernameBooked=$usernameBooked," =>
-        val campBooked = arrCampBooked.replace("[", "").replace("]", "").split(",").toList
-        Booking(id, usernameBooked, time, totalPrice.toDouble ,campBooked)
+      case s"_id=$id, campBookedId=$camp, timeStart=$timeStart, timeEnd=$timeEnd, totalPrice=$totalPrice, usernameBooked=$usernameBooked" =>
+        Booking(id, usernameBooked, timeStart, timeEnd, totalPrice.toDouble ,camp)
       case _ => templateBooking
     }
     booking
@@ -45,7 +74,8 @@ case object BookingLogic {
 
   def DocumentFromBooking(booking: Booking): Document = {
     Document("usernameBooked" -> booking.usernameBooked,
-      "time" -> booking.time,
+      "timeStart" -> booking.timeStart,
+      "timeEnd" -> booking.timeEnd,
       "totalPrice" -> booking.totalPrice,
       "campBookedId" -> booking.campBookedId
     )
