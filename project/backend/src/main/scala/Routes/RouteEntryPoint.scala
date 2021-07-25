@@ -39,14 +39,14 @@ object RouteEntryPoint {
 
     val userRoute =  new UserRoute()
     val campRoute =  new CampRoute()
-    import ch.megard.akka.http.cors.scaladsl.CorsDirectives._
+    val cors = new CORSHandler {}
 
-    val finalRoute = cors(){ userRoute.userFinalRoute ~ campRoute.campFinalRoute}
+    val finalRoute = cors.corsHandler{ userRoute.userFinalRoute ~ campRoute.campFinalRoute }
 
     val localhost = "127.0.0.1"
     val vpshost = "103.153.65.194"
 
-    val finalRouteHandler = Http().newServerAt(vpshost, 54000).bindFlow(finalRoute)
+    val finalRouteHandler = Http().newServerAt(localhost, 54000).bindFlow(finalRoute)
 
     val listBindingFutureWithSecurity = List(finalRouteHandler)
 

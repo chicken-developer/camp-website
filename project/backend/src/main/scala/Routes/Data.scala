@@ -37,8 +37,8 @@ case class User(_id: String, username: String, typeOfUser: String, firstName: St
             " Stanislaus National Forest", " Pinecrest, California","Pinecrest", "sa_123123",
               "sd_123123", "ae_123123", "av_123123")
 
-  case class SiteAvailability(_id: String,date: String, state: String)
-  val templateSiteAvailability = SiteAvailability("sa_123123", "2021:07:24", "R")
+  case class SiteAvailability(_id: String, date: String, state: String)
+  val templateSiteAvailability = SiteAvailability("sa_123123", "2021-07-24","R")
 
   case class SiteDetails(_id: String,
                          siteType: String,
@@ -46,7 +46,7 @@ case class User(_id: String, username: String, typeOfUser: String, firstName: St
                          checkInTime: String,
                          checkOutTime: String,
                          maxNumOfPeople: Int,
-                         minNumOfPeople: Int,
+                           minNumOfPeople: Int,
                          typeOfUse: String,
                          siteReserveType: String,
                          capacityRating: String,

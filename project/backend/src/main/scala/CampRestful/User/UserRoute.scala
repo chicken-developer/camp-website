@@ -15,7 +15,7 @@ import scala.util.{Failure, Success}
 class UserRoute(implicit val actorSystem : ActorSystem, implicit  val actorMaterializer: Materializer) extends Directives{
   import Routes.Data._
   import ch.megard.akka.http.cors.scaladsl.CorsDirectives._
-  val userRoute: Route = cors() {
+  val userRoute: Route = {
     (post & path("api_v01" / "user" / "login") & extractRequest) { request =>
       case class UserForm(username: String, password: String)
       implicit val userFormFormat = jsonFormat2(UserForm)
@@ -227,7 +227,7 @@ class UserRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
       }
       }
     }
-  val historyRoute: Route = cors() {
+  val historyRoute: Route =  {
     pathPrefix("api_v01" / "history") {
       (get & pathPrefix(Segment)) { userid =>
         val historyBookingOfUser = BookingLogic.GetAllBookingForHistory(userid)
@@ -252,7 +252,7 @@ class UserRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
       }
     }
   }
-  val bookingRoute: Route = cors() {
+  val bookingRoute: Route = {
     pathPrefix("api_v01"/ "booking") {
       (post & pathPrefix(Segment) & extractRequest ) { (username, request) =>
         val entity = request.entity
@@ -292,5 +292,45 @@ class UserRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
       }
     }
   }
-  val userFinalRoute = cors(){ userRoute ~ historyRoute ~ bookingRoute }
+  val calenderRoute: Route =  {
+    pathPrefix("api_v01"/ "calender") {
+      (post & extractRequest ) { request =>
+        val entity = request.entity
+        val strictEntityFuture = entity.toStrict(2 seconds)
+        val bookingData = strictEntityFuture.map(_.data.utf8String.parseJson.convertTo[Booking])
+        println(s"Data from server: $bookingData")
+
+        onComplete(bookingData) {
+          case Failure(ex) =>
+            complete(
+              StatusCodes.InternalServerError,
+              HttpEntity(
+                ContentTypes.`application/json`,
+                Message("New booking data not valid", 0, "".toJson).toJson.prettyPrint
+              )
+            )
+          case Success(form) => //Write user to database if valid
+            val result = BookingLogic.WriteBookingToDatabase(form)
+            onComplete(result) {
+              case Failure(ex) =>
+                complete(
+                  StatusCodes.InternalServerError,
+                  HttpEntity(
+                    ContentTypes.`application/json`,
+                    Message("Fail to write in database", 0, "".toJson).toJson.prettyPrint
+                  )
+                )
+              case Success(booking) =>
+                complete {
+                  HttpEntity(
+                    ContentTypes.`application/json`,
+                    Message("Success", 1, booking.toJson).toJson.prettyPrint
+                  )
+                }
+            }
+        }
+      }
+    }
+  }
+  val userFinalRoute = userRoute ~ historyRoute ~ bookingRoute
 }
