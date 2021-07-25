@@ -14,6 +14,12 @@ export interface SingleUser {
     message: String,
     status: Number
 }
+
+export interface ListUser {
+    data: Array<User>,
+    message: String,
+    status: Number
+}
 export interface Camp {
     _id: String,
     address: String,

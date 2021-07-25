@@ -27,7 +27,13 @@ function Login() {
         dispatch(actions.loginSuccess(authUser))
         localStorage.setItem(Constant.KEY.USER, JSON.stringify(authUser))
         toastSuccess("Login Successfull");
-        history.push("/home")
+
+        if (authUser.typeOfUser == "root") {
+          history.push("/admin")
+        } else {
+          history.push("/home")
+        }
+       
       } else {
         toastFailure("Login Fail")
         console.log("else!!!")
@@ -43,9 +49,11 @@ function Login() {
   const onChangeEmail = (e: any) => {
     setEmail(e.target.value);
   };
+  
   const onChangePass = (e: any) => {
     setPassword(e.target.value);
   };
+
   return (
     <form>
       <h3>Sign In</h3>

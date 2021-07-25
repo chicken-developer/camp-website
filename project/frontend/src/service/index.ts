@@ -21,3 +21,28 @@ export function getListCamp() {
 export function getDetailCamp(campId: String) {
   return axiosInstance.get<Model.CampResponse>("/camp/" + campId);
 }
+
+
+export function getAllUser() {
+  return axiosInstance.get<Model.ListUser>("/user/all");
+}
+
+export function editUser(userName: String, data: any) {
+  return axiosInstance.put("/user/" + userName, data)
+}
+
+export function deleteUser(userName: String) {
+  return axiosInstance.delete("/user/" + userName)
+}
+
+export function editCamp(campId: String, data: any) {
+  return axiosInstance.put("/camp/" + campId, data)
+}
+
+export function deleteCamp(campId: String) {
+  return axiosInstance.delete("/camp/" + campId)
+}
+
+export function createCamp(data) {
+  return axiosInstance.post("/camp/", data)
+}

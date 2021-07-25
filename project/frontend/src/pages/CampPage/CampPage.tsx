@@ -9,15 +9,23 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft, faPaw } from '@fortawesome/free-solid-svg-icons'
 import CampInfo from "../../components/CampInfo"
 import { withRouter } from "react-router";
-import {RouteComponentProps} from "react-router-dom"
+import {RouteComponentProps} from "react-router-dom";
+import { DateRangePicker, SingleDatePicker, DayPickerRangeController } from 'react-dates';
 import "./CampPage.scss"
+import moment from "moment";
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';   
+import { START_DATE, END_DATE } from 'react-dates/constants';
 
 interface Props extends RouteComponentProps {
     props: Props
 }
 interface State {
     camp: Model.HomeCamp,
-    isLoading: Boolean
+    isLoading: Boolean,
+    startDate?: moment.Moment,
+    endDate?: moment.Moment,
+    focusedInput?: String
 }
 
 export class CampPage extends Component<Props, State> {
@@ -25,7 +33,10 @@ export class CampPage extends Component<Props, State> {
         super(props)
         this.state = {
             camp: {} as Model.HomeCamp,
-            isLoading: false
+            isLoading: false,
+            startDate: moment(new Date()),
+            endDate: moment(new Date()),
+            focusedInput: 'startDate'
         }
     }
 
@@ -51,7 +62,14 @@ export class CampPage extends Component<Props, State> {
                 isLoading: false
             })
         })
-  }
+    }
+
+    renderDateText = (date: moment.Moment) => {
+        return <>
+            <div>{date.date()}</div>
+            <strong>A</strong>
+        </>
+    }
 
 
     render() {
@@ -143,6 +161,38 @@ export class CampPage extends Component<Props, State> {
                         <section id="availability">
                             <h3>Site Availability</h3>
                             <span>1 night weekday minimum</span>
+
+                            <div className = "my-4">
+                                <DayPickerRangeController
+                                    className = "my-4"
+                                    startDate={this.state.startDate} // momentPropTypes.momentObj or null,
+                                    endDate={this.state.endDate} // momentPropTypes.momentObj or null,
+                                    onDatesChange={({ startDate, endDate }) => this.setState({ startDate, endDate })} // PropTypes.func.isRequired,
+                                    focusedInput={this.state.focusedInput || START_DATE}
+                                    onFocusChange={(focusedInput: String) => this.setState({ focusedInput })}
+                                    initialVisibleMonth={() => moment().add(2, "M")} // PropTypes.func or null,
+                                    numberOfMonths = {2}
+                                    keepOpenOnDateSelect = {false}
+                                    onPrevMonthClick = {() => {
+                                        this.setState({
+                                            focusedInput: START_DATE
+                                        })
+                                    }}
+                                    onNextMonthClick = {() => {
+                                        this.setState({
+                                            focusedInput: END_DATE
+                                        })
+                                    }}
+                                    autoFocusEndDate = {true}
+                                    renderDayContents = {this.renderDateText}
+                                    onOutsideClick = {() => {
+                                    this.setState({
+                                        focusedInput: END_DATE
+                                    })
+                                    }}
+                                />
+                            </div>
+                            
                         </section>
 
                         <section id="site-detail">
