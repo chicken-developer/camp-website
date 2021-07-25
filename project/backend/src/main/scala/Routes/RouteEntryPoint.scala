@@ -46,7 +46,7 @@ object RouteEntryPoint {
     val localhost = "127.0.0.1"
     val vpshost = "103.153.65.194"
 
-    val finalRouteHandler = Http().newServerAt(localhost, 54000).bindFlow(finalRoute)
+    val finalRouteHandler = Http().newServerAt(vpshost, 54000).bindFlow(finalRoute)
 
     val listBindingFutureWithSecurity = List(finalRouteHandler)
 
