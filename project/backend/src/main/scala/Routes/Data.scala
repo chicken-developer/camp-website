@@ -45,8 +45,8 @@ case class User(_id: String, username: String, typeOfUser: String, firstName: St
                          siteAccessible: String,
                          checkInTime: String,
                          checkOutTime: String,
-                         maxNumOfPeople: Int,
-                           minNumOfPeople: Int,
+                         maxNumOfPeople: Double,
+                         minNumOfPeople: Double,
                          typeOfUse: String,
                          siteReserveType: String,
                          capacityRating: String,
@@ -71,15 +71,15 @@ case class User(_id: String, username: String, typeOfUser: String, firstName: St
                                 drivewayLength: Double,
                                 drivewaySurface: String,
                                 isEquipmentMandatory: String,
-                                maxNumOfVehicles: Int,
-                                maxVehicleLength: Int,
-                                siteLength: Int)
+                                maxNumOfVehicles: Double,
+                                maxVehicleLength: Double,
+                                siteLength: Double)
 
   val templateAllowableVehicleAndDrivewayDetails = AllowableVehicleAndDrivewayDetails("av_123123", "Back-in", 42.0, "Paved", "Yes", 2, 30, 42)
   case class Message(message: String, status: Int, data: JsValue)
   implicit val messageFormat3 = jsonFormat3(Message)
 
-  case class CampForHomePage(_id: String, name: String, mainImgSrc: String, allImgSrc: List[String], address: String,sd_typeOfUse: String,sd_maxNumOfPeople: Int, vd_maxNumOfVehicles: Int,vd_maxVehicleLengthForVehicle: Int,rvMax: Int, tenMax: Int, price: Double)
+  case class CampForHomePage(_id: String, name: String, mainImgSrc: String, allImgSrc: List[String], address: String,sd_typeOfUse: String,sd_maxNumOfPeople: Double, vd_maxNumOfVehicles: Double,vd_maxVehicleLengthForVehicle: Double,rvMax: Double, tenMax: Double, price: Double)
   implicit val campForHomeFormat = jsonFormat12(CampForHomePage)
 
 

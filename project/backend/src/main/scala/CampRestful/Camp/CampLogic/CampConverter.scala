@@ -1,7 +1,12 @@
 package CampRestful.Camp.CampLogic
 
+import CampRestful.Camp.CampLogic.GetMethodLogic._
 import Routes.Data._
 import org.mongodb.scala.bson.Document
+import spray.json.{JsValue, enrichAny}
+
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.util.{Failure, Success}
 
 case object CampConverter {
 
@@ -19,13 +24,30 @@ case object CampConverter {
   }
 
   def ConvertToCampForHomePage(c: Camp): CampForHomePage = {
-    val sd_typeOfUse: String = "Over night"
-    val sd_maxNumOfPeople: Int = 20
-    val vd_maxNumOfVehicles: Int = 32
-    val vd_maxVehicleLengthForVehicle = 80
-    val rvMax = 30
-    val tenMax = 30
-    CampForHomePage(c._id, c.campName, c.campImgSrc.head, c.campImgSrc, c.campLocationAddress,sd_typeOfUse,sd_maxNumOfPeople, vd_maxNumOfVehicles,vd_maxVehicleLengthForVehicle,rvMax, tenMax, c.price)
+    val sd = GetSiteDetailsById(c.siteDetailsId)
+    val ae = GetAllowableEquipmentById(c.allowableEquipmentListId)
+    val vd = GetAllowableVehicleAndDrivewayDetailsById(c.allowableVehicleAndDrivewayDetailsId)
+
+    val sd_typeOfUse: String = sd.typeOfUse
+    val sd_maxNumOfPeople = sd.maxNumOfPeople
+    val vd_maxNumOfVehicles = vd.maxNumOfVehicles
+    val vd_maxVehicleLengthForVehicle = vd.maxVehicleLength
+    println("========DEBUG+===========")
+    println(ae)
+    println(ae.items)
+    println("========DEBUG+===========")
+
+    val rvMax = ae.items.find(_._1 == "RV").get._2
+    val tenMax = ae.items.find(_._1 == "Trailer").get._2
+    CampForHomePage(c._id, c.campName, c.campImgSrc.head, c.campImgSrc, c.campLocationAddress,sd_typeOfUse,sd_maxNumOfPeople, vd_maxNumOfVehicles,vd_maxVehicleLengthForVehicle,rvMax.toDouble, tenMax.toDouble, c.price)
+  }
+
+  def ConvertToCampData(c: Camp): CampData = {
+    val sa = GetSiteAvailabilityById(c.siteAvailabilityId)
+    val sd = GetSiteDetailsById(c.siteDetailsId)
+    val ae = GetAllowableEquipmentById(c.allowableEquipmentListId)
+    val vd = GetAllowableVehicleAndDrivewayDetailsById(c.allowableVehicleAndDrivewayDetailsId)
+    CampData(c._id,c.campName, c.price, c.campImgSrc, c.partAddress, c.nearAddress, c.campLocationAddress, sa.toJson, sd.toJson, ae.toJson, vd.toJson)
   }
 
   def DocumentFromCamp(c: Camp): Document = {
@@ -49,7 +71,7 @@ case object CampConverter {
       .replace("}}", "")
     match {
       case s"_id=$id, campFireAllowed=$campFireAllowed, capacityRating=$capacityRating, checkInTime=$checkInTime, checkOutTime=$checkOutTime, maxNumOfPeople=$maxNumOfPeople, minNumOfPeople=$minNumOfPeople, petAllowed=$petAllowed, shade=$shade, siteAccessible=$siteAccessible, siteReserveType=$siteReserveType, siteType=$siteType, typeOfUse=$typeOfUse" =>
-        SiteDetails(id, siteType, siteAccessible, checkInTime, checkOutTime, maxNumOfPeople.toInt, minNumOfPeople.toInt, typeOfUse, siteReserveType, capacityRating, campFireAllowed, petAllowed, shade)
+        SiteDetails(id, siteType, siteAccessible, checkInTime, checkOutTime, maxNumOfPeople.toDouble, minNumOfPeople.toDouble, typeOfUse, siteReserveType, capacityRating, campFireAllowed, petAllowed, shade)
       case _ => templateSiteDetails
     }
     aSiteDetails
@@ -61,16 +83,19 @@ case object CampConverter {
       .replace("}}", "")
     match {
       case s"_id=$id, items=$items" =>
-        val itemList: Map[String, String] = Map()
-        val objList = items.split(',').toList
+        val objList = items.replace(" ", "").split(',').toList
           .map { obj =>
-            val temp = obj.split(':').toList
+            println(s"$obj")
+            val temp = obj.split('=').toList
+            println(s"$temp")
             val result = Map(temp.head -> temp.tail.head)
+            println(s"$result")
             result
-          }
-        objList.foreach(obj => itemList ++ obj)
+          }.flatten.toMap[String, String]
+        println(s"Object map: $objList")
+        println(s"ae value map: ${AllowableEquipment(id, objList)}")
+        AllowableEquipment(id, objList)
 
-        AllowableEquipment(id, itemList)
       case _ => templateAllowableEquipment
     }
     campAllowableEquipment
@@ -81,7 +106,7 @@ case object CampConverter {
       .replace("SiteAvailability{{", "")
       .replace("}}", "")
     match {
-      case s"_id=$id, date=$date,state=$state " =>
+      case s"_id=$id, date=$date, state=$state " =>
         SiteAvailability(id, date, state)
       case _ => templateSiteAvailability
     }
@@ -94,7 +119,7 @@ case object CampConverter {
       .replace("}}", "")
     match {
       case s"_id=$id, drivewayEntry=$drivewayEntry, drivewayLength=$drivewayLength, drivewaySurface=$drivewaySurface, isEquipmentMandatory=$isEquipmentMandatory, maxNumOfVehicles=$maxNumOfVehicles, maxVehicleLength=$maxVehicleLength, siteLength=$siteLength" =>
-        AllowableVehicleAndDrivewayDetails(id, drivewayEntry, drivewayLength.toDouble, drivewaySurface, isEquipmentMandatory, maxNumOfVehicles.toInt, maxVehicleLength.toInt, siteLength.toInt)
+        AllowableVehicleAndDrivewayDetails(id, drivewayEntry, drivewayLength.toDouble, drivewaySurface, isEquipmentMandatory, maxNumOfVehicles.toDouble, maxVehicleLength.toDouble, siteLength.toDouble)
       case _ => templateAllowableVehicleAndDrivewayDetails
     }
     campVehicleDetails
