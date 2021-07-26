@@ -1,11 +1,12 @@
 package CampRestful.Camp.CampLogic
 
-import CampRestful.Camp.CampLogic.CampConverter.{ConvertToAllowableEquipment, ConvertToAllowableVehicleAndDrivewayDetails, ConvertToCamp, ConvertToSiteAvailability, ConvertToSiteDetails}
+import CampRestful.Camp.CampLogic.CampConverter.{ConvertToAllowableEquipment, ConvertToAllowableVehicleAndDrivewayDetails, ConvertToCamp, ConvertToCampForHomePage, ConvertToSiteAvailability, ConvertToSiteDetails}
+
 import scala.collection.convert.ImplicitConversions.`iterable AsScalaIterable`
 import scala.concurrent.Future
-
 import Routes.Data._
 import Routes.MongoHelper._
+import CampRestful.Camp.CampLogic.CampConverter.ConvertToCampForHomePage
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.language.postfixOps
@@ -21,8 +22,12 @@ case object GetMethodLogic {
   }
 
   def GetCampForHomePage(): Future[List[CampForHomePage]] = {
-      val temp = Future(List(templateCampForHomePage, templateCampForHomePage, templateCampForHomePage, templateCampForHomePage,templateCampForHomePage,templateCampForHomePage,templateCampForHomePage))
-      temp
+    val allCamps = campCollection.find()
+      .map { camp =>
+        val c = ConvertToCamp(camp.toString.replaceAll("Document", "Camp"))
+        ConvertToCampForHomePage(c)
+      }.toList
+    Future(allCamps)
   }
 
   def GetCampById(id: String): Future[Camp] = {
@@ -37,7 +42,12 @@ case object GetMethodLogic {
       case None => Future(templateCamp)
     }
   }
-
+  def GetAllCampData(): Future[List[CampData]] = {
+    Future(List(templateCampData, templateCampData, templateCampData))
+  }
+  def GetFullCampDataById(id: String): Future[CampData] = {
+    Future(templateCampData)
+  }
   def GetSiteAvailabilityById(id: String): Future[SiteAvailability] = {
     val allSiteAvailability = siteAvailabilityCollection.find()
       .map { siteAvailability =>

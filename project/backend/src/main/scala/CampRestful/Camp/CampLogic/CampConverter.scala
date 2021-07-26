@@ -4,6 +4,7 @@ import Routes.Data._
 import org.mongodb.scala.bson.Document
 
 case object CampConverter {
+
   def ConvertToCamp(jsonStr: String): Camp = {
     val camp: Camp = jsonStr
       .replace("Camp{{", "")
@@ -15,6 +16,16 @@ case object CampConverter {
       case _ => templateCamp
     }
     camp
+  }
+
+  def ConvertToCampForHomePage(c: Camp): CampForHomePage = {
+    val sd_typeOfUse: String = "Over night"
+    val sd_maxNumOfPeople: Int = 20
+    val vd_maxNumOfVehicles: Int = 32
+    val vd_maxVehicleLengthForVehicle = 80
+    val rvMax = 30
+    val tenMax = 30
+    CampForHomePage(c._id, c.campName, c.campImgSrc.head, c.campImgSrc, c.campLocationAddress,sd_typeOfUse,sd_maxNumOfPeople, vd_maxNumOfVehicles,vd_maxVehicleLengthForVehicle,rvMax, tenMax, c.price)
   }
 
   def DocumentFromCamp(c: Camp): Document = {

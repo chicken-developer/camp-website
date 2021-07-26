@@ -14,7 +14,6 @@ import scala.util.{Failure, Success}
 
 class UserRoute(implicit val actorSystem : ActorSystem, implicit  val actorMaterializer: Materializer) extends Directives{
   import Routes.Data._
-  import ch.megard.akka.http.cors.scaladsl.CorsDirectives._
   val userRoute: Route = {
     (post & path("api_v01" / "user" / "login") & extractRequest) { request =>
       case class UserForm(username: String, password: String)
@@ -310,21 +309,22 @@ class UserRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
               )
             )
           case Success(form) => //Write user to database if valid
-            val result = BookingLogic.WriteBookingToDatabase(form)
+            val result = CalenderHandler.InsertBookingCalenderToDb(form)
             onComplete(result) {
               case Failure(ex) =>
                 complete(
                   StatusCodes.InternalServerError,
                   HttpEntity(
                     ContentTypes.`application/json`,
-                    Message("Fail to write in database", 0, "".toJson).toJson.prettyPrint
+                    Message("Fail to write booking into database", 0, "".toJson).toJson.prettyPrint
                   )
                 )
-              case Success(booking) =>
+              case Success(listDay) =>
+                val finalResult = CalenderHandler.HandleRawData(listDay)
                 complete {
                   HttpEntity(
                     ContentTypes.`application/json`,
-                    Message("Success", 1, booking.toJson).toJson.prettyPrint
+                    Message("Success", 1, finalResult.toJson).toJson.prettyPrint
                   )
                 }
             }

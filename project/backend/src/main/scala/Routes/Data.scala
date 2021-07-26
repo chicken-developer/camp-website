@@ -33,7 +33,7 @@ case class User(_id: String, username: String, typeOfUser: String, firstName: St
                   allowableVehicleAndDrivewayDetailsId: String
                   )
 
-  val templateCamp = Camp("c_template","Site: A004, Loop: A", 20.2, List("src/pic/01.png","src/pic/02.png"),
+  val templateCamp = Camp("c_123123","Site: A004, Loop: A", 20.2, List("src/pic/01.png","src/pic/02.png"),
             " Stanislaus National Forest", " Pinecrest, California","Pinecrest", "sa_123123",
               "sd_123123", "ae_123123", "av_123123")
 
