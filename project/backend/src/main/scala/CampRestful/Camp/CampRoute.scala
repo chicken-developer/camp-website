@@ -22,7 +22,7 @@ class CampRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
   import Routes.Data._
   import ch.megard.akka.http.cors.scaladsl.CorsDirectives._
 
-  val campRoute: Route = cors() {
+  val campFinalRoute: Route = {
     pathPrefix("api_v01" / "home") {
       pathEndOrSingleSlash {
         //GET all camps -> for show all camp in home page
@@ -159,6 +159,4 @@ class CampRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
     } // Finish camp path prefix
   } // Finish camp route
 
-
-  val campFinalRoute = campRoute
 }
