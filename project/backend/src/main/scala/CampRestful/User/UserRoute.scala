@@ -1,5 +1,6 @@
 package CampRestful.User
 
+import CampRestful.User.CalenderHandler.HandleRawData
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity, HttpRequest, StatusCodes}
 import akka.http.scaladsl.server.{Directives, Route}
@@ -292,8 +293,7 @@ class UserRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
     }
   }
   val calenderRoute: Route =  {
-    pathPrefix("api_v01"/ "calender") {
-      (post & extractRequest ) { request =>
+    (post & path ("api_v01"/ "calender") & extractRequest ) { request =>
         val entity = request.entity
         val strictEntityFuture = entity.toStrict(2 seconds)
         val bookingData = strictEntityFuture.map(_.data.utf8String.parseJson.convertTo[Booking])
@@ -319,18 +319,43 @@ class UserRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
                     Message("Fail to write booking into database", 0, "".toJson).toJson.prettyPrint
                   )
                 )
-              case Success(listDay) =>
-                val finalResult = CalenderHandler.HandleRawData(listDay)
+              case Success(booking) =>
                 complete {
                   HttpEntity(
                     ContentTypes.`application/json`,
-                    Message("Success", 1, finalResult.toJson).toJson.prettyPrint
+                    Message("Success", 1, booking.toJson).toJson.prettyPrint
                   )
                 }
             }
         }
+      } ~
+    (post & path("api_v01"/ "campCalender") & extractRequest) { request =>
+        val entity = request.entity
+        val strictEntityFuture = entity.toStrict(2 seconds)
+        case class Calender(campId: String, startDay: String, endDay: String)
+        implicit val calenderFormatter = jsonFormat3(Calender)
+        val calenderDateRange = strictEntityFuture.map(_.data.utf8String.parseJson.convertTo[Calender])
+        println(s"Data from server: $calenderDateRange")
+
+        onComplete(calenderDateRange) {
+          case Failure(ex) =>
+            complete(
+              StatusCodes.InternalServerError,
+              HttpEntity(
+                ContentTypes.`application/json`,
+                Message("New booking data not valid", 0, "".toJson).toJson.prettyPrint
+              )
+            )
+          case Success(calenderData) => //Write user to database if valid
+            val result = HandleRawData(calenderData.campId, calenderData.startDay, calenderData.endDay)
+            complete {
+              HttpEntity(
+                ContentTypes.`application/json`,
+                Message("Success", 1, result.toJson).toJson.prettyPrint
+              )
+            }
+        }
       }
-    }
   }
-  val userFinalRoute = userRoute ~ historyRoute ~ bookingRoute
+  val userFinalRoute = userRoute ~ historyRoute ~ bookingRoute ~ calenderRoute
 }
