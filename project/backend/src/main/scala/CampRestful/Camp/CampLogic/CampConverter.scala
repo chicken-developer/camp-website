@@ -3,10 +3,7 @@ package CampRestful.Camp.CampLogic
 import CampRestful.Camp.CampLogic.GetMethodLogic._
 import Routes.Data._
 import org.mongodb.scala.bson.Document
-import spray.json.{JsValue, enrichAny}
-
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.util.{Failure, Success}
+import spray.json.enrichAny
 
 case object CampConverter {
 
@@ -32,10 +29,6 @@ case object CampConverter {
     val sd_maxNumOfPeople = sd.maxNumOfPeople
     val vd_maxNumOfVehicles = vd.maxNumOfVehicles
     val vd_maxVehicleLengthForVehicle = vd.maxVehicleLength
-    println("========DEBUG+===========")
-    println(ae)
-    println(ae.items)
-    println("========DEBUG+===========")
 
     val rvMax = ae.items.find(_._1 == "RV").get._2
     val tenMax = ae.items.find(_._1 == "Trailer").get._2
@@ -92,10 +85,7 @@ case object CampConverter {
             println(s"$result")
             result
           }.flatten.toMap[String, String]
-        println(s"Object map: $objList")
-        println(s"ae value map: ${AllowableEquipment(id, objList)}")
         AllowableEquipment(id, objList)
-
       case _ => templateAllowableEquipment
     }
     campAllowableEquipment

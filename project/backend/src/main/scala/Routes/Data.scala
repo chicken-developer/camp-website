@@ -64,7 +64,7 @@ case class User(_id: String, username: String, typeOfUser: String, firstName: St
 
   case class AllowableEquipment(_id: String, items: Map[String, String])
 
-  val templateAllowableEquipment = AllowableEquipment("ae_123123", Map("Tent" -> "Yes", "RV" -> "max .30ft","Trailer" ->"max .30ft"))
+  val templateAllowableEquipment = AllowableEquipment("ae_123123", Map("Tent" -> "Yes", "RV" -> "30","Trailer" ->"30"))
 
   case class AllowableVehicleAndDrivewayDetails(_id: String,
                                 drivewayEntry: String,
