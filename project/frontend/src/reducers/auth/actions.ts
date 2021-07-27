@@ -6,6 +6,7 @@ import {
   LOGOUT,
 } from "./constants";
 import * as Type from '../../type'
+import * as action from '../../reducers/auth/reducer'
 
 export const loginSuccess = (data: Type.User) => {
   return {
@@ -26,4 +27,10 @@ export const loginIsLoading = () => {
     type: LOGIN_REQUESTING,
   };
 };
+
+export const logoutAction = () => {
+  return {
+    type: LOGOUT
+  }
+}
 

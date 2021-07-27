@@ -10,50 +10,47 @@ import AdminLayout from "../components/AdminLayout";
 import AdminPage from "../pages/AdminPage/AdminPage";
 import UsersPage from "../pages/UsersPage/UserPage";
 import CampsPage from "../pages/CampsPage/CampsPage";
+import Constant from "../utils/Constant";
+import DashboardLayoutRoute from "./AdminRoute";
+import UserRoute from "./UserLayout";
 
 
 function AppRouter() {
   let location = useLocation();
-
+  let authData = localStorage.getItem(Constant.KEY.USER) as any
+  let authRoot = authData?.typeOfUser
   return (
     <Router>
       <Switch>
-          <Route exact path="/" component={ (props: any) => (
-              <Layout>
-                <Login {...props} />
-              </Layout>
-          )} />
-          <Route exact path="/sign-in" component={ (props: any) => (
-              <Layout>
-                <Login {...props} />
-              </Layout>
-          )} />
+        <Route exact path="/" component={(props: any) => (
+          <Layout>
+            <Login {...props} />
+          </Layout>
+        )} />
+        <Route exact path="/sign-in" component={(props: any) => (
+          <Layout>
+            <Login {...props} />
+          </Layout>
+        )} />
 
-          <Route exact path="/sign-up" component={ (props: any) => (
-              <Layout>
-                <Register {...props} />
-              </Layout>
-          )} />        
-        {location.pathname.indexOf("/admin") >= 0 ?
-          <AdminLayout>
-            <React.Suspense fallback = {() => <div/>}>
-                <Route exact path="/admin" component={AdminPage} />
-                <Route exact path="/admin/users" component={UsersPage} />
-                <Route exact path="/admin/camps" component={CampsPage} />
-            </React.Suspense>
-          </AdminLayout>
-          : 
-          <LandingLayout>
-            <React.Suspense fallback = {() => <div/>}>
-                <Route exact path="/home" component={HomePage} />
-                <Route path="/camp/:campId" component={CampPage} />
-                <Route exact path="/camp" component={CampPage} />
-            </React.Suspense>
-          </LandingLayout>
-        }
-        
+        <Route exact path="/sign-up" component={(props: any) => (
+          <Layout>
+            <Register {...props} />
+          </Layout>
+        )} />
+
+        <DashboardLayoutRoute exact path="/admin" component={AdminPage} />
+        <DashboardLayoutRoute path="/admin/users" component={UsersPage} />
+        <DashboardLayoutRoute path="/admin/camps" component={CampsPage} />
+
+        <UserRoute exact path="/home" component={HomePage} />
+        <UserRoute path="/camp/:campId" component={CampPage} />
+        <UserRoute path="/camp" component={CampPage} />
+
       </Switch>
     </Router>
+
+
   );
 }
 

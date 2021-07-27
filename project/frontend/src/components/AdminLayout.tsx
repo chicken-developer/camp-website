@@ -6,8 +6,8 @@ import {useSelector} from "react-redux";
 import * as Model from "../type"
 import {RootState} from "../store";
 import { Redirect, useLocation } from "react-router-dom";
-import SideBar from "../components/SideBar";
 import AdminHeader from "../components/AdminHeader";
+import Sidebar from "./SideBar";
 
 interface Props {
   children: ReactNode;
@@ -24,7 +24,7 @@ const Layout = ({ children }: Props) => {
         <div className="main-wrapper">
             <div className="navbar-bg"></div>
             <AdminHeader/>
-            <SideBar />  
+            <Sidebar />  
             <div className="main-content">
                 <section className="section">
                 <div className="section-header">

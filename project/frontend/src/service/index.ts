@@ -6,6 +6,11 @@ const axiosInstance = axios.create({
   baseURL: CONSTANTS.HOST_URL
 });
 
+
+export function getHistory(username: String) {
+  return axiosInstance.get("/history/" + username);
+
+}
 export function login(data: Object) {
   return axiosInstance.post<Model.SingleUser>("/user/login", data)
 }
@@ -28,7 +33,7 @@ export function getAllUser() {
 }
 
 export function editUser(userName: String, data: any) {
-  return axiosInstance.put("/user/" + userName, data)
+  return axiosInstance.put("/user/update/" + userName, data)
 }
 
 export function deleteUser(userName: String) {
@@ -46,3 +51,7 @@ export function deleteCamp(campId: String) {
 export function createCamp(data) {
   return axiosInstance.post("/camp/", data)
 }
+export function booking(username, data) {
+  return axiosInstance.post("/booking/" + username, data)
+}
+

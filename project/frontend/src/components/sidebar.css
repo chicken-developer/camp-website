@@ -1,0 +1,11 @@
+.main-sidebar{
+    display: flex;
+}
+
+.main-sidebar .sidebar-menu{
+    width: 100%;
+}
+
+.main-sidebar .sidebar-menu:hover{
+    width: 100%;
+}

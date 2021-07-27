@@ -50,14 +50,24 @@ const CampsPage = ({}) => {
                         .then(newCamp => {
                             console.log(newCamp)
                             // setListUser(newUser)
-
+                            fetchUsers()
                         })
                     },
                     onRowDelete: (oldData) => {
                         return API.deleteUser(oldData._id)
+                        .then(newCamp => {
+                            console.log(newCamp)
+                            // setListUser(newUser)
+                            fetchUsers()
+                        })
                     },
                     onRowAdd: (newRow) => {
                         return API.createCamp(newRow)
+                        .then(newCamp => {
+                            console.log(newCamp)
+                            // setListUser(newUser)
+                            fetchUsers()
+                        })
                     }
                 }}
             />
