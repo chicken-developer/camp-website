@@ -32,7 +32,7 @@ class UploadRoute(implicit val actorSystem : ActorSystem, implicit  val actorMat
           """
             |<html>
             |  <body>
-            |    <form action="http://103.153.65.194:54000/api_v01/upload" method="post" enctype="multipart/form-data">
+            |    <form action="http://localhost:54000/api_v01/upload" method="post" enctype="multipart/form-data">
             |      <input type="file" name="image">
             |      <button type="submit">Upload</button>
             |    </form>
@@ -43,10 +43,9 @@ class UploadRoute(implicit val actorSystem : ActorSystem, implicit  val actorMat
       )
     } ~
     (path("api_v01" / "images" / Segment) & get ) { imageName =>
-      val originSource = "src/main/resources/img/" + imageName
-      val filePath = "img/" + imageName
+      val originSource = "src/data/img/" + imageName
       if(Files.exists(Paths.get(originSource))) {
-          getFromResource(filePath)
+        getFromFile(originSource)
       }
       else {
         complete(
@@ -70,7 +69,7 @@ class UploadRoute(implicit val actorSystem : ActorSystem, implicit  val actorMat
           val filePartsSink: Sink[Multipart.FormData.BodyPart, Future[Done]] = Sink.foreach[Multipart.FormData.BodyPart] { bodyPart =>
             if (bodyPart.name == "image") {
               // create a file
-              val filename = "src/main/resources/img/" + bodyPart.filename.getOrElse("tempFile_" + System.currentTimeMillis())
+              val filename = "src/data/img/" + bodyPart.filename.getOrElse("tempFile_" + System.currentTimeMillis())
               val file = new File(filename)
 
               log.info(s"Writing to file: $filename")
