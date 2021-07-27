@@ -81,7 +81,7 @@ const UsersPage = ({}) => {
                             <th>Camp Book Id</th>
                             <th>Time Start</th>
                             <th>Time End</th>
-                            <th>Time End</th>
+                            <th>Price</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -90,7 +90,7 @@ const UsersPage = ({}) => {
                                 <th>{history.campBookedId}</th>
                                 <td>{history.timeStart}</td>
                                 <td>{history.timeEnd}</td>
-                                <td>{history.timeEnd}</td>
+                                <td>{history.totalPrice}</td>
                             </tr>
                         )}
                         </tbody>

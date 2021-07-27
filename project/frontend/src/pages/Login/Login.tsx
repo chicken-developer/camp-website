@@ -100,7 +100,7 @@ function Login() {
         Login
       </button>
       <p className="forgot-password text-right">
-        Forgot <NavLink to="">password?</NavLink>
+        Or <NavLink to="/sign-up">Sign up</NavLink>
       </p>
     </form>
   );

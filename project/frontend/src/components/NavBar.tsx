@@ -24,8 +24,8 @@ const NavBar = (props: Props) => {
   return (
     <nav className="navbar navbar-expand-md navbar-light fixed-top">
       <div className="container">
-        <Link className="navbar-brand" to={"/sign-in"}>
-          Booking Camp Super
+        <Link className="navbar-brand" to={"/home"}>
+          Camp For Life
         </Link>
         <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
           <ul className="navbar-nav ml-auto">
