@@ -32,7 +32,7 @@ class UploadRoute(implicit val actorSystem : ActorSystem, implicit  val actorMat
           """
             |<html>
             |  <body>
-            |    <form action="http://localhost:54000/api_v01/upload" method="post" enctype="multipart/form-data">
+            |    <form action="http://103.153.65.194:54000/api_v01/upload" method="post" enctype="multipart/form-data">
             |      <input type="file" name="image">
             |      <button type="submit">Upload</button>
             |    </form>
@@ -88,7 +88,7 @@ class UploadRoute(implicit val actorSystem : ActorSystem, implicit  val actorMat
             case Success(_) => complete (
                 HttpEntity(
                   ContentTypes.`application/json`,
-                  Message("Success", 0, filePath.toJson).toJson.prettyPrint
+                  Message("Success", 1, filePath.toJson).toJson.prettyPrint
                 )
             )
             case Failure(ex) => complete(s"File failed to upload: $ex")
