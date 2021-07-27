@@ -33,20 +33,20 @@ case class User(_id: String, username: String, typeOfUser: String, firstName: St
                   allowableVehicleAndDrivewayDetailsId: String
                   )
 
-  val templateCamp = Camp("c_template","Site: A004, Loop: A", 20.2, List("src/pic/01.png","src/pic/02.png"),
+  val templateCamp = Camp("c_123123","Site: A004, Loop: A", 20.2, List("src/pic/01.png","src/pic/02.png"),
             " Stanislaus National Forest", " Pinecrest, California","Pinecrest", "sa_123123",
               "sd_123123", "ae_123123", "av_123123")
 
-  case class SiteAvailability(_id: String,date: String, state: String)
-  val templateSiteAvailability = SiteAvailability("sa_123123", "2021:07:24", "R")
+  case class SiteAvailability(_id: String, date: String, state: String)
+  val templateSiteAvailability = SiteAvailability("sa_123123", "2021-07-24","R")
 
   case class SiteDetails(_id: String,
                          siteType: String,
                          siteAccessible: String,
                          checkInTime: String,
                          checkOutTime: String,
-                         maxNumOfPeople: Int,
-                         minNumOfPeople: Int,
+                         maxNumOfPeople: Double,
+                         minNumOfPeople: Double,
                          typeOfUse: String,
                          siteReserveType: String,
                          capacityRating: String,
@@ -64,22 +64,22 @@ case class User(_id: String, username: String, typeOfUser: String, firstName: St
 
   case class AllowableEquipment(_id: String, items: Map[String, String])
 
-  val templateAllowableEquipment = AllowableEquipment("ae_123123", Map("Tent" -> "Yes", "RV" -> "max .30ft","Trailer" ->"max .30ft"))
+  val templateAllowableEquipment = AllowableEquipment("ae_123123", Map("Tent" -> "Yes", "RV" -> "30","Trailer" ->"30"))
 
   case class AllowableVehicleAndDrivewayDetails(_id: String,
                                 drivewayEntry: String,
                                 drivewayLength: Double,
                                 drivewaySurface: String,
                                 isEquipmentMandatory: String,
-                                maxNumOfVehicles: Int,
-                                maxVehicleLength: Int,
-                                siteLength: Int)
+                                maxNumOfVehicles: Double,
+                                maxVehicleLength: Double,
+                                siteLength: Double)
 
   val templateAllowableVehicleAndDrivewayDetails = AllowableVehicleAndDrivewayDetails("av_123123", "Back-in", 42.0, "Paved", "Yes", 2, 30, 42)
   case class Message(message: String, status: Int, data: JsValue)
   implicit val messageFormat3 = jsonFormat3(Message)
 
-  case class CampForHomePage(_id: String, name: String, mainImgSrc: String, allImgSrc: List[String], address: String,sd_typeOfUse: String,sd_maxNumOfPeople: Int, vd_maxNumOfVehicles: Int,vd_maxVehicleLengthForVehicle: Int,rvMax: Int, tenMax: Int, price: Double)
+  case class CampForHomePage(_id: String, name: String, mainImgSrc: String, allImgSrc: List[String], address: String,sd_typeOfUse: String,sd_maxNumOfPeople: Double, vd_maxNumOfVehicles: Double,vd_maxVehicleLengthForVehicle: Double,rvMax: Double, tenMax: Double, price: Double)
   implicit val campForHomeFormat = jsonFormat12(CampForHomePage)
 
 

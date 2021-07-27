@@ -1,6 +1,6 @@
 package CampRestful.Camp
 
-import CampRestful.Camp.CampLogic.{CampController, GetMethodLogic}
+import CampRestful.Camp.CampLogic.{CRUDMethodLogic, GetMethodLogic}
 import akka.Done
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity, Multipart, StatusCodes}
@@ -20,19 +20,35 @@ import scala.util.{Failure, Success}
 
 class CampRoute(implicit val actorSystem : ActorSystem, implicit  val actorMaterializer: Materializer) extends Directives {
   import Routes.Data._
-  import ch.megard.akka.http.cors.scaladsl.CorsDirectives._
-
-  val campRoute: Route = cors() {
-    pathPrefix("api_v01" / "home") {
-      pathEndOrSingleSlash {
-        //GET all camps -> for show all camp in home page
-        val listCampForHomeFuture = GetMethodLogic.GetCampForHomePage()
-        onComplete(listCampForHomeFuture) {
-          case Success(campsForHome) =>
+  val campForSpecialDataRoute: Route = {
+    (get & path("api_v01" / "home")) {
+      val listCampForHomeFuture = GetMethodLogic.GetCampForHomePage()
+      onComplete(listCampForHomeFuture) {
+        case Success(campsForHome) =>
+          complete(
+            HttpEntity(
+              ContentTypes.`application/json`,
+              Message(s"Success with ${campsForHome.size} camps", 1, campsForHome.toJson).toJson.prettyPrint
+            )
+          )
+        case Failure(ex) =>
+          complete(
+            StatusCodes.InternalServerError,
+            HttpEntity(
+              ContentTypes.`application/json`,
+              Message("Fail to get camp", 0, "".toJson).toJson.prettyPrint
+            )
+          )
+      }
+    } ~
+    (get & path("api_v01" / "camp" / "full")) {
+        val camps = GetMethodLogic.GetAllCampData()
+        onComplete(camps) {
+          case Success(listCamp) =>
             complete(
               HttpEntity(
                 ContentTypes.`application/json`,
-                Message(s"Success with ${campsForHome.size} camps", 1, campsForHome.toJson).toJson.prettyPrint
+                Message(s"Success with ${listCamp.size}", 1, listCamp.toJson).toJson.prettyPrint
               )
             )
           case Failure(ex) =>
@@ -45,111 +61,98 @@ class CampRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
             )
         }
       }
-    } ~
-    (post  & extractRequest & pathPrefix("api_v01" / "camp"/ "create")) { request =>
-        val entity = request.entity
-        val strictEntityFuture = entity.toStrict(2 seconds)
-        val newCampData = strictEntityFuture.map(_.data.utf8String.parseJson.convertTo[CampData])
-        println(s"Data from server: $newCampData")
-        onComplete(newCampData) {
-          case Failure(ex) =>
-            complete(
-              StatusCodes.InternalServerError,
-              HttpEntity(
-                ContentTypes.`application/json`,
-                Message("Some input not valid", 0, "".toJson).toJson.prettyPrint
-              )
-            )
-          case Success(camp) =>
-            CampController.InsertNewCampToDatabase(camp)
-            complete {
-              HttpEntity(
-                ContentTypes.`application/json`,
-                Message("Success", 1, camp.toJson).toJson.prettyPrint
-              )
-            }
-        }
-      } ~
+  }
+  val CRUDCampRoute: Route = {
     pathPrefix("api_v01" / "camp" / Segment) { campId =>
       get {
-        val camp = Future(templateCampData)
-        onComplete(camp) {
-          case Success(aCamp) =>
-            complete (
-              HttpEntity(
-                ContentTypes.`application/json`,
-                Message(s"Success with camp id ${aCamp._id}", 1, aCamp.toJson).toJson.prettyPrint
-              )
-            )
-          case Failure(ex) =>
-            complete (
-              StatusCodes.InternalServerError,
-              HttpEntity(
-                ContentTypes.`application/json`,
-                Message("Fail to get camp", 0, "".toJson).toJson.prettyPrint
-              )
-            )
-        }
-      } ~
-      (put  & extractRequest) { request =>
-          val entity = request.entity
-          val strictEntityFuture = entity.toStrict(2 seconds)
-          val newCampData = strictEntityFuture.map(_.data.utf8String.parseJson.convertTo[CampData])
-          println(s"Data from server: $newCampData")
-          onComplete(newCampData) {
+          val camp = GetMethodLogic.GetFullCampDataById(campId)
+          onComplete(camp) {
+            case Success(aCamp) =>
+              if (aCamp._id == templateCampData._id) { //TODO
+                complete(
+                  HttpEntity(
+                    ContentTypes.`application/json`,
+                    Message(s"Success with camp id ${aCamp._id}", 1, aCamp.toJson).toJson.prettyPrint
+                  )
+                )
+              } else {
+                complete(
+                  StatusCodes.InternalServerError,
+                  HttpEntity(
+                    ContentTypes.`application/json`,
+                    Message("No have camp", 0, "".toJson).toJson.prettyPrint
+                  )
+                )
+              }
             case Failure(ex) =>
               complete(
                 StatusCodes.InternalServerError,
                 HttpEntity(
                   ContentTypes.`application/json`,
-                  Message("Some input not valid", 0, "".toJson).toJson.prettyPrint
+                  Message("Fail to get camp", 0, "".toJson).toJson.prettyPrint
                 )
               )
-            case Success(camp) =>
-              CampController.InsertNewCampToDatabase(camp)
-              complete {
-                HttpEntity(
-                  ContentTypes.`application/json`,
-                  Message("Success", 1, camp.toJson).toJson.prettyPrint
+          }
+        } ~
+      (put & extractRequest) { request =>
+            val entity = request.entity
+            val strictEntityFuture = entity.toStrict(2 seconds)
+            val newCampData = strictEntityFuture.map(_.data.utf8String.parseJson.convertTo[CampData])
+            println(s"Data from server: $newCampData")
+            onComplete(newCampData) {
+              case Failure(ex) =>
+                complete(
+                  StatusCodes.InternalServerError,
+                  HttpEntity(
+                    ContentTypes.`application/json`,
+                    Message("Some input not valid", 0, "".toJson).toJson.prettyPrint
+                  )
                 )
-              }
-          }
-      } ~
-      (path("upload") & extractLog) { log =>
-        // handle uploading files
-        // multipart/form-data
-        entity(as[Multipart.FormData]) { formdata =>
-          // handle file payload
-          val partsSource: Source[Multipart.FormData.BodyPart, Any] = formdata.parts
-
-          val filePartsSink: Sink[Multipart.FormData.BodyPart, Future[Done]] = Sink.foreach[Multipart.FormData.BodyPart] { bodyPart =>
-            if (bodyPart.name == "myFile") {
-              // create a file
-              val filename = "src/main/resources/download/" + bodyPart.filename.getOrElse("tempFile_" + System.currentTimeMillis())
-              val file = new File(filename)
-
-              log.info(s"Writing to file: $filename")
-
-              val fileContentsSource: Source[ByteString, _] = bodyPart.entity.dataBytes
-              val fileContentsSink: Sink[ByteString, _] = FileIO.toPath(file.toPath)
-
-              // writing the data to the file
-              fileContentsSource.runWith(fileContentsSink)
+              case Success(camp) =>
+                val aCamp = CRUDMethodLogic.UpdateCampFromDatabase(camp, campId)
+                complete {
+                  HttpEntity(
+                    ContentTypes.`application/json`,
+                    Message("Success", 1, aCamp.toJson).toJson.prettyPrint
+                  )
+                }
             }
+          } ~
+      (post & extractRequest) { request =>
+            val entity = request.entity
+            val strictEntityFuture = entity.toStrict(2 seconds)
+            val newCampData = strictEntityFuture.map(_.data.utf8String.parseJson.convertTo[CampData])
+            println(s"Data from server: $newCampData")
+            onComplete(newCampData) {
+              case Failure(ex) =>
+                complete(
+                  StatusCodes.InternalServerError,
+                  HttpEntity(
+                    ContentTypes.`application/json`,
+                    Message("Some input not valid", 0, "".toJson).toJson.prettyPrint
+                  )
+                )
+              case Success(camp) =>
+                val aCamp = CRUDMethodLogic.InsertNewCampToDatabase(camp)
+                complete {
+                  HttpEntity(
+                    ContentTypes.`application/json`,
+                    Message("Success", 1, aCamp.toJson).toJson.prettyPrint
+                  )
+                }
+            }
+          } ~
+      delete {
+            complete(
+              StatusCodes.InternalServerError,
+              HttpEntity(
+                ContentTypes.`application/json`,
+                Message("Success", 1, "".toJson).toJson.prettyPrint
+              )
+            )
           }
-          val writeOperationFuture = partsSource.runWith(filePartsSink)
-          onComplete(writeOperationFuture) {
-            case Success(_) => complete("File uploaded.")
-            case Failure(ex) => complete(s"File failed to upload: $ex")
-          }
-        }
       }
+    }
 
-
-
-    } // Finish camp path prefix
-  } // Finish camp route
-
-
-  val campFinalRoute = campRoute
+  val campFinalRoute = campForSpecialDataRoute ~ CRUDCampRoute
 }

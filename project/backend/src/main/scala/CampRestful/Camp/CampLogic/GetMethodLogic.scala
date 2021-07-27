@@ -1,9 +1,9 @@
 package CampRestful.Camp.CampLogic
 
-import CampRestful.Camp.CampLogic.CampConverter.{ConvertToAllowableEquipment, ConvertToAllowableVehicleAndDrivewayDetails, ConvertToCamp, ConvertToSiteAvailability, ConvertToSiteDetails}
+import CampRestful.Camp.CampLogic.CampConverter.{ConvertToAllowableEquipment, ConvertToAllowableVehicleAndDrivewayDetails, ConvertToCamp, ConvertToCampData, ConvertToCampForHomePage, ConvertToSiteAvailability, ConvertToSiteDetails}
+
 import scala.collection.convert.ImplicitConversions.`iterable AsScalaIterable`
 import scala.concurrent.Future
-
 import Routes.Data._
 import Routes.MongoHelper._
 
@@ -21,8 +21,12 @@ case object GetMethodLogic {
   }
 
   def GetCampForHomePage(): Future[List[CampForHomePage]] = {
-      val temp = Future(List(templateCampForHomePage, templateCampForHomePage, templateCampForHomePage, templateCampForHomePage,templateCampForHomePage,templateCampForHomePage,templateCampForHomePage))
-      temp
+    val allCamps = campCollection.find()
+      .map { camp =>
+        val c = ConvertToCamp(camp.toString.replaceAll("Document", "Camp"))
+        ConvertToCampForHomePage(c)
+      }.toList
+    Future(allCamps)
   }
 
   def GetCampById(id: String): Future[Camp] = {
@@ -38,7 +42,20 @@ case object GetMethodLogic {
     }
   }
 
-  def GetSiteAvailabilityById(id: String): Future[SiteAvailability] = {
+  def GetAllCampData(): Future[List[CampData]] = {
+    val allCamps = campCollection.find()
+      .map { camp =>
+        val c = ConvertToCamp(camp.toString.replaceAll("Document", "Camp"))
+        ConvertToCampData(c)
+      }.toList
+    Future(allCamps)
+  }
+
+  def GetFullCampDataById(id: String): Future[CampData] = {
+    Future(templateCampData)
+  }
+
+  def GetSiteAvailabilityById(id: String): SiteAvailability = {
     val allSiteAvailability = siteAvailabilityCollection.find()
       .map { siteAvailability =>
         ConvertToSiteAvailability(siteAvailability.toString.replaceAll("Document", "SiteAvailability"))
@@ -46,12 +63,13 @@ case object GetMethodLogic {
     val siteAvailability = allSiteAvailability.findLast(_._id == id)
     siteAvailability match {
       case Some(aSiteAvailability) =>
-        Future(aSiteAvailability)
-      case None => Future(templateSiteAvailability)
+        aSiteAvailability
+      case None => templateSiteAvailability
     }
+    templateSiteAvailability
   }
 
-  def GetSiteDetailsById(id: String): Future[SiteDetails] = {
+  def GetSiteDetailsById(id: String): SiteDetails = {
     val allSiteDetails = siteDetailsCollection.find()
       .map { siteDetails =>
         ConvertToSiteDetails(siteDetails.toString.replaceAll("Document", "SiteDetails"))
@@ -59,12 +77,13 @@ case object GetMethodLogic {
     val siteDetails = allSiteDetails.findLast(_._id == id)
     siteDetails match {
       case Some(aSiteDetails) =>
-        Future(aSiteDetails)
-      case None => Future(templateSiteDetails)
+        aSiteDetails
+      case None => templateSiteDetails
     }
+
   }
 
-  def GetAllowableEquipmentById(id: String): Future[AllowableEquipment] = {
+  def GetAllowableEquipmentById(id: String): AllowableEquipment = {
     val allAllowableEquipment = allowableEquipmentCollection.find()
       .map { allowableEquipment =>
         ConvertToAllowableEquipment(allowableEquipment.toString.replaceAll("Document", "AllowableEquipment"))
@@ -72,12 +91,12 @@ case object GetMethodLogic {
     val allowableEquipment = allAllowableEquipment.findLast(_._id == id)
     allowableEquipment match {
       case Some(aAllowableEquipment) =>
-        Future(aAllowableEquipment)
-      case None => Future(templateAllowableEquipment)
+        aAllowableEquipment
+      case None => templateAllowableEquipment
     }
   }
 
-  def GetAllowableVehicleAndDrivewayDetailsById(id: String): Future[AllowableVehicleAndDrivewayDetails] = {
+  def GetAllowableVehicleAndDrivewayDetailsById(id: String): AllowableVehicleAndDrivewayDetails = {
     val allAllowableVehicleAndDrivewayDetails = allowableVehicleAndDrivewayDetailsCollection.find()
       .map { allowableVehicleAndDrivewayDetails =>
         ConvertToAllowableVehicleAndDrivewayDetails(allowableVehicleAndDrivewayDetails.toString.replaceAll("Document", "AllowableVehicleAndDrivewayDetails"))
@@ -85,8 +104,8 @@ case object GetMethodLogic {
     val allowableVehicleAndDrivewayDetails = allAllowableVehicleAndDrivewayDetails.findLast(_._id == id)
     allowableVehicleAndDrivewayDetails match {
       case Some(aAllowableVehicleAndDrivewayDetails) =>
-        Future(aAllowableVehicleAndDrivewayDetails)
-      case None => Future(templateAllowableVehicleAndDrivewayDetails)
+        aAllowableVehicleAndDrivewayDetails
+      case None => templateAllowableVehicleAndDrivewayDetails
     }
   }
 

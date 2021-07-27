@@ -111,7 +111,7 @@ case object UserLogic {
   def DocumentFromUserForUpdate(oldUser: User, newUser: User): Document = {
     Document("_id" -> oldUser._id,
       "username" -> newUser.username,
-      "typeOfUser" -> newUser.typeOfUser,
+      "typeOfUser" -> oldUser.typeOfUser,
       "firstName" -> newUser.firstName,
       "lastName" -> newUser.lastName,
       "password" -> newUser.password,
