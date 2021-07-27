@@ -1,4 +1,5 @@
 package Routes
+import CampRestful.Camp.CampLogic.UploadRoute
 import CampRestful.Camp.CampRoute
 import CampRestful.User.UserRoute
 
@@ -39,9 +40,10 @@ object RouteEntryPoint {
 
     val userRoute =  new UserRoute()
     val campRoute =  new CampRoute()
+    val uploadRoute = new UploadRoute()
     val cors = new CORSHandler {}
 
-    val finalRoute = cors.corsHandler{ userRoute.userFinalRoute ~ campRoute.campFinalRoute }
+    val finalRoute = cors.corsHandler{ userRoute.userFinalRoute ~ campRoute.campFinalRoute ~ uploadRoute.uploadRoute}
 
     val localhost = "127.0.0.1"
     val vpshost = "103.153.65.194"

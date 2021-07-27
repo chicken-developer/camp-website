@@ -40,18 +40,23 @@ case object UserLogic {
     Future(StatusCodes.OK)
   }
 
-  def HandleUserUpdateData(newData: User, userId: String): Future[User] = {
+  def HandleUserUpdateData(newData: User, usrname: String): Future[User] = {
     val allUsers = userCollection.find()
       .map { user =>
         UserLogic.ConvertToUser(user.toString.replaceAll("Document", "User"))
       }.toList
-    val user = allUsers.findLast(_._id == userId) match {
-      case Some(usr) =>
-        val updateDocument = UserLogic.DocumentFromUserForUpdate(oldUser = usr, newUser = newData)
-        userCollection.replaceOne(equal("_id", userId),updateDocument)
-        usr
+    val user = allUsers.findLast(_.username == usrname) match {
+      case Some(value) =>
+        val updateDocument = UserLogic.DocumentFromUserForUpdate(oldUser = value, newUser = newData)
+        userCollection.replaceOne(equal("username", usrname),updateDocument)
+        User(value._id, newData.username,value.typeOfUser, newData.firstName,
+          newData.lastName, newData.password, newData.email, newData.phoneNumber, value.bookingHistoryId)
       case None => templateUser
     }
+    println("===============DEBUGBU")
+    println("===============DEBUGBU")
+    println("===============User: ")
+    println(user)
     Future(user)
   }
 
@@ -109,7 +114,7 @@ case object UserLogic {
   }
 
   def DocumentFromUserForUpdate(oldUser: User, newUser: User): Document = {
-    Document("_id" -> oldUser._id,
+    Document(
       "username" -> newUser.username,
       "typeOfUser" -> oldUser.typeOfUser,
       "firstName" -> newUser.firstName,

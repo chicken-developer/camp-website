@@ -109,7 +109,7 @@ class CampRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
                   )
                 )
               case Success(camp) =>
-                val aCamp = CRUDMethodLogic.UpdateCampFromDatabase(camp, campId)
+                val aCamp = CRUDMethodLogic.HandleCampUpdate(camp, campId)
                 complete {
                   HttpEntity(
                     ContentTypes.`application/json`,
@@ -133,7 +133,7 @@ class CampRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
                   )
                 )
               case Success(camp) =>
-                val aCamp = CRUDMethodLogic.InsertNewCampToDatabase(camp)
+                val aCamp = CRUDMethodLogic.HandleInsertNewCap(camp)
                 complete {
                   HttpEntity(
                     ContentTypes.`application/json`,
