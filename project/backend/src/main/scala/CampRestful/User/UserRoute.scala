@@ -105,7 +105,7 @@ class UserRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
             }
         }
       } ~
-    (put & path("api_v01" / "user" / "update" / Segment) & extractRequest) { (userId, request) =>
+    (put & path("api_v01" / "user" / "update" / Segment) & extractRequest) { (username, request) =>
         case class NewData(username: String, firstName: String, lastName: String, password: String, email: String, phoneNumber: String)
         implicit val updateFormat = jsonFormat6(NewData)
         val entity = request.entity
@@ -123,8 +123,8 @@ class UserRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
               )
             )
           case Success(form) => //Write user to database if valid
-            val userDataTemplate: User = User(userId, form.username, "normal", form.firstName, form.lastName, form.password, form.email, form.phoneNumber, List(""))
-            val userFuture = UserLogic.HandleUserUpdateData(userDataTemplate, userId)
+            val newData: User = User("u_template", form.username, "normal", form.firstName, form.lastName, form.password, form.email, form.phoneNumber, List(""))
+            val userFuture = UserLogic.HandleUserUpdateData(newData, username)
             onComplete(userFuture) {
               case Failure(ex) =>
                 complete(
