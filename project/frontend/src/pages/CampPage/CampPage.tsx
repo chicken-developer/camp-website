@@ -81,13 +81,14 @@ export class CampPage extends Component<Props, State> {
         let totalDate = (this.state.startDate !== null && this.state.endDate !== null) ? this.state.endDate?.diff(this.state.startDate, "days") as number : 0 as number
         // let camObj = this.state.camp
         let camObj = {
+            _id: "null",
             campBookedId: this.state.camp.campLocationAddress,
             // allImgSrc: this.state.camp.allImgSrc,
             // mainImgSrc: this.state.camp.main,
             usernameBooked: this.state.camp.campName,
             totalPrice: totalDate * Number(this.state.camp.price),
-            timeStart: this.state.startDate, 
-            timeEnd:  this.state.endDate,
+            timeStart: this.state.startDate ? this.state.startDate.format("YYYY-MM-DD") : "2021-07-27", 
+            timeEnd:  this.state.endDate ? this.state.endDate.format("YYYY-MM-DD") : "2021-07-28", 
             // rvMax: this.state.camp.ma,
             // sd_maxNumOfPeople: this.state.camp.sd,
             // sd_typeOfUse: this.state.camp.ty,
