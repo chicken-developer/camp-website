@@ -8,7 +8,6 @@ export interface User {
     phoneNumber?: String,
     typeOfUser?: String,
     bookingHistory?: Array<String>
-    _id: String
 }
 
 export interface SingleUser {
