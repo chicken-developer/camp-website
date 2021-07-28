@@ -10,6 +10,7 @@ import AdminLayout from "../components/AdminLayout";
 import AdminPage from "../pages/AdminPage/AdminPage";
 import UsersPage from "../pages/UsersPage/UserPage";
 import CampsPage from "../pages/CampsPage/CampsPage";
+import BookingHistoryPage from "../pages/BookingHistoryPage/BookingHistoryPage";
 import Constant from "../utils/Constant";
 import DashboardLayoutRoute from "./AdminRoute";
 import UserRoute from "./UserLayout";
@@ -50,7 +51,7 @@ function AppRouter() {
         <GuesRouter path="/camp" component={CampPage} />
 
         <UserRoute exect path="/profile" component={ProflePage} />
-
+        <UserRoute path="/history" component={BookingHistoryPage} />
       </Switch>
     </Router>
 
