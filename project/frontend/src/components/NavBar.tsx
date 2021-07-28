@@ -66,9 +66,9 @@ const NavBar = (props: Props) => {
                       <a href="." className="dropdown-item has-icon text-dark d-flex align-items-center" onClick={onLogout}>
                         <i className="fas fa-user"></i>Profile
                       </a>
-                      <a href="." className="dropdown-item has-icon text-dark d-flex align-items-center" onClick={onLogout}>
+                      <Link to = "/history" className="dropdown-item has-icon text-dark d-flex align-items-center">
                         <i className="fas fa-bookmark"></i> <span>My Booking</span>
-                      </a>
+                      </Link>
                       <hr />
 
                       <a href="." className="dropdown-item has-icon text-danger d-flex align-items-center" onClick={onLogout}>
