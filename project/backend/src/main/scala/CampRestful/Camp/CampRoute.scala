@@ -68,7 +68,7 @@ class CampRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
           val camp = GetMethodLogic.GetFullCampDataById(campId)
           onComplete(camp) {
             case Success(aCamp) =>
-              if (aCamp._id == templateCampData._id) { //TODO
+              if (aCamp._id != templateCampData._id) { //TODO
                 complete(
                   HttpEntity(
                     ContentTypes.`application/json`,
@@ -80,7 +80,7 @@ class CampRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
                   StatusCodes.InternalServerError,
                   HttpEntity(
                     ContentTypes.`application/json`,
-                    Message("No have camp", 0, "".toJson).toJson.prettyPrint
+                    Message("This method not avalid now", 0, "".toJson).toJson.prettyPrint
                   )
                 )
               }
@@ -143,13 +143,24 @@ class CampRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
             }
           } ~
       delete {
+        val campStatusCodeFuture = CRUDMethodLogic.HandleDeleteCamp(campId)
+        onComplete(campStatusCodeFuture) {
+          case Success(status) =>
+            complete {
+              HttpEntity(
+                ContentTypes.`application/json`,
+                Message(s"Success with status: ${status.toString()}", 1, "".toJson).toJson.prettyPrint
+              )
+            }
+          case Failure(ex) =>
             complete(
               StatusCodes.InternalServerError,
               HttpEntity(
                 ContentTypes.`application/json`,
-                Message("Success", 1, "".toJson).toJson.prettyPrint
+                Message("Fail to delete", 0, "".toJson).toJson.prettyPrint
               )
             )
+        }
           }
       }
     }

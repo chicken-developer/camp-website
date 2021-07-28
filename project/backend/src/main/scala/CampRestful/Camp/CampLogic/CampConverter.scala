@@ -3,6 +3,7 @@ package CampRestful.Camp.CampLogic
 import CampRestful.Camp.CampLogic.GetMethodLogic._
 import Routes.Data._
 import org.mongodb.scala.bson.Document
+import spray.json.DefaultJsonProtocol.{StringJsonFormat, mapFormat}
 import spray.json.enrichAny
 
 case object CampConverter {
@@ -55,6 +56,48 @@ case object CampConverter {
       "price" -> c.price,
       "siteAvailabilityId" -> c.siteAvailabilityId,
       "siteDetailsId" -> c.siteDetailsId
+    )
+  }
+
+  def DocumentFromSiteAvailability(sa: SiteAvailability): Document = {
+    Document(
+      "date" -> sa.date,
+      "state" -> sa.date,
+    )
+  }
+
+  def DocumentFromSiteDetails(sd: SiteDetails): Document = {
+    Document(
+      "campFireAllowed" -> sd.campFireAllowed,
+      "capacityRating" -> sd.capacityRating,
+      "checkInTime" -> sd.checkInTime,
+      "checkOutTime" -> sd.checkOutTime,
+      "maxNumOfPeople" -> sd.maxNumOfPeople,
+      "minNumOfPeople" -> sd.minNumOfPeople,
+      "petAllowed" -> sd.petAllowed,
+      "shade" -> sd.shade,
+      "siteAccessible" -> sd.siteAccessible,
+      "siteReserveType" -> sd.siteReserveType,
+      "siteType" -> sd.siteType,
+      "typeOfUse" -> sd.typeOfUse
+    )
+  }
+
+  def DocumentFromAllowableEquipment(ae: AllowableEquipment): Document = {
+    Document (
+      "items" -> ae.items.toJson.prettyPrint
+    )
+  }
+
+  def DocumentFromAllowableVehicleAndDrivewayDetails(ae: AllowableVehicleAndDrivewayDetails): Document = {
+    Document(
+      "drivewayEntry" -> ae.drivewayEntry,
+      "drivewayLength" -> ae.drivewayLength,
+      "drivewaySurface" -> ae.drivewaySurface,
+      "isEquipmentMandatory" -> ae.isEquipmentMandatory,
+      "maxNumOfVehicles" -> ae.maxNumOfVehicles,
+      "maxVehicleLength" -> ae.maxVehicleLength,
+      "siteLength" -> ae.siteLength
     )
   }
 
@@ -114,4 +157,5 @@ case object CampConverter {
     }
     campVehicleDetails
   }
+
 }

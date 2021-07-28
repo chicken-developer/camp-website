@@ -154,13 +154,13 @@ class UserRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
         }
       } ~
     (delete & path("api_v01" / "user" / Segment)) { userId =>
-      val userFuture = UserLogic.HandleDeleteUser(userId)
-      onComplete(userFuture) {
-        case Success(user) =>
+      val userStatusCodeFuture = UserLogic.HandleDeleteUser(userId)
+      onComplete(userStatusCodeFuture) {
+        case Success(status) =>
           complete {
             HttpEntity(
               ContentTypes.`application/json`,
-              Message("Success", 1, "".toJson).toJson.prettyPrint
+              Message(s"Success with status: ${status.toString()}", 1, "".toJson).toJson.prettyPrint
             )
           }
         case Failure(ex) =>
@@ -281,6 +281,7 @@ class UserRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
                   )
                 )
               case Success(booking) =>
+                BookingLogic.WriteBookingToHistoryOfUser(booking)
                 complete {
                   HttpEntity(
                     ContentTypes.`application/json`,

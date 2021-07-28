@@ -9,6 +9,8 @@ import org.mongodb.scala.bson.{BsonObjectId, Document}
 import org.mongodb.scala.model.Filters
 import org.mongodb.scala.model.Filters.equal
 import org.mongodb.scala.model.Updates.{combine, currentDate, set}
+import spray.json.DefaultJsonProtocol._
+import spray.json.enrichAny
 
 import scala.collection.convert.ImplicitConversions.`iterable AsScalaIterable`
 import scala.concurrent.Future
@@ -53,10 +55,6 @@ case object UserLogic {
           newData.lastName, newData.password, newData.email, newData.phoneNumber, value.bookingHistoryId)
       case None => templateUser
     }
-    println("===============DEBUGBU")
-    println("===============DEBUGBU")
-    println("===============User: ")
-    println(user)
     Future(user)
   }
 
@@ -123,6 +121,18 @@ case object UserLogic {
       "email"-> newUser.email,
       "phoneNumber" -> newUser.phoneNumber,
       "bookingHistoryId" -> oldUser.bookingHistoryId)
+  }
+
+  def DocumentFromUserForAddBooking(oldUser: User, newUser: User): Document = {
+    Document(
+      "username" -> oldUser.username,
+      "typeOfUser" -> oldUser.typeOfUser,
+      "firstName" -> oldUser.firstName,
+      "lastName" -> oldUser.lastName,
+      "password" -> oldUser.password,
+      "email"-> oldUser.email,
+      "phoneNumber" -> oldUser.phoneNumber,
+      "bookingHistoryId" -> newUser.bookingHistoryId.toJson.prettyPrint)
   }
 
 }
