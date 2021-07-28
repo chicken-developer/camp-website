@@ -61,40 +61,32 @@ case object BookingLogic {
     Future(booking)
   }
   def WriteBookingToHistoryOfUser(booking: Booking): Unit = {
-//    val userId = booking.usernameBooked
-//    val bookingIds = bookingCollection.find()
-//      .map { booked =>
-//        BookingLogic.ConvertToBooking(booked.toString.replaceAll("Document", "Booking"))
-//      }.toList
-//    println("==============================Debug:")
-//    println(s"==============================Debug: $bookingIds")
-//    val bookingId =  bookingIds.find(b => b.usernameBooked == userId)
-//      .filter(b => b.timeStart == booking.timeStart)
-//      .filter(b => b.timeEnd == booking.timeEnd)
-//      .get._id
-//    println(s"==============================Debug: $bookingId")
-//
-//
-//    val allUsers = userCollection.find()
-//      .map { user =>
-//        UserLogic.ConvertToUser(user.toString.replaceAll("Document", "User"))
-//      }.toList
-//    allUsers.findLast(_._id == userId) match {
-//      case Some(value) =>
-//        println("==============================Debug:")
-//        println("==============================Debug:")
-//        println("==============================Debug:")
-//        val newBooking: List[String] = value.bookingHistoryId.isEmpty match {
-//          case true => List(bookingId)
-//          case false => value.bookingHistoryId :+ bookingId
-//        }
-//        val userWithNewData = User(value._id, value.username,value.typeOfUser, value.firstName, value.lastName, value.password, value.email, value.phoneNumber,newBooking)
-//        println(newBooking)
-//        println(userWithNewData)
-//        userCollection.replaceOne(equal("username", value.username),UserLogic.DocumentFromUserForAddBooking(value, userWithNewData))
-//      case None =>
-//        println("Error when update user booking history, return template user")
-//    }
+    val userId = booking.usernameBooked
+    val bookingIds = bookingCollection.find()
+      .map { booked =>
+        BookingLogic.ConvertToBooking(booked.toString.replaceAll("Document", "Booking"))
+      }.toList
+
+    val bookingId1 =  bookingIds.filter(b => b.usernameBooked == userId)
+    val bookingId2 = bookingId1.filter(b => (b.timeStart == booking.timeStart) && ( b.timeEnd == booking.timeEnd))
+    val bookingId = bookingId2.head._id
+    val allUsers = userCollection.find()
+      .map { user =>
+        UserLogic.ConvertToUser(user.toString.replaceAll("Document", "User"))
+      }.toList
+    allUsers.findLast(_._id == userId) match {
+      case Some(value) =>
+        val newBooking: List[String] = value.bookingHistoryId.isEmpty match {
+          case true => List(bookingId)
+          case false => value.bookingHistoryId :+ bookingId
+        }
+        val userWithNewData = User(value._id, value.username,value.typeOfUser, value.firstName, value.lastName, value.password, value.email, value.phoneNumber,newBooking)
+        println(newBooking)
+        println(userWithNewData)
+        userCollection.replaceOne(equal("username", value.username),UserLogic.DocumentFromUserForAddBooking(value, userWithNewData))
+      case None =>
+        println("Error when update user booking history, return template user")
+    }
   }
   def ConvertToBooking(jsonStr: String): Booking = {
     val booking: Booking = jsonStr

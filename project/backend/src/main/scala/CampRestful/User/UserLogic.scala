@@ -7,7 +7,7 @@ import akka.stream.Materializer
 import org.bson.types.ObjectId
 import org.mongodb.scala.bson.{BsonObjectId, Document}
 import org.mongodb.scala.model.Filters
-import org.mongodb.scala.model.Filters.equal
+import org.mongodb.scala.model.Filters.{bsonType, equal}
 import org.mongodb.scala.model.Updates.{combine, currentDate, set}
 import spray.json.DefaultJsonProtocol._
 import spray.json.enrichAny
@@ -132,7 +132,7 @@ case object UserLogic {
       "password" -> oldUser.password,
       "email"-> oldUser.email,
       "phoneNumber" -> oldUser.phoneNumber,
-      "bookingHistoryId" -> newUser.bookingHistoryId.toJson.prettyPrint)
+      "bookingHistoryId" -> newUser.bookingHistoryId)
   }
 
 }

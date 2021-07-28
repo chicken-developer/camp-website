@@ -2,9 +2,13 @@ package CampRestful.Camp.CampLogic
 
 import CampRestful.Camp.CampLogic.GetMethodLogic._
 import Routes.Data._
-import org.mongodb.scala.bson.Document
+import com.mongodb.DBObject
+import org.bson.{BsonDocumentWriter, BsonWriter}
+import org.mongodb.scala.bson.{BsonDocument, BsonValue, Document}
 import spray.json.DefaultJsonProtocol.{StringJsonFormat, mapFormat}
 import spray.json.enrichAny
+
+import scala.util.parsing.json.JSONObject
 
 case object CampConverter {
 
@@ -82,10 +86,20 @@ case object CampConverter {
       "typeOfUse" -> sd.typeOfUse
     )
   }
+  def ConvertAeItemsToDocuments(items: Map[String, String]): Document = {
+    val tentValue = items.find(_._1=="Tent").get._2
+    val rVValue = items.find(_._1=="RV").get._2
+    val  trailerValue = items.find(_._1=="Trailer").get._2
+    Document(
+      "Tent" -> tentValue,
+      "RV" -> rVValue,
+      "Trailer" -> trailerValue
+    )
+  }
 
   def DocumentFromAllowableEquipment(ae: AllowableEquipment): Document = {
     Document (
-      "items" -> ae.items.toJson.prettyPrint
+      "items" -> ConvertAeItemsToDocuments(ae.items)
     )
   }
 
