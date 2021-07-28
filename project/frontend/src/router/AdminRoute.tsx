@@ -13,20 +13,22 @@ const DashboardLayout = ({ children, ...rest }) => {
 }
 
 const DashboardLayoutRoute = ({ component: Component, ...rest }) => {
-    const location = useLocation();
     const data = JSON.parse(localStorage.getItem(Constant.KEY.USER) as any);
-
-    console.log('AUTH', data?.typeOfUser)
     return (
-        data?.typeOfUser === 'root' ? (
-            <Route {...rest} render={matchProps => (
-                <DashboardLayout>
-                    <Component {...matchProps} />
-                </DashboardLayout>
-            )} />
-        )
+        data?.typeOfUser === 'root'
+            ? (
+                <Route {...rest} render={matchProps => (
+                    <DashboardLayout>
+                        <Component {...matchProps} />
+                    </DashboardLayout>
+                )} />
+            )
             :
-            <Redirect to={{ pathname: "/home", state: { from: location } }} />
+            (
+                data?.typeOfUser === null
+                    ? <Redirect exact to={{ pathname: "/sign-in" }} />
+                    : <Redirect exact to={{ pathname: "/home" }} />
+            )
     )
 };
 

@@ -19,9 +19,6 @@ const UserRoute = ({ component: Component, ...rest }) => {
 
     const location = useLocation();
     const data = JSON.parse(localStorage.getItem(Constant.KEY.USER) as any);
-
-    console.log('AUTH', data?.typeOfUser)
-
     return (
         data?.typeOfUser !== 'root' ? (
             <Route {...rest} render={matchProps => (
@@ -31,7 +28,7 @@ const UserRoute = ({ component: Component, ...rest }) => {
             )} />
         )
             :
-            <Redirect to={{ pathname: "/home", state: { from: location } }} />
+            <Redirect to={{ pathname: "/admin", state: { from: location } }} />
     )
 };
 

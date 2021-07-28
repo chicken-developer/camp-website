@@ -2,13 +2,13 @@ import React from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useHistory, useLocation } from "react-router-dom"
 import Constant from "../utils/Constant"
-import {RootState} from "../store";
-import {User} from "../type"
+import { RootState } from "../store";
+import { User } from "../type"
 import { toastSuccess } from "../utils/toast_mixin"
 import * as action from '../reducers/auth/actions'
 
-export default ({ })  => {
-  
+export const AdminHeader = () => {
+
   const authUser = useSelector((state) => state.auth.userData)
 
   let history = useHistory()
@@ -18,7 +18,7 @@ export default ({ })  => {
     dispatch(action.logoutAction)
     localStorage.removeItem(Constant.KEY.USER)
     toastSuccess("Logout Successfull");
-    // history.push('/sign-in')
+    history.push('/sign-in')
   }
 
   return (
