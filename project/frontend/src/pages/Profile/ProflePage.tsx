@@ -169,7 +169,7 @@ export const ProflePage = () => {
                     <label className="text-danger">{checkMatch}</label>
                 </div>
                 <button type="submit" className="btn btn-primary btn-block">
-                    Sign Up
+                    Update
                 </button>
             </form>
         </div>
