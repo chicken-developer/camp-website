@@ -3,6 +3,7 @@ import {
   LOGIN_SUCCESS,
   LOGIN_ERROR,
   LOGOUT,
+  UPDATE_PROFILE_SUCCESS,
 } from "./constants";
 
 const initialState = {
@@ -14,19 +15,22 @@ const authReducer = function loginReducer(
   action: any
 ) {
   const nextData = action.data
-  let newState = {...state}
+  let newState = { ...state }
 
   switch (action.type) {
     case LOGIN_SUCCESS:
       newState.userData = nextData;
       break;
-    case LOGOUT: 
+    case UPDATE_PROFILE_SUCCESS:
+      newState.userData = nextData;
+      break;
+    case LOGOUT:
       newState.userData = {}
       break;
 
     default:
       newState = state;
-      break;    
+      break;
   }
 
   return newState;

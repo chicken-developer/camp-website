@@ -15,14 +15,14 @@ interface Props { }
 const NavBar = (props: Props) => {
 
   let history = useHistory()
-
+  let dispatch = useDispatch()
   const authUser = useSelector((state: RootState) => state.auth.userData) as Model.User;
 
   let onLogout: MouseEventHandler<HTMLAnchorElement> = () => {
-    // useDispatch(action.logoutAction())
+    dispatch(action.logoutAction())
     localStorage.removeItem(Constant.KEY.USER)
     toastSuccess("Logout Successfull");
-    history.push('/sign-in')
+    history.push('/home')
   }
 
   return (
@@ -37,7 +37,7 @@ const NavBar = (props: Props) => {
               ? (
                 <>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/sign-in">
+                    <Link className="nav-link" to={"/sign-in"}>
                       Login
                     </Link>
                   </li>
@@ -58,15 +58,16 @@ const NavBar = (props: Props) => {
                   <li className="dropdown">
 
                     <a href="." data-toggle="dropdown" className="nav-link dropdown-toggle nav-link-lg nav-link-user">
-                      <img alt="image" src="../assets/img/avatar/avatar-1.png" className="rounded-circle mr-1" />
+                      <img alt="image" src="../assets/img/avatar/avatar-1.png" 
+                      className="rounded-circle mr-1" />
                       <div className="d-sm-none d-lg-inline-block">Hi, {authUser.username}</div>
                     </a>
 
                     <div className="dropdown-menu dropdown-menu-right">
-                      <a href="." className="dropdown-item has-icon text-dark d-flex align-items-center" onClick={onLogout}>
+                      <Link className="dropdown-item has-icon text-dark d-flex align-items-center" to={'/profile'}>
                         <i className="fas fa-user"></i>Profile
-                      </a>
-                      <a href="." className="dropdown-item has-icon text-dark d-flex align-items-center" onClick={onLogout}>
+                      </Link>
+                      <a href="." className="dropdown-item has-icon text-dark d-flex align-items-center">
                         <i className="fas fa-bookmark"></i> <span>My Booking</span>
                       </a>
                       <hr />
