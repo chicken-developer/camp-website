@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Redirect, Route, Switch, useLocation } from "react-router-dom";
 import Login from "../pages/Login/Login";
 import Register from "../pages/RegisterPage/Register";
 import HomePage from "../pages/HomePage/HomePage";
@@ -22,20 +22,20 @@ function AppRouter() {
   return (
     <Router>
       <Switch>
-        <Route exact path="/" component={(props: any) => (
+        {/* <Route exact path="/" component={(props: any) => (
           <Layout>
             <Login {...props} />
           </Layout>
-        )} />
+        )} /> */}
 
-        {/* <Route path="/">
+        <Route exact path="/">
           {
             data?.typeOfUser === 'root'
-              ? <Redirect exact to={{ pathname: "/admin" }} />
-              : <Redirect exact to={{ pathname: "/home" }} />
+              ? <Redirect to={{ pathname: "/admin" }} />
+              : <Redirect  to={{ pathname: "/home" }} />
           }
         </Route>
-        */}
+
         <AuthRouter exact path="/sign-in" component={Login} />
         <AuthRouter exact path="/sign-up" component={Register} />
 
