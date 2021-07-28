@@ -14,6 +14,8 @@ import Constant from "../utils/Constant";
 import DashboardLayoutRoute from "./AdminRoute";
 import UserRoute from "./UserLayout";
 import AuthRouter from "./AuthRouter";
+import GuesRouter from "./GuestRouter";
+import { ProflePage } from "../pages/Profile/ProflePage";
 
 
 function AppRouter() {
@@ -32,7 +34,7 @@ function AppRouter() {
           {
             data?.typeOfUser === 'root'
               ? <Redirect to={{ pathname: "/admin" }} />
-              : <Redirect  to={{ pathname: "/home" }} />
+              : <Redirect to={{ pathname: "/home" }} />
           }
         </Route>
 
@@ -42,9 +44,12 @@ function AppRouter() {
         <DashboardLayoutRoute exact path="/admin" component={AdminPage} />
         <DashboardLayoutRoute path="/admin/users" component={UsersPage} />
         <DashboardLayoutRoute path="/admin/camps" component={CampsPage} />
-        <UserRoute exact path="/home" component={HomePage} />
-        <UserRoute path="/camp/:campId" component={CampPage} />
-        <UserRoute path="/camp" component={CampPage} />
+
+        <GuesRouter exact path="/home" component={HomePage} />
+        <GuesRouter path="/camp/:campId" component={CampPage} />
+        <GuesRouter path="/camp" component={CampPage} />
+
+        <UserRoute exect path="/profile" component={ProflePage} />
 
       </Switch>
     </Router>

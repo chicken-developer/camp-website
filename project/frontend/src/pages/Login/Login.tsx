@@ -30,7 +30,7 @@ function Login() {
         localStorage.setItem(Constant.KEY.USER, JSON.stringify(authUser))
         toastSuccess("Login Successfull");
 
-        if (authUser.typeOfUser == "root") {
+        if (authUser.typeOfUser === "root") {
           history.push("/admin")
         } else {
           history.push("/home")
