@@ -12,7 +12,7 @@ const Layout = ({ children }: Props) => {
   let pathName = location?.pathname
   return (
     <div className="App">
-      {pathName.indexOf('/sign-in') >= 0 || pathName.indexOf('/sign-up') >= 0 && <NavBar />}
+      {(pathName.indexOf('/sign-in') >= 0 && pathName.indexOf('/sign-up') >= 0) && <NavBar />}
       <div className="auth-wrapper">
         <div className="auth-inner">{children}</div>
       </div>

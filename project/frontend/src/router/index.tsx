@@ -13,12 +13,12 @@ import CampsPage from "../pages/CampsPage/CampsPage";
 import Constant from "../utils/Constant";
 import DashboardLayoutRoute from "./AdminRoute";
 import UserRoute from "./UserLayout";
+import AuthRouter from "./AuthRouter";
 
 
 function AppRouter() {
-  let location = useLocation();
-  let authData = localStorage.getItem(Constant.KEY.USER) as any
-  let authRoot = authData?.typeOfUser
+  const data = JSON.parse(localStorage.getItem(Constant.KEY.USER) as any);
+
   return (
     <Router>
       <Switch>
@@ -27,22 +27,21 @@ function AppRouter() {
             <Login {...props} />
           </Layout>
         )} />
-        <Route exact path="/sign-in" component={(props: any) => (
-          <Layout>
-            <Login {...props} />
-          </Layout>
-        )} />
 
-        <Route exact path="/sign-up" component={(props: any) => (
-          <Layout>
-            <Register {...props} />
-          </Layout>
-        )} />
+        {/* <Route path="/">
+          {
+            data?.typeOfUser === 'root'
+              ? <Redirect exact to={{ pathname: "/admin" }} />
+              : <Redirect exact to={{ pathname: "/home" }} />
+          }
+        </Route>
+        */}
+        <AuthRouter exact path="/sign-in" component={Login} />
+        <AuthRouter exact path="/sign-up" component={Register} />
 
         <DashboardLayoutRoute exact path="/admin" component={AdminPage} />
         <DashboardLayoutRoute path="/admin/users" component={UsersPage} />
         <DashboardLayoutRoute path="/admin/camps" component={CampsPage} />
-
         <UserRoute exact path="/home" component={HomePage} />
         <UserRoute path="/camp/:campId" component={CampPage} />
         <UserRoute path="/camp" component={CampPage} />

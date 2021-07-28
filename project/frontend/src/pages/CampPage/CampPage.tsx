@@ -98,10 +98,8 @@ export class CampPage extends Component<Props, State> {
         }
         API.booking(this.props.authUser.username, camObj).then(response => {
             console.log(response);
-
             this.renderPopup()
         }).catch(error => {
-
             this.renderPopup()
         })
     }
