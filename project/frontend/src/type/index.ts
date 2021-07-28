@@ -1,4 +1,5 @@
 export interface User {
+    _id: String,
     username: String
     firstName: String,
     lastName: String,
@@ -7,7 +8,7 @@ export interface User {
     phoneNumber?: String,
     typeOfUser?: String,
     bookingHistory?: Array<String>
-} 
+}
 
 export interface SingleUser {
     data: User,
@@ -52,40 +53,40 @@ export interface HomeCamp {
         }
     },
     allowableVehicleAndDrivewayDetails: {
-         _id : String ,
-        drivewayEntry :  String ,
-        drivewayLength : Number,
-        drivewaySurface :  String ,
-        isEquipmentMandatory :  String ,
-        maxNumOfVehicles : Number,
-        maxVehicleLength : Number,
-        siteLength : Number
+        _id: String,
+        drivewayEntry: String,
+        drivewayLength: Number,
+        drivewaySurface: String,
+        isEquipmentMandatory: String,
+        maxNumOfVehicles: Number,
+        maxVehicleLength: Number,
+        siteLength: Number
     },
     allImgSrc: Array<String>,
-    campLocationAddress : String ,
-    campName : String ,
-    nearAddress : String ,
-    partAddress : String ,
-    price : Number,
+    campLocationAddress: String,
+    campName: String,
+    nearAddress: String,
+    partAddress: String,
+    price: Number,
     siteAvailability: {
         _id: String,
         date: String,
         state: String
     },
     siteDetails: {
-         _id :  String ,
-        campFireAllowed :  String ,
-        capacityRating :  String ,
-        checkInTime : String ,
-        checkOutTime :  String ,
-        maxNumOfPeople : Number,
-        minNumOfPeople : Number,
-        petAllowed :  String ,
-        shade:  String ,
-        siteAccessible :  String ,
-        siteReserveType :  String ,
-        siteType :  String ,
-        typeOfUse :  String 
+        _id: String,
+        campFireAllowed: String,
+        capacityRating: String,
+        checkInTime: String,
+        checkOutTime: String,
+        maxNumOfPeople: Number,
+        minNumOfPeople: Number,
+        petAllowed: String,
+        shade: String,
+        siteAccessible: String,
+        siteReserveType: String,
+        siteType: String,
+        typeOfUse: String
     }
 }
 

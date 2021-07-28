@@ -8,17 +8,21 @@ import { toastSuccess } from "../utils/toast_mixin";
 import * as action from '../reducers/auth/actions'
 interface Props { }
 
+// 
+// let AccountDropdown = styled
+
+// 
 const NavBar = (props: Props) => {
 
   let history = useHistory()
-
+  let dispatch = useDispatch()
   const authUser = useSelector((state: RootState) => state.auth.userData) as Model.User;
 
   let onLogout: MouseEventHandler<HTMLAnchorElement> = () => {
-    // useDispatch(action.logoutAction())
+    dispatch(action.logoutAction())
     localStorage.removeItem(Constant.KEY.USER)
     toastSuccess("Logout Successfull");
-    history.push('/sign-in')
+    history.push('/home')
   }
 
   return (
@@ -29,36 +33,54 @@ const NavBar = (props: Props) => {
         </Link>
         <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
           <ul className="navbar-nav ml-auto">
-            {!authUser.username ?
-              <>
-                <li className="nav-item">
-                  <Link className="nav-link" to={"/sign-in"}>
-                    Login
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to={"/sign-up"}>
-                    Sign up
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to={"/home"}>
-                    Home
-                  </Link>
-                </li>
-              </>
-              :
-              <>
-                <li className="nav-item">
-                  Wellcome <strong>{authUser.username}</strong>
-                </li>
-                <li className="nav-item">
-                  {/* <Link className="nav-link" to={"/sign-in"}>
-                    Logout
-                  </Link> */}
-                  <a className="menu_link" onClick={onLogout}> Logout</a>
-                </li>
-              </>
+            {!authUser.username
+              ? (
+                <>
+                  <li className="nav-item">
+                    <Link className="nav-link" to={"/sign-in"}>
+                      Login
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/sign-up">
+                      Sign up
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/home">
+                      Home
+                    </Link>
+                  </li>
+                </>
+              )
+              : (
+                <>
+                  <li className="dropdown">
+
+                    <a href="." data-toggle="dropdown" className="nav-link dropdown-toggle nav-link-lg nav-link-user">
+                      <img alt="image" src="../assets/img/avatar/avatar-1.png" 
+                      className="rounded-circle mr-1" />
+                      <div className="d-sm-none d-lg-inline-block">Hi, {authUser.username}</div>
+                    </a>
+
+                    <div className="dropdown-menu dropdown-menu-right">
+                      <Link className="dropdown-item has-icon text-dark d-flex align-items-center" to={'/profile'}>
+                        <i className="fas fa-user"></i>Profile
+                      </Link>
+                      <a href="." className="dropdown-item has-icon text-dark d-flex align-items-center">
+                      </a>
+                      <Link to = "/history" className="dropdown-item has-icon text-dark d-flex align-items-center">
+                        <i className="fas fa-bookmark"></i> <span>My Booking</span>
+                      </Link>
+                      <hr />
+
+                      <a href="." className="dropdown-item has-icon text-danger d-flex align-items-center" onClick={onLogout}>
+                        <i className="fas fa-sign-out-alt"></i> Logout
+                      </a>
+                    </div>
+                  </li>
+                </>
+              )
             }
 
           </ul>

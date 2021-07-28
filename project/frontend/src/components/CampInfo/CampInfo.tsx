@@ -8,15 +8,15 @@ interface Props {
     text: String
 }
 
-const CampInfo = ({icon, text}: Props) => {
+const CampInfo = ({ icon, text }: Props) => {
     return (
-        <div className = "card camp-info">
-           <div className = "card-info__content">
-                <div className = "camp-info__icon">
-                    <FontAwesomeIcon icon={icon} className = "mr-4"/>
+        <div className="card camp-info">
+            <div className="card-info__content">
+                <div className="camp-info__icon">
+                    <FontAwesomeIcon icon={icon} className="mr-4" />
                 </div>
 
-                <div className = "camp-info__title">
+                <div className="camp-info__title">
                     {text}
                 </div>
             </div>
