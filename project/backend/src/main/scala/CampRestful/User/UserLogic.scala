@@ -78,6 +78,22 @@ case object UserLogic {
     val userFullData =  UserFullData(u._id , u.username, u.typeOfUser, u.firstName, u.lastName, u.password, u.email, u.phoneNumber,result.toJson )
     Future(userFullData)
   }
+  def GetAllUserWithFullData(): Future[List[UserFullData]] = {
+    val allUsers = userCollection.find()
+      .map { user =>
+        UserLogic.ConvertToUser(user.toString.replaceAll("Document", "User"))
+      }.toList
+    val result = allUsers.map { u =>
+      val bookingHistory =  bookingCollection.find()
+        .map { booking =>
+          BookingLogic.ConvertToBooking(booking.toString.replaceAll("Document", "Booking"))
+        }.toList
+      val result = bookingHistory.filter(b => b.usernameBooked == u._id)
+      val userFullData =  UserFullData(u._id , u.username, u.typeOfUser, u.firstName, u.lastName, u.password, u.email, u.phoneNumber,result.toJson )
+      userFullData
+    }
+    Future(result)
+  }
 
   def GetAllUser(): Future[List[User]] = {
     val allUsers = userCollection.find()
