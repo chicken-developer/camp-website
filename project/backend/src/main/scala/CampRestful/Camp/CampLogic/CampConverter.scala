@@ -32,7 +32,7 @@ case object CampConverter {
 
     val rvMax = ae.items.find(_._1 == "RV").get._2
     val tenMax = ae.items.find(_._1 == "Trailer").get._2
-    CampForHomePage(c._id, c.campName, c.campImgSrc.head, c.campImgSrc, c.campLocationAddress,sd_typeOfUse,sd_maxNumOfPeople, vd_maxNumOfVehicles,vd_maxVehicleLengthForVehicle,rvMax.toDouble, tenMax.toDouble, c.price)
+    CampForHomePage(c._id, c.campName, c.campImgSrc.tail.head, c.campImgSrc, c.campLocationAddress,sd_typeOfUse,sd_maxNumOfPeople, vd_maxNumOfVehicles,vd_maxVehicleLengthForVehicle,rvMax.toDouble, tenMax.toDouble, c.price)
   }
 
   def ConvertToCampData(c: Camp): CampData = {
@@ -55,6 +55,58 @@ case object CampConverter {
       "price" -> c.price,
       "siteAvailabilityId" -> c.siteAvailabilityId,
       "siteDetailsId" -> c.siteDetailsId
+    )
+  }
+
+  def DocumentFromSiteAvailability(sa: SiteAvailability): Document = {
+    Document(
+      "date" -> sa.date,
+      "state" -> sa.date,
+    )
+  }
+
+  def DocumentFromSiteDetails(sd: SiteDetails): Document = {
+    Document(
+      "campFireAllowed" -> sd.campFireAllowed,
+      "capacityRating" -> sd.capacityRating,
+      "checkInTime" -> sd.checkInTime,
+      "checkOutTime" -> sd.checkOutTime,
+      "maxNumOfPeople" -> sd.maxNumOfPeople,
+      "minNumOfPeople" -> sd.minNumOfPeople,
+      "petAllowed" -> sd.petAllowed,
+      "shade" -> sd.shade,
+      "siteAccessible" -> sd.siteAccessible,
+      "siteReserveType" -> sd.siteReserveType,
+      "siteType" -> sd.siteType,
+      "typeOfUse" -> sd.typeOfUse
+    )
+  }
+  def ConvertAeItemsToDocuments(items: Map[String, String]): Document = {
+    val tentValue = items.find(_._1=="Tent").get._2
+    val rVValue = items.find(_._1=="RV").get._2
+    val  trailerValue = items.find(_._1=="Trailer").get._2
+    Document(
+      "Tent" -> tentValue,
+      "RV" -> rVValue,
+      "Trailer" -> trailerValue
+    )
+  }
+
+  def DocumentFromAllowableEquipment(ae: AllowableEquipment): Document = {
+    Document (
+      "items" -> ConvertAeItemsToDocuments(ae.items)
+    )
+  }
+
+  def DocumentFromAllowableVehicleAndDrivewayDetails(ae: AllowableVehicleAndDrivewayDetails): Document = {
+    Document(
+      "drivewayEntry" -> ae.drivewayEntry,
+      "drivewayLength" -> ae.drivewayLength,
+      "drivewaySurface" -> ae.drivewaySurface,
+      "isEquipmentMandatory" -> ae.isEquipmentMandatory,
+      "maxNumOfVehicles" -> ae.maxNumOfVehicles,
+      "maxVehicleLength" -> ae.maxVehicleLength,
+      "siteLength" -> ae.siteLength
     )
   }
 
@@ -114,4 +166,5 @@ case object CampConverter {
     }
     campVehicleDetails
   }
+
 }

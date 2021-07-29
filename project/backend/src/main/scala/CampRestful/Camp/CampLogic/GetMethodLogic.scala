@@ -1,7 +1,6 @@
 package CampRestful.Camp.CampLogic
 
-import CampRestful.Camp.CampLogic.CampConverter.{ConvertToAllowableEquipment, ConvertToAllowableVehicleAndDrivewayDetails, ConvertToCamp, ConvertToCampData, ConvertToCampForHomePage, ConvertToSiteAvailability, ConvertToSiteDetails}
-
+import CampRestful.Camp.CampLogic.CampConverter._
 import scala.collection.convert.ImplicitConversions.`iterable AsScalaIterable`
 import scala.concurrent.Future
 import Routes.Data._
@@ -52,7 +51,15 @@ case object GetMethodLogic {
   }
 
   def GetFullCampDataById(id: String): Future[CampData] = {
-    Future(templateCampData)
+    val camp = campCollection.find()
+      .map { camp =>
+        val c = ConvertToCamp(camp.toString.replaceAll("Document", "Camp"))
+        ConvertToCampData(c)
+      }.toList.findLast(c => c._id == id) match {
+      case Some(value) => Future(value)
+      case None => Future(templateCampData)
+    }
+    camp
   }
 
   def GetSiteAvailabilityById(id: String): SiteAvailability = {

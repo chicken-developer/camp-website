@@ -1,19 +1,13 @@
 package CampRestful.Camp
 
 import CampRestful.Camp.CampLogic.{CRUDMethodLogic, GetMethodLogic}
-import akka.Done
 import akka.actor.ActorSystem
-import akka.http.scaladsl.model.{ContentTypes, HttpEntity, Multipart, StatusCodes}
+import akka.http.scaladsl.model.{ContentTypes, HttpEntity, StatusCodes}
 import akka.http.scaladsl.server.{Directives, Route}
 import akka.stream.Materializer
-import akka.stream.scaladsl.{FileIO, Sink, Source}
-import akka.util.ByteString
 import spray.json.DefaultJsonProtocol.{StringJsonFormat, listFormat}
 import spray.json._
-
-import java.io.File
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
 import scala.language.postfixOps
 import scala.util.{Failure, Success}
@@ -68,7 +62,7 @@ class CampRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
           val camp = GetMethodLogic.GetFullCampDataById(campId)
           onComplete(camp) {
             case Success(aCamp) =>
-              if (aCamp._id == templateCampData._id) { //TODO
+              if (aCamp._id != templateCampData._id) { //TODO
                 complete(
                   HttpEntity(
                     ContentTypes.`application/json`,
@@ -80,7 +74,7 @@ class CampRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
                   StatusCodes.InternalServerError,
                   HttpEntity(
                     ContentTypes.`application/json`,
-                    Message("No have camp", 0, "".toJson).toJson.prettyPrint
+                    Message("This method not avalid now", 0, "".toJson).toJson.prettyPrint
                   )
                 )
               }
@@ -143,13 +137,24 @@ class CampRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
             }
           } ~
       delete {
+        val campStatusCodeFuture = CRUDMethodLogic.HandleDeleteCamp(campId)
+        onComplete(campStatusCodeFuture) {
+          case Success(status) =>
+            complete {
+              HttpEntity(
+                ContentTypes.`application/json`,
+                Message(s"Success with status: ${status.toString()}", 1, "".toJson).toJson.prettyPrint
+              )
+            }
+          case Failure(ex) =>
             complete(
               StatusCodes.InternalServerError,
               HttpEntity(
                 ContentTypes.`application/json`,
-                Message("Success", 1, "".toJson).toJson.prettyPrint
+                Message("Fail to delete", 0, "".toJson).toJson.prettyPrint
               )
             )
+        }
           }
       }
     }
