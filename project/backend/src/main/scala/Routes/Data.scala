@@ -1,7 +1,7 @@
 package Routes
 
 import spray.json.DefaultJsonProtocol._
-import spray.json.{JsValue, enrichAny, jsonReader}
+import spray.json._
 
 case object Data {
   implicit val userFormat = jsonFormat9(User)

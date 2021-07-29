@@ -2,8 +2,7 @@ package CampRestful.User
 
 import CampRestful.Camp.CampLogic.CampConverter
 import Routes.Data._
-import Routes.MongoHelper.{siteAvailabilityCollection, siteDetailsCollection}
-import akka.http.scaladsl.model.{ContentTypes, HttpEntity, StatusCodes}
+import Routes.MongoHelper._
 import spray.json.DefaultJsonProtocol._
 
 import java.time.LocalDate

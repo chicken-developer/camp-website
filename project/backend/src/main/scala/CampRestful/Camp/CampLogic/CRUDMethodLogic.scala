@@ -2,7 +2,7 @@ package CampRestful.Camp.CampLogic
 
 import CampRestful.Camp.CampLogic.CampConverter.ConvertToCamp
 import Routes.Data.{AllowableEquipment, AllowableVehicleAndDrivewayDetails, Camp, CampData, SiteAvailability, SiteDetails, allowableVehicleAndDrivewayDetailsFormat, templateCamp}
-import Routes.MongoHelper.{allowableEquipmentCollection, allowableVehicleAndDrivewayDetailsCollection, campCollection, siteAvailabilityCollection, siteDetailsCollection, userCollection}
+import Routes.MongoHelper._
 import akka.http.scaladsl.model.{StatusCode, StatusCodes}
 import org.mongodb.scala.model.Filters.equal
 
@@ -11,8 +11,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 case object CRUDMethodLogic {
-  def HandleInsertNewCap(campData: CampData): CampData =
-  {
+  def HandleInsertNewCap(campData: CampData): CampData = {
     val siteAvailability = campData.siteAvailability.convertTo[SiteAvailability]
     val siteDetails = campData.siteDetails.convertTo[SiteDetails]
     val allowableEquipment = campData.allowableEquipmentList.convertTo[AllowableEquipment]
@@ -47,7 +46,6 @@ case object CRUDMethodLogic {
     campData
   }
 
-
   def HandleDeleteCamp(campId: String): Future[StatusCode] = {
     val allCamps = campCollection.find()
       .map { camp =>
@@ -58,11 +56,13 @@ case object CRUDMethodLogic {
       case Some(aCamp) => aCamp
       case None => templateCamp
     }
+
     campCollection.deleteOne(equal("_id", c._id))
     siteAvailabilityCollection.deleteOne(equal("_id", c.siteAvailabilityId))
     siteDetailsCollection.deleteOne(equal("_id", c.siteDetailsId))
     allowableEquipmentCollection.deleteOne(equal("_id", c.allowableEquipmentListId))
     allowableVehicleAndDrivewayDetailsCollection.deleteOne(equal("_id", c.allowableVehicleAndDrivewayDetailsId))
+
     Future(StatusCodes.OK)
   }
 }

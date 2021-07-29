@@ -1,8 +1,8 @@
 package CampRestful.User
 
-import Routes.Data.{Booking, User, templateBooking, templateUser}
+import Routes.Data._
 import akka.actor.ActorSystem
-import akka.http.scaladsl.model.{HttpEntity, StatusCode, StatusCodes}
+import akka.http.scaladsl.model.HttpEntity
 import akka.stream.Materializer
 import org.mongodb.scala.bson.Document
 import org.mongodb.scala.model.Filters.equal
@@ -12,7 +12,6 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
 import scala.language.postfixOps
-import scala.util.{Failure, Success}
 
 case object BookingLogic {
 

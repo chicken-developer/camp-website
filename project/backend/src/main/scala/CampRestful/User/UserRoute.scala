@@ -2,7 +2,7 @@ package CampRestful.User
 
 import CampRestful.User.CalenderHandler.HandleRawData
 import akka.actor.ActorSystem
-import akka.http.scaladsl.model.{ContentTypes, HttpEntity, HttpRequest, StatusCodes}
+import akka.http.scaladsl.model.{ContentTypes, HttpEntity, StatusCodes}
 import akka.http.scaladsl.server.{Directives, Route}
 import akka.stream.Materializer
 import spray.json.DefaultJsonProtocol._

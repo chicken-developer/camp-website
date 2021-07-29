@@ -1,19 +1,13 @@
 package CampRestful.Camp
 
 import CampRestful.Camp.CampLogic.{CRUDMethodLogic, GetMethodLogic}
-import akka.Done
 import akka.actor.ActorSystem
-import akka.http.scaladsl.model.{ContentTypes, HttpEntity, Multipart, StatusCodes}
+import akka.http.scaladsl.model.{ContentTypes, HttpEntity, StatusCodes}
 import akka.http.scaladsl.server.{Directives, Route}
 import akka.stream.Materializer
-import akka.stream.scaladsl.{FileIO, Sink, Source}
-import akka.util.ByteString
 import spray.json.DefaultJsonProtocol.{StringJsonFormat, listFormat}
 import spray.json._
-
-import java.io.File
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
 import scala.language.postfixOps
 import scala.util.{Failure, Success}

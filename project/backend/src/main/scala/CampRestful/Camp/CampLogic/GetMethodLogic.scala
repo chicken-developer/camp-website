@@ -1,7 +1,6 @@
 package CampRestful.Camp.CampLogic
 
-import CampRestful.Camp.CampLogic.CampConverter.{ConvertToAllowableEquipment, ConvertToAllowableVehicleAndDrivewayDetails, ConvertToCamp, ConvertToCampData, ConvertToCampForHomePage, ConvertToSiteAvailability, ConvertToSiteDetails}
-
+import CampRestful.Camp.CampLogic.CampConverter._
 import scala.collection.convert.ImplicitConversions.`iterable AsScalaIterable`
 import scala.concurrent.Future
 import Routes.Data._

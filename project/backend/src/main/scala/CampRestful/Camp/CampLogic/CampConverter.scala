@@ -2,13 +2,8 @@ package CampRestful.Camp.CampLogic
 
 import CampRestful.Camp.CampLogic.GetMethodLogic._
 import Routes.Data._
-import com.mongodb.DBObject
-import org.bson.{BsonDocumentWriter, BsonWriter}
-import org.mongodb.scala.bson.{BsonDocument, BsonValue, Document}
-import spray.json.DefaultJsonProtocol.{StringJsonFormat, mapFormat}
+import org.mongodb.scala.bson.Document
 import spray.json.enrichAny
-
-import scala.util.parsing.json.JSONObject
 
 case object CampConverter {
 
@@ -37,7 +32,7 @@ case object CampConverter {
 
     val rvMax = ae.items.find(_._1 == "RV").get._2
     val tenMax = ae.items.find(_._1 == "Trailer").get._2
-    CampForHomePage(c._id, c.campName, c.campImgSrc.head, c.campImgSrc, c.campLocationAddress,sd_typeOfUse,sd_maxNumOfPeople, vd_maxNumOfVehicles,vd_maxVehicleLengthForVehicle,rvMax.toDouble, tenMax.toDouble, c.price)
+    CampForHomePage(c._id, c.campName, c.campImgSrc.tail.head, c.campImgSrc, c.campLocationAddress,sd_typeOfUse,sd_maxNumOfPeople, vd_maxNumOfVehicles,vd_maxVehicleLengthForVehicle,rvMax.toDouble, tenMax.toDouble, c.price)
   }
 
   def ConvertToCampData(c: Camp): CampData = {

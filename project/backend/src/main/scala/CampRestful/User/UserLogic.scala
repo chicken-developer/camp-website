@@ -2,20 +2,13 @@ package CampRestful.User
 
 import Routes.Data._
 import akka.actor.ActorSystem
-import akka.http.scaladsl.model.{HttpEntity, StatusCode, StatusCodes}
+import akka.http.scaladsl.model.{StatusCode, StatusCodes}
 import akka.stream.Materializer
-import org.bson.types.ObjectId
 import org.mongodb.scala.bson.{BsonObjectId, Document}
-import org.mongodb.scala.model.Filters
 import org.mongodb.scala.model.Filters.{bsonType, equal}
-import org.mongodb.scala.model.Updates.{combine, currentDate, set}
-import spray.json.DefaultJsonProtocol._
-import spray.json.enrichAny
-
 import scala.collection.convert.ImplicitConversions.`iterable AsScalaIterable`
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.duration.DurationInt
 import scala.language.postfixOps
 
 case object UserLogic {
