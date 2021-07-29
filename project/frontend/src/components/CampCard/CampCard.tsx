@@ -2,7 +2,7 @@ import React, { ReactNode } from "react";
 import {NavLink} from 'react-router-dom'
 import "./CampCard.scss";
 import * as Model from "../../type"
-
+import {getLink} from "../../utils/Utils"
 interface Props {
     camp: Model.Camp
 }
@@ -13,7 +13,7 @@ const CampCard = ({camp}: Props) => {
         <div className="card-horizontal camp-card-contain">
             <img
                 className="card-img-top item-img"
-                src="https://cdn.recreation.gov/public/2019/02/21/19/34/65350_e7c97c84-39f2-425b-9714-4566d2fbaf8f_700.jpg"
+                src= {getLink(camp.mainImgSrc)}
                 alt=""
             />
             <div className = "d-flex flex-column justify-content-between w-100">

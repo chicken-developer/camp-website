@@ -87,7 +87,8 @@ export interface HomeCamp {
         siteReserveType: String,
         siteType: String,
         typeOfUse: String
-    }
+    },
+    campImgSrc: Array<String>
 }
 
 export interface CampResponse {

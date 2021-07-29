@@ -49,7 +49,8 @@ const UsersPage = ({}) => {
         <div style={{ maxWidth: '100%' }}>
             <MaterialTable
                 columns={[
-                    { title: 'User Name', field: 'username' },
+                    { title: 'Id', field: '_id', disableClick: true },
+                    { title: 'User Name', field: 'username', disableClick: true },
                     { title: 'First Name', field: 'firstName' },
                     { title: 'Last Name', field: 'lastName' },
                     { title: 'Email', field: 'email' },
@@ -66,7 +67,7 @@ const UsersPage = ({}) => {
                         })
                     },
                     onRowDelete: (oldData) => {
-                        return API.deleteUser(oldData.username)
+                        return API.deleteUser(oldData._id)
                           .then(newUser => {
                             fetchUsers()
 
@@ -76,24 +77,24 @@ const UsersPage = ({}) => {
                 detailPanel ={rowdata => {
                     return (
                         <Table>
-                        <thead>
-                          <tr>
-                            <th>Camp Book Id</th>
-                            <th>Time Start</th>
-                            <th>Time End</th>
-                            <th>Price</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {detailHistory.map((history: any) => 
+                          <thead>
                             <tr>
-                                <th>{history.campBookedId}</th>
-                                <td>{history.timeStart}</td>
-                                <td>{history.timeEnd}</td>
-                                <td>{history.totalPrice}</td>
+                              <th>Camp Book Id</th>
+                              <th>Time Start</th>
+                              <th>Time End</th>
+                              <th>Price</th>
                             </tr>
-                        )}
-                        </tbody>
+                          </thead>
+                          <tbody>
+                            {detailHistory.map((history: any) => 
+                              <tr>
+                                  <th>{history.campBookedId}</th>
+                                  <td>{history.timeStart}</td>
+                                  <td>{history.timeEnd}</td>
+                                  <td>{history.totalPrice}</td>
+                              </tr>
+                          )}
+                          </tbody>
                       </Table>
                     )
                 }}

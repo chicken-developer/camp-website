@@ -4,7 +4,7 @@ import CampCard from "../../components/CampCard";
 import { Pagination, PaginationItem, PaginationLink, Row, Col } from 'reactstrap';
 import PagePagintion from "../../components/PagePagingtion";
 // import ReadMoreReact from 'read-more-react';
-import Carousel from 'react-multi-carousel';
+import ImageCarousel from "../../components/ImageCarousel/ImageCarousel";
 import Loading from "../../components/Loading";
 import * as API from "../../service";
 import * as Model from "../../type";
@@ -13,25 +13,7 @@ import 'react-multi-carousel/lib/styles.css';
 import "./HomePage.css";
 import { Type } from "typescript";
 interface Props { }
-const responsive = {
-  superLargeDesktop: {
-    // the naming can be any, depends on you.
-    breakpoint: { max: 4000, min: 3000 },
-    items: 5
-  },
-  desktop: {
-    breakpoint: { max: 3000, min: 1024 },
-    items: 3
-  },
-  tablet: {
-    breakpoint: { max: 1024, min: 464 },
-    items: 2
-  },
-  mobile: {
-    breakpoint: { max: 464, min: 0 },
-    items: 1
-  }
-};
+
 
 const HomePage = (props: Props) => {
   const [isLoading, setLoading] = useState(false);
@@ -59,44 +41,7 @@ const HomePage = (props: Props) => {
   return (
     <div className="container home">
       <Row>
-        <Carousel responsive={responsive}>
-          <div className="mx-3">
-            <img
-              className="w-100"
-              src="https://cdn.recreation.gov/public/2019/02/21/19/34/65350_e7c97c84-39f2-425b-9714-4566d2fbaf8f_700.jpg"
-              alt=""
-            />
-          </div>
-
-          <div className="mx-3">
-            <img
-              className="w-100"
-              src="https://cdn.recreation.gov/public/2019/02/21/19/34/65350_e7c97c84-39f2-425b-9714-4566d2fbaf8f_700.jpg"
-              alt=""
-            />
-          </div>
-          <div className="mx-3">
-            <img
-              className="w-100"
-              src="https://cdn.recreation.gov/public/2019/02/21/19/34/65350_e7c97c84-39f2-425b-9714-4566d2fbaf8f_700.jpg"
-              alt=""
-            />
-          </div>
-          <div className="mx-3">
-            <img
-              className="w-100"
-              src="https://cdn.recreation.gov/public/2019/02/21/19/34/65350_e7c97c84-39f2-425b-9714-4566d2fbaf8f_700.jpg"
-              alt=""
-            />
-          </div>
-          <div className="mx-3">
-            <img
-              className="w-100"
-              src="https://cdn.recreation.gov/public/2019/02/21/19/34/65350_e7c97c84-39f2-425b-9714-4566d2fbaf8f_700.jpg"
-              alt=""
-            />
-          </div>
-        </Carousel>;
+        <ImageCarousel data = {listCamp}/>
       </Row>
 
       <Row>

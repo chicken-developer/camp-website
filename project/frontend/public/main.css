@@ -311,3 +311,7 @@ ul.pagination li:hover {
     font-weight:600
   }
 }
+
+.card-img-top {
+  object-fit: cover;
+}

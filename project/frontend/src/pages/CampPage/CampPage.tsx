@@ -18,8 +18,15 @@ import 'react-dates/lib/css/_datepicker.css';
 import { START_DATE, END_DATE } from 'react-dates/constants';
 import Swal from 'sweetalert2'
 import { ButtonProps } from "@material-ui/core";
-import {connect} from "react-redux"
-interface Props extends RouteComponentProps {
+import {connect} from "react-redux";
+import { Slide } from 'react-slideshow-image';
+import 'react-slideshow-image/dist/styles.css';
+import {getLink} from "../../utils/Utils"
+
+interface MatchParams {
+    campId: string
+}
+interface Props extends RouteComponentProps<MatchParams> {
     props: Props,
     authUser: any
 }
@@ -50,8 +57,9 @@ export class CampPage extends Component<Props, State> {
     }
 
     fetchCamp = () => {
+        const campId = this.props.match.params.campId;
         this.setState({ isLoading: true })
-        API.getDetailCamp("123123")
+        API.getDetailCamp(campId)
             .then(response => {
                 const campData = response.data;
                 console.log(campData)
@@ -72,7 +80,7 @@ export class CampPage extends Component<Props, State> {
     renderDateText = (date: moment.Moment) => {
         return <>
             <div>{date.date()}</div>
-            <strong>A</strong>
+            <strong>R</strong>
         </>
     }
 
@@ -205,11 +213,23 @@ export class CampPage extends Component<Props, State> {
                             </div>
                         </Col>
                         <Col md={5}>
-                            <img
-                                className="w-100"
-                                src="https://cdn.recreation.gov/public/2019/02/21/19/34/65350_e7c97c84-39f2-425b-9714-4566d2fbaf8f_700.jpg"
-                                alt=""
-                            />
+                            <Slide>
+                                {camp.campImgSrc.map(source => {
+                                    const   link = getLink(source)
+
+                                    return (
+                                        <div className="each-slide">
+                                            <div style={{
+                                                'backgroundImage': `url(${link})`,
+                                                width: '100%',
+                                                height: '400px'
+                                            }} >
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                            </Slide>
+                        
                         </Col>
                     </Row>
                     <Row className="mt-5">
