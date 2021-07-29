@@ -80,7 +80,7 @@ export class CampPage extends Component<Props, State> {
     renderDateText = (date: moment.Moment) => {
         return <>
             <div>{date.date()}</div>
-            <strong>R</strong>
+            <strong>A</strong>
         </>
     }
 
@@ -90,10 +90,10 @@ export class CampPage extends Component<Props, State> {
         // let camObj = this.state.camp
         let camObj = {
             _id: "null",
-            campBookedId: this.state.camp.campLocationAddress,
+            campBookedId: this.state.camp._id,
             // allImgSrc: this.state.camp.allImgSrc,
             // mainImgSrc: this.state.camp.main,
-            usernameBooked: this.state.camp.campName,
+            usernameBooked: this.props.authUser.username,
             totalPrice: totalDate * Number(this.state.camp.price),
             timeStart: this.state.startDate ? this.state.startDate.format("YYYY-MM-DD") : "2021-07-27", 
             timeEnd:  this.state.endDate ? this.state.endDate.format("YYYY-MM-DD") : "2021-07-28", 

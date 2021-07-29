@@ -8,12 +8,13 @@ const UsersPage = ({}) => {
     const [isLoading, setLoading] = useState(false);
     const [listUser, setListUser] = useState([] as any);
     const [detailHistory, setDetailHistory] = useState([]);
+    const [historys, setHistorys] = useState([] as any);
 
 
     useEffect(() => {
         setLoading(true);
         fetchUsers();
-        // fetchHistory("60fdf3a85756b8629ed0129a")
+        getFullHistory();
       }, [])
 
     const fetchUsers = () => {
@@ -30,20 +31,20 @@ const UsersPage = ({}) => {
           setLoading(false);
         })
     }
-    const fetchHistory = (username: String) => {
-        API.getHistory(username)
-        .then(response => {
-          const listCampData = response.data;
-          console.log(listCampData)
-          if (listCampData) {
-            setDetailHistory(listCampData.data);
-          }
-          setLoading(false);
-        })
-        .catch(error => {
-          setLoading(false);
-        })
-    }
+
+    const getFullHistory = () => {
+      API.fullHistory()
+      .then(response => {
+        const listCampData = response.data;
+        if (listCampData) {
+          setHistorys(listCampData.data);
+        }
+        setLoading(false);
+      })
+      .catch(error => {
+        setLoading(false);
+      })
+  }
 
     return (
         <div style={{ maxWidth: '100%' }}>
@@ -74,8 +75,17 @@ const UsersPage = ({}) => {
                         })
                     }
                 }}
-                detailPanel ={rowdata => {
-                    return (
+                
+                detailPanel ={[
+                  {
+                    render: rowData => {
+                      console.log("two data", rowData);
+                      const userHistory = historys.find(user => user.username == rowData.username);
+
+                      const listHistory = userHistory ? userHistory.bookingHistory : [];
+                     
+                      console.log("hallo")
+                      return (
                         <Table>
                           <thead>
                             <tr>
@@ -86,7 +96,7 @@ const UsersPage = ({}) => {
                             </tr>
                           </thead>
                           <tbody>
-                            {detailHistory.map((history: any) => 
+                            {listHistory.map((history: any) => 
                               <tr>
                                   <th>{history.campBookedId}</th>
                                   <td>{history.timeStart}</td>
@@ -95,13 +105,13 @@ const UsersPage = ({}) => {
                               </tr>
                           )}
                           </tbody>
-                      </Table>
-                    )
-                }}
-                onRowClick = {(rowData) => {
-                    // fetchHistory(rowData)
-                    console.log("hello")
-                }}
+                      </Table>)
+                    },
+                    
+                  }
+                ]}
+            
+
             />
       </div>
     )

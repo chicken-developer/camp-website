@@ -121,7 +121,11 @@ const CampsPage = ({}) => {
                             fetchUsers()
                         })
                     },
-                    onRowAdd: (newRow) => {
+                    onRowAdd: async (newRow) => {
+                        const resultCampDetail = await API.getDetailCamp(newRow?._id);
+                         const fullCamp = resultCampDetail.data.data;
+                        const mergeCamp = Object.assign(fullCamp, newRow);
+                        // mergeCamp._id = "null";
                         return API.createCamp(newRow)
                         .then(newCamp => {
                             console.log(newCamp)

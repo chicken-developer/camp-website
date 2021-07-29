@@ -56,6 +56,10 @@ export function booking(username, data) {
   return axiosInstance.post("/booking/" + username, data)
 }
 
+export function fullHistory() {
+  return axiosInstance.get("/userfull")
+}
+
 export function uploadFile(data) {
   const formData = Utils.getFormData(data);
   return axiosInstance({

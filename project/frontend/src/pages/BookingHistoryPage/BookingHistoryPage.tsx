@@ -13,7 +13,7 @@ function BookingPage() {
 
 
     useEffect(() => {
-        fetchHistory(authUser._id);
+        fetchHistory(authUser.username);
         // fetchHistory("60fdf3a85756b8629ed0129a") //fake
     }, [])
 
@@ -32,6 +32,7 @@ function BookingPage() {
           setLoading(false);
         })
     }
+
 
     return (
         <div className = "container" style = {{minHeight: '500px'}}>
