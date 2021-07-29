@@ -250,7 +250,51 @@ class UserRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
             )
         }
       }
-    }
+    } ~
+    pathPrefix("api_v01" / "userwithid") {
+        (get & pathPrefix(Segment)) { userid =>
+          val fullUserData = UserLogic.GetUserWithFullBookingData(userid)
+          onComplete(fullUserData) {
+            case Success(data) =>
+              complete {
+                HttpEntity(
+                  ContentTypes.`application/json`,
+                  Message("Success", 1, data.toJson).toJson.prettyPrint
+                )
+              }
+            case Failure(ex) =>
+              complete(
+                StatusCodes.InternalServerError,
+                HttpEntity(
+                  ContentTypes.`application/json`,
+                  Message("Fail to get user", 0, "".toJson).toJson.prettyPrint
+                )
+              )
+          }
+        }
+      } ~
+    pathPrefix("api_v01" / "userfull") {
+        (get & pathEndOrSingleSlash) {
+          val fullUserData = UserLogic.GetAllUserWithFullData()
+          onComplete(fullUserData) {
+            case Success(data) =>
+              complete {
+                HttpEntity(
+                  ContentTypes.`application/json`,
+                  Message("Success", 1, data.toJson).toJson.prettyPrint
+                )
+              }
+            case Failure(ex) =>
+              complete(
+                StatusCodes.InternalServerError,
+                HttpEntity(
+                  ContentTypes.`application/json`,
+                  Message("Fail to get user", 0, "".toJson).toJson.prettyPrint
+                )
+              )
+          }
+        }
+      }
   }
   val bookingRoute: Route = {
     pathPrefix("api_v01"/ "booking") {

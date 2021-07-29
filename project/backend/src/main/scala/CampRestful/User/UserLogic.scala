@@ -6,6 +6,9 @@ import akka.http.scaladsl.model.{StatusCode, StatusCodes}
 import akka.stream.Materializer
 import org.mongodb.scala.bson.{BsonObjectId, Document}
 import org.mongodb.scala.model.Filters.{bsonType, equal}
+import spray.json.DefaultJsonProtocol.{JsValueFormat, listFormat}
+import spray.json.enrichAny
+
 import scala.collection.convert.ImplicitConversions.`iterable AsScalaIterable`
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -54,6 +57,42 @@ case object UserLogic {
   def HandleDeleteUser(userId: String): Future[StatusCode] = {
     userCollection.deleteOne(equal("_id", userId))
     Future(StatusCodes.OK)
+  }
+
+  def GetUserWithFullBookingData(userId: String): Future[UserFullData] = {
+    val allUsers = userCollection.find()
+      .map { user =>
+        UserLogic.ConvertToUser(user.toString.replaceAll("Document", "User"))
+      }.toList
+    val user = allUsers.findLast(_._id == userId)
+    val u = user match {
+      case Some(user) => user
+      case None => templateUser
+    }
+
+    val bookingHistory =  bookingCollection.find()
+      .map { booking =>
+        BookingLogic.ConvertToBooking(booking.toString.replaceAll("Document", "Booking"))
+      }.toList
+    val result = bookingHistory.filter(b => b.usernameBooked == u._id)
+    val userFullData =  UserFullData(u._id , u.username, u.typeOfUser, u.firstName, u.lastName, u.password, u.email, u.phoneNumber,result.toJson )
+    Future(userFullData)
+  }
+  def GetAllUserWithFullData(): Future[List[UserFullData]] = {
+    val allUsers = userCollection.find()
+      .map { user =>
+        UserLogic.ConvertToUser(user.toString.replaceAll("Document", "User"))
+      }.toList
+    val result = allUsers.map { u =>
+      val bookingHistory =  bookingCollection.find()
+        .map { booking =>
+          BookingLogic.ConvertToBooking(booking.toString.replaceAll("Document", "Booking"))
+        }.toList
+      val result = bookingHistory.filter(b => b.usernameBooked == u._id)
+      val userFullData =  UserFullData(u._id , u.username, u.typeOfUser, u.firstName, u.lastName, u.password, u.email, u.phoneNumber,result.toJson )
+      userFullData
+    }
+    Future(result)
   }
 
   def GetAllUser(): Future[List[User]] = {

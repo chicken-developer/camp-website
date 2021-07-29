@@ -19,6 +19,8 @@ case class User(_id: String, username: String, typeOfUser: String, firstName: St
   case class Booking(_id: String, usernameBooked: String, timeStart: String, timeEnd: String, totalPrice: Double, campBookedId: String)
 
   val templateBooking = Booking("b_template", "test", "2021:07:24","2021:07:26", 324.2,"c_123123")
+  case class UserFullData(_id: String, username: String, typeOfUser: String, firstName: String, lastName: String, password: String, email: String, phoneNumber: String, bookingHistory: JsValue)
+  implicit val userFullDataFormat = jsonFormat9(UserFullData)
 
   case class Camp(_id: String,
                   campName: String,

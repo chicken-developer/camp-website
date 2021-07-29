@@ -31,28 +31,8 @@ case object BookingLogic {
       .map { booking =>
         BookingLogic.ConvertToBooking(booking.toString.replaceAll("Document", "Booking"))
       }.toList
-
-    def GetBookingHistoryFromUser(user: User): Future[List[Booking]] = {
-      val listBooking = user.bookingHistoryId.map { bookingId =>
-        val booking = allBooking.findLast(_._id == bookingId)
-        booking match {
-          case Some(booking) => booking
-          case None => templateBooking
-        }
-      }.filter(booking => booking._id != templateBooking._id)
-      Future(listBooking)
-    }
-
-    val allUsers = userCollection.find()
-      .map { user =>
-        UserLogic.ConvertToUser(user.toString.replaceAll("Document", "User"))
-      }.toList
-    val user = allUsers.findLast(_._id == userId)
-      user match {
-        case Some(user) =>
-          GetBookingHistoryFromUser(user)
-        case None => Future(List(templateBooking))
-      }
+    val result = allBooking.filter(b => b.usernameBooked == userId)
+    Future(result)
   }
 
   def WriteBookingToDatabase(booking: Booking): Future[Booking] = {
