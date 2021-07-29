@@ -54,8 +54,8 @@ case object UserLogic {
     Future(user)
   }
 
-  def HandleDeleteUser(userId: String): Future[StatusCode] = {
-    userCollection.deleteOne(equal("_id", userId))
+  def HandleDeleteUser(username: String): Future[StatusCode] = {
+    userCollection.deleteOne(equal("username", username))
     Future(StatusCodes.OK)
   }
 

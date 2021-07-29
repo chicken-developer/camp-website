@@ -46,18 +46,18 @@ case object CRUDMethodLogic {
     campData
   }
 
-  def HandleDeleteCamp(campId: String): Future[StatusCode] = {
+  def HandleDeleteCamp(campLocationAddress: String): Future[StatusCode] = {
     val allCamps = campCollection.find()
       .map { camp =>
         ConvertToCamp(camp.toString.replaceAll("Document", "Camp"))
       }.toList
-    val camp = allCamps.findLast(_._id == campId)
+    val camp = allCamps.findLast(_.campLocationAddress == campLocationAddress)
     val c = camp match {
       case Some(aCamp) => aCamp
       case None => templateCamp
     }
 
-    campCollection.deleteOne(equal("_id", c._id))
+    campCollection.deleteOne(equal("campLocationAddress", c.campLocationAddress))
     siteAvailabilityCollection.deleteOne(equal("_id", c.siteAvailabilityId))
     siteDetailsCollection.deleteOne(equal("_id", c.siteDetailsId))
     allowableEquipmentCollection.deleteOne(equal("_id", c.allowableEquipmentListId))
