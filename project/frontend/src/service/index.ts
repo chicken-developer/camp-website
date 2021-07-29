@@ -1,6 +1,7 @@
 import axios from "axios";
 import CONSTANTS from '../utils/Constant'
 import * as Model from '../type'
+import * as Utils from "../utils/Utils";
 
 const axiosInstance = axios.create({
   baseURL: CONSTANTS.HOST_URL
@@ -55,3 +56,13 @@ export function booking(username, data) {
   return axiosInstance.post("/booking/" + username, data)
 }
 
+export function uploadFile(data) {
+  const formData = Utils.getFormData(data);
+  return axiosInstance({
+    method: 'post',
+    url: '/upload',
+    data: formData,
+    headers: { "Content-Type": "multipart/form-data" },
+  })
+}
+  
