@@ -50,7 +50,7 @@ export function deleteCamp(campId: String) {
 }
 
 export function createCamp(data) {
-  return axiosInstance.post("/camp/", data)
+  return axiosInstance.post("/camp/null", data)
 }
 export function booking(username, data) {
   return axiosInstance.post("/booking/" + username, data)

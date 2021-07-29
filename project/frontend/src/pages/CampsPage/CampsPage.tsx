@@ -5,7 +5,6 @@ import {Table, Button, Input, CustomInput} from "reactstrap";
 import "./CampsPage.scss";
 import {getLink, getFormData} from "../../utils/Utils"
 import * as Model from "../../type"
-
 const CampsPage = ({}) => {
     const [isLoading, setLoading] = useState(false);
     const [listCamp, setListCamp] = useState([] as any);
@@ -82,6 +81,80 @@ const CampsPage = ({}) => {
         })
     }
 
+    const mapObjectDetailFromHome = (isUpdate: Boolean, homeData: Model.Camp, detailData?: Model.HomeCamp) => {
+        let templete: Model.HomeCamp = {
+            _id: "null",
+            allowableEquipmentList: {
+                _id: "null",
+                items: {
+                    Tent: "YES",
+                    RV: "20",
+                    Trailer: "15"
+                }
+            },
+            allowableVehicleAndDrivewayDetails: {
+                _id: "null",
+                drivewayEntry: "N/A",
+                drivewayLength: 25.0,
+                drivewaySurface: "Paved",
+                isEquipmentMandatory: "Yes",
+                maxNumOfVehicles: 1.0,
+                maxVehicleLength: 28.0,
+                siteLength: 35.0
+            },
+            allImgSrc: [],
+            campLocationAddress: "Milpitas",
+            campName: "Site: A001, Loop: B",
+            nearAddress: " Milpitas, California",
+            partAddress: " Canon National Forest",
+            price: 10,
+            siteAvailability: {
+                _id: "null",
+                date: "2021-07-24",
+                state: "R"
+            },
+            siteDetails: {
+                _id: "null",
+                campFireAllowed: "Yes",
+                capacityRating: "Group",
+                checkInTime: "3:00 PM",
+                checkOutTime: "12:00 AM",
+                maxNumOfPeople: 16.0,
+                minNumOfPeople: 2.0,
+                petAllowed: "No",
+                shade: "Yes",
+                siteAccessible: "No",
+                siteReserveType: "Site-Specific",
+                siteType: "Standard Nonelectric",
+                typeOfUse: "Over night"
+            },
+            campImgSrc: []
+        };
+
+        if (isUpdate) {
+            templete = {...detailData};
+            templete._id = "null";
+            templete.allowableEquipmentList._id = "null";
+            templete.allowableVehicleAndDrivewayDetails._id = "null";
+            templete.siteAvailability._id = "null";
+            templete.siteDetails._id = "null";
+        }
+
+        // update new
+        templete.allowableEquipmentList.items.Tent = isUpdate ? templete.allowableEquipmentList.items.Tent.toString() : "YES"
+        templete.campLocationAddress = homeData.address;
+        templete.campName = homeData.name;
+        templete.price = isUpdate ? homeData.price : Number.parseFloat(`${homeData.price}`);
+        templete.allowableEquipmentList.items.RV = homeData.rvMax.toString();
+        templete.siteDetails.maxNumOfPeople = Number.parseFloat(`${homeData.sd_maxNumOfPeople}`);
+        templete.siteDetails.typeOfUse = homeData.sd_typeOfUse;
+        templete.allowableEquipmentList.items.Tent = isUpdate ? homeData.tenMax.toString() : "YES"; 
+        templete.allowableVehicleAndDrivewayDetails.maxVehicleLength = Number.parseFloat(`${homeData.vd_maxVehicleLengthForVehicle}`)
+        templete.allowableVehicleAndDrivewayDetails.maxNumOfVehicles =  Number.parseFloat(`${homeData.vd_maxNumOfVehicles}`);
+
+        return templete;
+    }
+
     return (
         <div style={{ maxWidth: '100%' }}>
             <MaterialTable
@@ -103,9 +176,9 @@ const CampsPage = ({}) => {
                 editable = {{
                     onRowUpdate: async (newData, oldData) => {
                         const resultCampDetail = await API.getDetailCamp(oldData?._id);
-                        const fullCamp = resultCampDetail.data.data;
-                        const mergeCamp = Object.assign(fullCamp, newData);
-                        mergeCamp._id = "null";
+                        const fullCamp = resultCampDetail.data.data as Model.HomeCamp;
+                        const mergeCamp = mapObjectDetailFromHome(true, newData as Model.Camp, fullCamp);
+                        console.log(JSON.stringify(mergeCamp))
                         return API.editCamp(oldData?._id, mergeCamp)
                         .then(newCamp => {
                             console.log(newCamp)
@@ -114,19 +187,19 @@ const CampsPage = ({}) => {
                         })
                     },
                     onRowDelete: (oldData) => {
-                        return API.deleteUser(oldData._id)
+                        return API.deleteCamp(oldData.address)
                         .then(newCamp => {
                             console.log(newCamp)
+                            
                             // setListUser(newUser)
                             fetchUsers()
                         })
                     },
                     onRowAdd: async (newRow) => {
-                        const resultCampDetail = await API.getDetailCamp(newRow?._id);
-                         const fullCamp = resultCampDetail.data.data;
-                        const mergeCamp = Object.assign(fullCamp, newRow);
-                        // mergeCamp._id = "null";
-                        return API.createCamp(newRow)
+                         const mergeCamp = mapObjectDetailFromHome(false, newRow as Model.Camp);
+                         // mergeCamp._id = "null";
+                        console.log(JSON.stringify(mergeCamp))
+                        return API.createCamp(mergeCamp)
                         .then(newCamp => {
                             console.log(newCamp)
                             // setListUser(newUser)

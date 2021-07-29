@@ -68,7 +68,7 @@ const UsersPage = ({}) => {
                         })
                     },
                     onRowDelete: (oldData) => {
-                        return API.deleteUser(oldData._id)
+                        return API.deleteUser(oldData.username)
                           .then(newUser => {
                             fetchUsers()
 

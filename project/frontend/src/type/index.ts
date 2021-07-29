@@ -30,8 +30,8 @@ export interface Camp {
     price: Number,
     rvMax: Number,
     sd_maxNumOfPeople: Number,
-    sd_typeOfUse: Number,
-    tenMax: Number,
+    sd_typeOfUse: String,
+    tenMax: String,
     vd_maxNumOfVehicles: Number,
     vd_maxVehicleLengthForVehicle: Number
 }
