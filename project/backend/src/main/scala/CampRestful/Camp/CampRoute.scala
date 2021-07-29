@@ -15,7 +15,7 @@ import scala.util.{Failure, Success}
 class CampRoute(implicit val actorSystem : ActorSystem, implicit  val actorMaterializer: Materializer) extends Directives {
   import Routes.Data._
   val campForSpecialDataRoute: Route = {
-    (get & path("api_v01" / "home")) {
+    (get & path("api_v01" / "home") & pathEndOrSingleSlash) {
       val listCampForHomeFuture = GetMethodLogic.GetCampForHomePage()
       onComplete(listCampForHomeFuture) {
         case Success(campsForHome) =>
@@ -35,7 +35,7 @@ class CampRoute(implicit val actorSystem : ActorSystem, implicit  val actorMater
           )
       }
     } ~
-    (get & path("api_v01" / "camp" / "full")) {
+    (get & path("api_v01" / "camp" / "full") & pathEndOrSingleSlash) {
         val camps = GetMethodLogic.GetAllCampData()
         onComplete(camps) {
           case Success(listCamp) =>

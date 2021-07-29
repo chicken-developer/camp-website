@@ -32,7 +32,11 @@ case object CampConverter {
 
     val rvMax = ae.items.find(_._1 == "RV").get._2
     val tenMax = ae.items.find(_._1 == "Trailer").get._2
-    CampForHomePage(c._id, c.campName, c.campImgSrc.tail.head, c.campImgSrc, c.campLocationAddress,sd_typeOfUse,sd_maxNumOfPeople, vd_maxNumOfVehicles,vd_maxVehicleLengthForVehicle,rvMax.toDouble, tenMax.toDouble, c.price)
+    val img = c.campImgSrc.isEmpty match {
+      case false => "src/data/img/camp_01"
+      case true => c.campImgSrc.tail.head
+    }
+    CampForHomePage(c._id, c.campName,img , c.campImgSrc, c.campLocationAddress,sd_typeOfUse,sd_maxNumOfPeople, vd_maxNumOfVehicles,vd_maxVehicleLengthForVehicle,rvMax.toDouble, tenMax.toDouble, c.price)
   }
 
   def ConvertToCampData(c: Camp): CampData = {
