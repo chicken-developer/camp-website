@@ -9,7 +9,7 @@ import Loading from "../../components/Loading";
 import * as API from "../../service";
 import * as Model from "../../type";
 import 'react-multi-carousel/lib/styles.css';
-
+import {getLink} from "../../utils/Utils"
 import "./HomePage.css";
 import { Type } from "typescript";
 interface Props { }

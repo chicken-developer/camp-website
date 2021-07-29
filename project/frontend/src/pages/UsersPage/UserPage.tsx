@@ -13,7 +13,7 @@ const UsersPage = ({}) => {
     useEffect(() => {
         setLoading(true);
         fetchUsers();
-        fetchHistory("60fdf3a85756b8629ed0129a")
+        // fetchHistory("60fdf3a85756b8629ed0129a")
       }, [])
 
     const fetchUsers = () => {

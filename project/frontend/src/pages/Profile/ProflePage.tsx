@@ -83,7 +83,7 @@ export const ProflePage = () => {
     return (
         <div className="page-register container py-5">
             <form onSubmit={handleSubmit(updateProfile)}>
-                <h3>Sign Up</h3>
+                <h3>Profile</h3>
                 <div className="form-group">
                     <label>Username</label>
                     <input
