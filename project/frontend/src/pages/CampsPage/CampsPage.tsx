@@ -101,8 +101,12 @@ const CampsPage = ({}) => {
                 data={listCamp}
                 title="Camp Managment"
                 editable = {{
-                    onRowUpdate: (newData, oldData) => {
-                        return API.editCamp(oldData?._id, newData)
+                    onRowUpdate: async (newData, oldData) => {
+                        const resultCampDetail = await API.getDetailCamp(oldData?._id);
+                        const fullCamp = resultCampDetail.data.data;
+                        const mergeCamp = Object.assign(fullCamp, newData);
+                        mergeCamp._id = "null";
+                        return API.editCamp(oldData?._id, mergeCamp)
                         .then(newCamp => {
                             console.log(newCamp)
                             // setListUser(newUser)
