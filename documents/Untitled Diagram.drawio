@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2021-08-19T04:13:35.630Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36" etag="9OgLqIrpabFY2AUyFT-y" version="14.9.7" type="github">
+<mxfile host="app.diagrams.net" modified="2021-08-19T04:29:36.518Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36" etag="v27lAxqR-8QH_2G6lK7-" version="14.9.7" type="github">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
     <mxGraphModel dx="3322" dy="2243" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -41,7 +41,7 @@
           <mxGeometry x="10" y="110" width="70" height="30" as="geometry" />
         </mxCell>
         <mxCell id="ZwT0vpusaRzmzd89078X-4" value="JoinGameStateRespin(sm: ScrollerStateMachine)" style="swimlane;align=center;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="370" y="-360" width="290" height="150" as="geometry" />
+          <mxGeometry x="360" y="-350" width="290" height="150" as="geometry" />
         </mxCell>
         <mxCell id="ZwT0vpusaRzmzd89078X-5" value="replayStore&lt;br&gt;respinCalculator: IRespinResultCalculator&lt;br&gt;gameRoundData&lt;br&gt;backupReplayData: Map&amp;lt;String, String?&amp;gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;" vertex="1" parent="ZwT0vpusaRzmzd89078X-4">
           <mxGeometry x="10" y="30" width="240" height="60" as="geometry" />
@@ -155,7 +155,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="ZwT0vpusaRzmzd89078X-357" value="FreeSpinState(sm: ScrollerStateMachine)" style="swimlane;align=center;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="-903" y="-290" width="490" height="240" as="geometry" />
+          <mxGeometry x="-913" y="-584" width="490" height="240" as="geometry" />
         </mxCell>
         <mxCell id="ZwT0vpusaRzmzd89078X-358" value="uniqueNumberProvider: UniqueNumberProviderdataSender: IDataSender&lt;br&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;" vertex="1" parent="ZwT0vpusaRzmzd89078X-357">
           <mxGeometry x="10" y="50" width="410" height="20" as="geometry" />
@@ -167,13 +167,13 @@
           <mxGeometry x="10" y="120" width="110" height="60" as="geometry" />
         </mxCell>
         <mxCell id="ZwT0vpusaRzmzd89078X-362" value="FreeSpinAction" style="swimlane;align=center;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="-1510" y="-280" width="490" height="240" as="geometry" />
+          <mxGeometry x="-1520" y="-574" width="490" height="240" as="geometry" />
         </mxCell>
         <mxCell id="ZwT0vpusaRzmzd89078X-366" value="TODO" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="-1305" y="-190" width="50" height="20" as="geometry" />
+          <mxGeometry x="-1315" y="-484" width="50" height="20" as="geometry" />
         </mxCell>
         <mxCell id="ZwT0vpusaRzmzd89078X-367" value="BonusStateBase(sm: ScrollerStateMachine)" style="swimlane;align=center;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="-716" y="50" width="303" height="140" as="geometry" />
+          <mxGeometry x="-726" y="-244" width="303" height="140" as="geometry" />
         </mxCell>
         <mxCell id="ZwT0vpusaRzmzd89078X-369" value="init(){registerBonusAction()}" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;" vertex="1" parent="ZwT0vpusaRzmzd89078X-367">
           <mxGeometry x="10" y="40" width="160" height="20" as="geometry" />
@@ -182,13 +182,13 @@
           <mxGeometry x="10" y="70" width="130" height="60" as="geometry" />
         </mxCell>
         <mxCell id="ZwT0vpusaRzmzd89078X-372" value="BonusAction" style="swimlane;align=center;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="-1510" width="490" height="240" as="geometry" />
+          <mxGeometry x="-1520" y="-294" width="490" height="240" as="geometry" />
         </mxCell>
         <mxCell id="ZwT0vpusaRzmzd89078X-373" value="TODO" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="-1305" y="90" width="50" height="20" as="geometry" />
+          <mxGeometry x="-1315" y="-204" width="50" height="20" as="geometry" />
         </mxCell>
         <mxCell id="ZwT0vpusaRzmzd89078X-374" value="FeverGameState(sm: ScrollerStateMachine)" style="swimlane;align=center;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="-963" y="260" width="550" height="140" as="geometry" />
+          <mxGeometry x="-973" y="-34" width="550" height="140" as="geometry" />
         </mxCell>
         <mxCell id="ZwT0vpusaRzmzd89078X-375" value="init { registerAction(ScrollerGameCommand.FEVER_SPIN_REQUEST, createFeverSpinAction()) }" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;" vertex="1" parent="ZwT0vpusaRzmzd89078X-374">
           <mxGeometry x="10" y="40" width="540" height="20" as="geometry" />
@@ -197,22 +197,22 @@
           <mxGeometry x="5" y="75" width="140" height="50" as="geometry" />
         </mxCell>
         <mxCell id="ZwT0vpusaRzmzd89078X-377" value="FeverAction" style="swimlane;align=center;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="-1510" y="270" width="490" height="240" as="geometry" />
+          <mxGeometry x="-1520" y="-24" width="490" height="240" as="geometry" />
         </mxCell>
         <mxCell id="ZwT0vpusaRzmzd89078X-378" value="TODO" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="-1365" y="370" width="50" height="20" as="geometry" />
+          <mxGeometry x="-1375" y="76" width="50" height="20" as="geometry" />
         </mxCell>
         <mxCell id="ZwT0vpusaRzmzd89078X-379" value="FeverFreeSpinState(sm: ScrollerStateMachine)" style="swimlane;align=center;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="-760" y="410" width="347" height="100" as="geometry" />
+          <mxGeometry x="-770" y="116" width="347" height="100" as="geometry" />
         </mxCell>
         <mxCell id="ZwT0vpusaRzmzd89078X-382" value="override fun createFreeSpinAction(): FreeSpinActionBase { &lt;br&gt;&amp;nbsp; &amp;nbsp;return FeverFreeSpinAction(this) &lt;br&gt;}" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;" vertex="1" parent="ZwT0vpusaRzmzd89078X-379">
           <mxGeometry x="10" y="30" width="330" height="50" as="geometry" />
         </mxCell>
         <mxCell id="ZwT0vpusaRzmzd89078X-383" value="FeverFreeSpinAction" style="swimlane;align=center;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="-2020" y="270" width="490" height="240" as="geometry" />
+          <mxGeometry x="-2030" y="-24" width="490" height="240" as="geometry" />
         </mxCell>
         <mxCell id="ZwT0vpusaRzmzd89078X-387" value="RespinGameState(sm: ScrollerStateMachine)" style="swimlane;align=center;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="-963" y="590" width="550" height="140" as="geometry" />
+          <mxGeometry x="-973" y="296" width="550" height="140" as="geometry" />
         </mxCell>
         <mxCell id="ZwT0vpusaRzmzd89078X-388" value="init { registerAction(ScrollerGameCommand.RESPIN_REQUEST, createRespinAction()) }" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;" vertex="1" parent="ZwT0vpusaRzmzd89078X-387">
           <mxGeometry x="10" y="40" width="490" height="20" as="geometry" />
@@ -221,13 +221,13 @@
           <mxGeometry x="10" y="75" width="130" height="50" as="geometry" />
         </mxCell>
         <mxCell id="ZwT0vpusaRzmzd89078X-390" value="RespinAction" style="swimlane;align=center;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="-1510" y="550" width="490" height="240" as="geometry" />
+          <mxGeometry x="-1520" y="256" width="490" height="240" as="geometry" />
         </mxCell>
         <mxCell id="ZwT0vpusaRzmzd89078X-391" value="TODO" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="-1365" y="650" width="50" height="20" as="geometry" />
+          <mxGeometry x="-1375" y="356" width="50" height="20" as="geometry" />
         </mxCell>
         <mxCell id="ZwT0vpusaRzmzd89078X-392" value="GamebleState(sm: ScrollerStateMachine)" style="swimlane;align=center;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="-963" y="880" width="550" height="140" as="geometry" />
+          <mxGeometry x="-973" y="586" width="550" height="140" as="geometry" />
         </mxCell>
         <mxCell id="ZwT0vpusaRzmzd89078X-393" value="init { registerAction(ScrollerGameCommand.GAMBLE_REQUEST, GambleAction(this)) }" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;" vertex="1" parent="ZwT0vpusaRzmzd89078X-392">
           <mxGeometry x="10" y="50" width="490" height="20" as="geometry" />
@@ -236,13 +236,60 @@
           <mxGeometry y="80" width="230" height="50" as="geometry" />
         </mxCell>
         <mxCell id="ZwT0vpusaRzmzd89078X-395" value="transactionBuilder: IScrollerTransactionBuilder" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="-960" y="910" width="260" height="20" as="geometry" />
+          <mxGeometry x="-970" y="616" width="260" height="20" as="geometry" />
         </mxCell>
         <mxCell id="ZwT0vpusaRzmzd89078X-396" value="GambleAction" style="swimlane;align=center;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="-1510" y="840" width="490" height="240" as="geometry" />
+          <mxGeometry x="-1520" y="546" width="490" height="240" as="geometry" />
         </mxCell>
         <mxCell id="ZwT0vpusaRzmzd89078X-397" value="TODO" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
-          <mxGeometry x="-1365" y="940" width="50" height="20" as="geometry" />
+          <mxGeometry x="-1375" y="646" width="50" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="ZwT0vpusaRzmzd89078X-398" value="JackpotState(sm: ScrollerStateMachine)" style="swimlane;align=center;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="-980" y="875" width="550" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="ZwT0vpusaRzmzd89078X-399" value="init { registerAction(ScrollerGameCommand.GAMBLE_REQUEST, GambleAction(this)) }" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;" vertex="1" parent="ZwT0vpusaRzmzd89078X-398">
+          <mxGeometry x="10" y="55" width="490" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="ZwT0vpusaRzmzd89078X-400" value="&lt;div style=&quot;text-align: left&quot;&gt;onEnter()&lt;/div&gt;&lt;div style=&quot;text-align: left&quot;&gt;onEXit()&lt;/div&gt;&lt;div style=&quot;text-align: left&quot;&gt;canTriggerJackpot()&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;" vertex="1" parent="ZwT0vpusaRzmzd89078X-398">
+          <mxGeometry y="80" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="ZwT0vpusaRzmzd89078X-401" value="config: ConfigurationManager&lt;br&gt;jackpotEngine IScrollerGameJackpoteEngine" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;" vertex="1" parent="ZwT0vpusaRzmzd89078X-398">
+          <mxGeometry x="10" y="25" width="260" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ZwT0vpusaRzmzd89078X-403" value="ScrollerBaseState(stateID: Int,&#xa; stateMachine: ScrollerStateMachine)" style="swimlane;align=center;startSize=34;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="-315" y="636" width="240" height="154" as="geometry" />
+        </mxCell>
+        <mxCell id="ZwT0vpusaRzmzd89078X-407" value="Use for scroller game" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;" vertex="1" parent="ZwT0vpusaRzmzd89078X-403">
+          <mxGeometry x="50" y="39" width="130" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="ZwT0vpusaRzmzd89078X-409" value="onResume()&lt;br&gt;&lt;div&gt;&lt;span&gt;send(data: IPacketBuilder?)&lt;/span&gt;&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;" vertex="1" parent="ZwT0vpusaRzmzd89078X-403">
+          <mxGeometry x="10" y="80" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="ZwT0vpusaRzmzd89078X-404" value="BaseState" style="swimlane;align=center;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="-275" y="520" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="ZwT0vpusaRzmzd89078X-405" value="" style="endArrow=classic;html=1;align=left;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-190" y="590" as="sourcePoint" />
+            <mxPoint x="-190" y="630" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ZwT0vpusaRzmzd89078X-406" value="Use for all game" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="-215" y="550" width="100" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="ZwT0vpusaRzmzd89078X-410" value="" style="endArrow=classic;html=1;align=left;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="-320" y="730" as="sourcePoint" />
+            <mxPoint x="-200" y="480" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="-390" y="730" />
+              <mxPoint x="-390" y="500" />
+              <mxPoint x="-200" y="500" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ZwT0vpusaRzmzd89078X-411" value="All&lt;br&gt;state&lt;br&gt;in&lt;br&gt;Scroller&lt;br&gt;State&lt;br&gt;Machine&lt;br&gt;inherit&lt;br&gt;from&lt;br&gt;Scroller&lt;br&gt;Base&lt;br&gt;State" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="-380" y="596" width="40" height="20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
